@@ -6,16 +6,15 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/12 16:30:54 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/12 18:51:52 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+#include <iostream>
 #include <memory>
-// #include <vector>
-
 
 namespace ft {
 	
@@ -89,7 +88,10 @@ namespace ft {
 			 * @note constructs an empty container, with no elements.
 			 * @param alloc: allocator object.
 			 */
-			explicit vector(const allocator_type & alloc = allocator_type()) : _n(0) {}
+			explicit vector(const allocator_type & alloc = allocator_type()) :
+				_array(alloc),
+				_start(NULL),
+				_end(NULL) {}
 
 			/**
 			 * @brief constructor: fill
@@ -99,9 +101,16 @@ namespace ft {
 			 * @param alloc: allocator object.
 			 */
 			explicit vector(size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()) :
-				_n(n) {
-					for (size_type i = 0; i < n; i++)
-						
+				_array(alloc),
+				_start(NULL),
+				_end(NULL) {
+					this->_start = this->_array.allocate(n);
+					this->_end = this->_start;
+
+					for (; n != 0; n--) {
+						this->_array.construct(this->_end, val);
+						++this->_end;
+					}
 			}
 
 			/**
@@ -119,20 +128,33 @@ namespace ft {
 			 * @note constructs a container with a copy of each of the elements in x, in the same order.
 			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
 			 */
-			vector(const vector & x);
+			vector(const vector & x) {
+				*this = x;
+			}
 			
 			/**
 			 * @brief destructor
-			 * @note this destroys all container elements, and deallocates alll the storage capacity allocated by the vector using its allocator.
+			 * @note this destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 			 */
-			~vector(void);
+			~vector(void) {
+				for (; this->_end != this->_start; this->_end--)
+					this->_array.destroy(this->_end);
+				this->_array.deallocate(this->_start, this->size());
+			}
 
 			/**
 			 * @brief operator: copy
 			 * @note copies all the elements from x into the container.
 			 * @param x: a vector object of the same type.
 			 */
-			vector &	operator=(vector const & x);
+			vector &	operator=(vector const & x) {
+				if (this == &x) return *this;
+
+				this->_array = x._array;
+				this->_start = x._start;
+				this->_end = x._end;
+				return *this;
+			}
 
 		/* iterators */
 
@@ -147,13 +169,13 @@ namespace ft {
 			 * @brief returns the number of elements in the vector.
 			 * @return the number of elements in the container. 
 			 */
-			size_type	size(void) const { return this->n; }
+			size_type	size(void) const { return this->_end - this->_start; }
 
 			/**
 			 * @brief return the maximum number of elements that the vector can hold.
 			 * @return the maximum number of elements a vector container can hold as content.
 			 */
-			size_type	max_size(void) const;
+			size_type	max_size(void) const { return allocator_type().max_size(); }
 
 			/**
 			 * @brief resizes the container so that it contains n elements
@@ -188,8 +210,9 @@ namespace ft {
 		 * attributes
 		 */
 
-			std::allocator<value_type> _array;
-			size_type	_n;
+			allocator_type	_array;
+			pointer			_start;
+			pointer			_end;
 	};
 }
 
