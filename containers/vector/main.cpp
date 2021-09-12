@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 13:47:24 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/12 18:52:09 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/12 18:59:09 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,27 @@ void vecMaxSizeTest(void) {
 		vector<double> vec2(100, 42.42);
 
 		std::cout << "my max_size:   " << vec.max_size() << std::endl;
-		std::cout << "my max_size:   " << vec1.max_size() << std::endl;
+		std::cout << "my max_size:   " << vec1.max_size() << std::endl; // get different result but same in linux
 		std::cout << "my max_size:   " << vec2.max_size() << std::endl;
 	}
 	std::cout << std::endl;
 }
 
-void test(void) {
-	using namespace std;
 
-	vector<int> vec(1, 1);
-	vector<int> copy = vec;
 
-	cout << vec[0] << endl;
-	cout << copy[0] << endl;
+// void test(void) {
+// 	using namespace std;
 
-	vec[0] = 2;
-	cout << vec[0] << endl;
-	cout << copy[0] << endl;
-}
+// 	vector<int> vec(1, 1);
+// 	vector<int> copy = vec;
+
+// 	cout << vec[0] << endl;
+// 	cout << copy[0] << endl;
+
+// 	vec[0] = 2;
+// 	cout << vec[0] << endl;
+// 	cout << copy[0] << endl;
+// }
 
 int main(void) {
 	vecSizeTest();

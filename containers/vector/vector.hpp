@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/12 18:51:52 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/12 19:41:23 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ namespace ft {
 			explicit vector(const allocator_type & alloc = allocator_type()) :
 				_array(alloc),
 				_start(NULL),
-				_end(NULL) {}
+				_end(NULL),
+				_capacity(NULL) {}
 
 			/**
 			 * @brief constructor: fill
@@ -103,9 +104,11 @@ namespace ft {
 			explicit vector(size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()) :
 				_array(alloc),
 				_start(NULL),
-				_end(NULL) {
+				_end(NULL),
+				_capacity(NULL) {
 					this->_start = this->_array.allocate(n);
 					this->_end = this->_start;
+					this->_capacity = this->_start + n;
 
 					for (; n != 0; n--) {
 						this->_array.construct(this->_end, val);
@@ -139,7 +142,7 @@ namespace ft {
 			~vector(void) {
 				for (; this->_end != this->_start; this->_end--)
 					this->_array.destroy(this->_end);
-				this->_array.deallocate(this->_start, this->size());
+				this->_array.deallocate(this->_start, this->capacity());
 			}
 
 			/**
@@ -153,6 +156,7 @@ namespace ft {
 				this->_array = x._array;
 				this->_start = x._start;
 				this->_end = x._end;
+				this->_capacity = x._capacity;
 				return *this;
 			}
 
@@ -182,13 +186,15 @@ namespace ft {
 			 * @param n: new container size, expressed in number of elements.
 			 * @param val: object whose content is copied to the added elements in case that n is greater than the current container size. If not specified, the default constructor is used instead.
 			 */
-			void		resize(size_type n, value_type val = value_type());
+			void		resize(size_type n, value_type val = value_type()) {
+				// last time here
+			}
 
 			/**
 			 * @brief returns the size of the storage space currently allocated for the vector, expressed in terms of elements.
 			 * @return the size of the currently allocated storage capacity in the vector, measured in terms of the number elements it can hold.
 			 */
-			size_type	capacity(void) const;
+			size_type	capacity(void) const { return this->_capacity - this->_start; }
 
 			/**
 			 * @brief return whether the vector is empty.
@@ -203,7 +209,19 @@ namespace ft {
 			void		reserve(size_type n);
 			
 		/* element access */
-			
+
+			reference			operator[](size_type n);
+			const_reference		operator[](size_type n) const;
+			reference			at(size_type n);
+			const_reference		at(size_type n) const;
+			reference			front(void);
+			const_reference		front(void);
+			reference			back(void);
+			const_reference		back(void);
+
+		/* modifiers */
+
+			void	clear(void);
 		
 		private:
 		/**
@@ -213,6 +231,7 @@ namespace ft {
 			allocator_type	_array;
 			pointer			_start;
 			pointer			_end;
+			pointer			_capacity;
 	};
 }
 
