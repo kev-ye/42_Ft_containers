@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/13 19:21:56 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/13 19:57:53 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ namespace ft {
 						_alloc.destroy(--_end);
 				}
 				else {
-					
+					// comming soon ..
 				}
 			}
 
@@ -222,8 +222,15 @@ namespace ft {
 				if (n > capacity()) {
 					pointer oldStart = _start;
 					pointer oldEnd = _end;
+					size_type oldN = size();
+					size_type oldCap = capacity();
 
-					_start = _alloc.
+					_start = _alloc.allocate(n);
+					_end = _start;
+					_capacity = _start + n;
+					while (oldStart != oldEnd)
+						_alloc.construct(_end++, *oldStart++);
+					_alloc.deallocate(oldStart - oldN, oldCap);
 				}
 			}
 			

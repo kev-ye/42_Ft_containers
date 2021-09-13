@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/12 13:47:24 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/13 17:11:31 by kaye             ###   ########.fr       */
+/*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
+/*   Updated: 2021/09/13 19:57:43 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,7 @@ void vecMaxSizeTest(void) {
 	std::cout << std::endl;
 }
 
-
-
-void test(void) {
+void vecReserveTest(void) {
 {
 	using namespace std;
 
@@ -87,51 +85,102 @@ void test(void) {
 	cout << "cap: " << vec.capacity() << endl;
 
 	vec.reserve(1);
-	cout << "reserve 1" << endl;
+	cout << "--> reserve 1" << endl;
 
 	cout << "size: " << vec.size() << endl;
 	cout << "cap: " << vec.capacity() << endl;
 	
 	vec.reserve(20);
-	cout << "reserve 20" << endl;
+	cout << "--> reserve 20" << endl;
 
 	cout << "size: " << vec.size() << endl;
 	cout << "cap: " << vec.capacity() << endl;
 
-	// vec.resize(10);
-	// cout << "size: " << vec.size() << endl;
-	// cout << "cap: " << vec.capacity() << endl;
-	// cout << "element [5]: " << vec[5] << endl;
-
-	// vec.reserve(20);
-	// cout << "size: " << vec.size() << endl;
-	// cout << "cap: " << vec.capacity() << endl;
-	// cout << "element [15]: " << vec[15] << endl;
-
 	cout << endl;
 
 }
+{
+	using namespace ft;
+
+	vector<int> vec(10);
+
+	std::cout << "-- my --" << std::endl;
+
+	std::cout << "size: " << vec.size() << std::endl;
+	std::cout << "cap: " << vec.capacity() << std::endl;
+
+	vec.reserve(1);
+	std::cout << "--> reserve 1" << std::endl;
+
+	std::cout << "size: " << vec.size() << std::endl;
+	std::cout << "cap: " << vec.capacity() << std::endl;
+	
+	vec.reserve(20);
+	std::cout << "--> reserve 20" << std::endl;
+
+	std::cout << "size: " << vec.size() << std::endl;
+	std::cout << "cap: " << vec.capacity() << std::endl;
+}
+}
+
+// void test(void) {
 // {
-// 	using namespace ft;
+// 	using namespace std;
 
 // 	vector<int> vec(10);
 
-// 	std::cout << "-- my --" << std::endl;
+// 	cout << "-- real --" << endl;
 
-// 	std::cout << "size: " << vec.size() << std::endl;
-// 	std::cout << "cap: " << vec.capacity() << std::endl;
+// 	cout << "size: " << vec.size() << endl;
+// 	cout << "cap: " << vec.capacity() << endl;
 
-// 	vec.clear();
+// 	vec.reserve(1);
+// 	cout << "reserve 1" << endl;
 
-// 	std::cout << "size: " << vec.size() << std::endl;
-// 	std::cout << "cap: " << vec.capacity() << std::endl;
+// 	cout << "size: " << vec.size() << endl;
+// 	cout << "cap: " << vec.capacity() << endl;
+	
+// 	vec.reserve(20);
+// 	cout << "reserve 20" << endl;
+
+// 	cout << "size: " << vec.size() << endl;
+// 	cout << "cap: " << vec.capacity() << endl;
+
+// 	// vec.resize(10);
+// 	// cout << "size: " << vec.size() << endl;
+// 	// cout << "cap: " << vec.capacity() << endl;
+// 	// cout << "element [5]: " << vec[5] << endl;
+
+// 	// vec.reserve(20);
+// 	// cout << "size: " << vec.size() << endl;
+// 	// cout << "cap: " << vec.capacity() << endl;
+// 	// cout << "element [15]: " << vec[15] << endl;
+
+// 	cout << endl;
+
 // }
-}
+// // {
+// // 	using namespace ft;
+
+// // 	vector<int> vec(10);
+
+// // 	std::cout << "-- my --" << std::endl;
+
+// // 	std::cout << "size: " << vec.size() << std::endl;
+// // 	std::cout << "cap: " << vec.capacity() << std::endl;
+
+// // 	vec.clear();
+
+// // 	std::cout << "size: " << vec.size() << std::endl;
+// // 	std::cout << "cap: " << vec.capacity() << std::endl;
+// // }
+// }
 
 int main(void) {
 	// vecSizeTest();
 	// vecMaxSizeTest();
-	test();
+	vecReserveTest();
+	// test();
 
 	return 0;
 }
