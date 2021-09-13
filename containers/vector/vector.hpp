@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/12 19:41:23 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/13 19:21:56 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <memory>
+#include <exception>
 
 namespace ft {
 	
@@ -89,7 +90,7 @@ namespace ft {
 			 * @param alloc: allocator object.
 			 */
 			explicit vector(const allocator_type & alloc = allocator_type()) :
-				_array(alloc),
+				_alloc(alloc),
 				_start(NULL),
 				_end(NULL),
 				_capacity(NULL) {}
@@ -102,18 +103,16 @@ namespace ft {
 			 * @param alloc: allocator object.
 			 */
 			explicit vector(size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()) :
-				_array(alloc),
+				_alloc(alloc),
 				_start(NULL),
 				_end(NULL),
 				_capacity(NULL) {
-					this->_start = this->_array.allocate(n);
-					this->_end = this->_start;
-					this->_capacity = this->_start + n;
+					_start = _alloc.allocate(n);
+					_end = _start;
+					_capacity = _start + n;
 
-					for (; n != 0; n--) {
-						this->_array.construct(this->_end, val);
-						++this->_end;
-					}
+					for (; n != 0; n--)
+						_alloc.construct(_end++, val);
 			}
 
 			/**
@@ -140,9 +139,8 @@ namespace ft {
 			 * @note this destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 			 */
 			~vector(void) {
-				for (; this->_end != this->_start; this->_end--)
-					this->_array.destroy(this->_end);
-				this->_array.deallocate(this->_start, this->capacity());
+				clear();
+				_alloc.deallocate(_start, capacity());
 			}
 
 			/**
@@ -153,10 +151,12 @@ namespace ft {
 			vector &	operator=(vector const & x) {
 				if (this == &x) return *this;
 
-				this->_array = x._array;
-				this->_start = x._start;
-				this->_end = x._end;
-				this->_capacity = x._capacity;
+				_alloc.clear();
+				_alloc = x._alloc;
+				_start = x._start;
+				_end = x._end;
+				_capacity = x._capacity; // capacity no change when assign
+				// need insert
 				return *this;
 			}
 
@@ -173,7 +173,7 @@ namespace ft {
 			 * @brief returns the number of elements in the vector.
 			 * @return the number of elements in the container. 
 			 */
-			size_type	size(void) const { return this->_end - this->_start; }
+			size_type	size(void) const { return _end - _start; }
 
 			/**
 			 * @brief return the maximum number of elements that the vector can hold.
@@ -187,14 +187,23 @@ namespace ft {
 			 * @param val: object whose content is copied to the added elements in case that n is greater than the current container size. If not specified, the default constructor is used instead.
 			 */
 			void		resize(size_type n, value_type val = value_type()) {
-				// last time here
+				if (n > max_size())
+					throw std::length_error("vector");
+
+				if (n < size()) {
+					while (size() > n)
+						_alloc.destroy(--_end);
+				}
+				else {
+					
+				}
 			}
 
 			/**
 			 * @brief returns the size of the storage space currently allocated for the vector, expressed in terms of elements.
 			 * @return the size of the currently allocated storage capacity in the vector, measured in terms of the number elements it can hold.
 			 */
-			size_type	capacity(void) const { return this->_capacity - this->_start; }
+			size_type	capacity(void) const { return _capacity - _start; }
 
 			/**
 			 * @brief return whether the vector is empty.
@@ -206,7 +215,17 @@ namespace ft {
 			 * @brief requests that the vector capacity be at least enough to contain n elements.
 			 * @param n: minimum capacity fot the vector.
 			 */
-			void		reserve(size_type n);
+			void		reserve(size_type n) {
+				if (n > max_size())
+					throw std::length_error("vector");
+
+				if (n > capacity()) {
+					pointer oldStart = _start;
+					pointer oldEnd = _end;
+
+					_start = _alloc.
+				}
+			}
 			
 		/* element access */
 
@@ -215,20 +234,26 @@ namespace ft {
 			reference			at(size_type n);
 			const_reference		at(size_type n) const;
 			reference			front(void);
-			const_reference		front(void);
+			const_reference		front(void) const;
 			reference			back(void);
-			const_reference		back(void);
+			const_reference		back(void) const;
 
 		/* modifiers */
 
-			void	clear(void);
+			/** @brief removes all elements from the vector, leaving the container with a size of 0. */
+			void	clear(void) {
+				size_type len = size();
+
+				for (size_type i = 0; i < len; i++)
+					_alloc.destroy(--_end);
+			}
 		
 		private:
 		/**
 		 * attributes
 		 */
 
-			allocator_type	_array;
+			allocator_type	_alloc;
 			pointer			_start;
 			pointer			_end;
 			pointer			_capacity;
