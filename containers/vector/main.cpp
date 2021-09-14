@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/14 19:17:17 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/14 19:44:44 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,9 +333,6 @@ void vecSwapTest(void) {
 	vector<int> vec(5, 100);
 	vector<int> vec2(10, 999);
 
-	// std::cout << "address: " << &vec << std::endl;
-	// std::cout << "address: " << &vec2 << std::endl;
-
 	std::cout << "-- real --" << std::endl;
 
 	std::cout << "size before swap: vec: " << vec.size() << std::endl;
@@ -363,15 +360,26 @@ void vecSwapTest(void) {
 	std::cout << "back: " << vec2.back() << std::endl;
 
 	cout << endl;
+
+	swap(vec, vec2);
+
+	std::cout << "size after swap: vec: " << vec.size() << std::endl;
+	std::cout << "cap after swap: vec: " << vec.capacity() << std::endl;
+	std::cout << "first: " << vec.front() << std::endl;
+	std::cout << "back: " << vec.back() << std::endl;
+
+	std::cout << "size after swap: vec2: " << vec2.size() << std::endl;
+	std::cout << "cap after swap: vec2: " << vec2.capacity() << std::endl;
+	std::cout << "first: " << vec2.front() << std::endl;
+	std::cout << "back: " << vec2.back() << std::endl;
+
+	cout << endl;
 }
 {
 	using namespace ft;
 
 	vector<int> vec(5, 100);
 	vector<int> vec2(10, 999);
-
-	// std::cout << "address: " << &vec << std::endl;
-	// std::cout << "address: " << &vec2 << std::endl;
 
 	std::cout << "-- my --" << std::endl;
 
@@ -388,6 +396,20 @@ void vecSwapTest(void) {
 	std::cout << std::endl;
 
 	vec.swap(vec2);
+
+	std::cout << "size after swap: vec: " << vec.size() << std::endl;
+	std::cout << "cap after swap: vec: " << vec.capacity() << std::endl;
+	std::cout << "first: " << vec.front() << std::endl;
+	std::cout << "back: " << vec.back() << std::endl;
+
+	std::cout << "size after swap: vec2: " << vec2.size() << std::endl;
+	std::cout << "cap after swap: vec2: " << vec2.capacity() << std::endl;
+	std::cout << "first: " << vec2.front() << std::endl;
+	std::cout << "back: " << vec2.back() << std::endl;
+
+	std::cout << std::endl;
+
+	swap(vec, vec2);
 
 	std::cout << "size after swap: vec: " << vec.size() << std::endl;
 	std::cout << "cap after swap: vec: " << vec.capacity() << std::endl;
@@ -411,8 +433,6 @@ void vecAssignment(void) {
 	vector<int> vec2(vec);
 	vec.pop_back();
 
-	// vec2 = vec;
-
 	std::cout << "vec: " << vec[0] << " - cap: " << vec.capacity() << std::endl;
 	std::cout << "vec2: " << vec2[0] << " - cap: " << vec2.capacity() << std::endl;
 
@@ -430,8 +450,6 @@ void vecAssignment(void) {
 	vector<int> vec(4, 2);
 	vector<int> vec2(vec);
 	vec.pop_back();
-
-	// vec2 = vec;
 
 	std::cout << "vec: " << vec[0] << " - cap: " << vec.capacity() << std::endl;
 	std::cout << "vec2: " << vec2[0] << " - cap: " << vec2.capacity() << std::endl;
@@ -451,8 +469,8 @@ int main(void) {
 	// relationalOperator();
 	// vecAssignTest();
 	// vecPushPopTest();
-	// vecSwapTest();
-	vecAssignment();
+	vecSwapTest();
+	// vecAssignment();
 
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/14 19:18:48 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/14 19:43:30 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ namespace ft {
 		public:
 		/*
 		 * member types
+		 */
+		/**
+		 * @todo iterator typedef
 		 */
 		
 			/** @brief the first template parameter (T) */
@@ -87,6 +90,10 @@ namespace ft {
 		 */
 	
 		/* constructor / destructor / operator= */
+		/**
+		 * @todo constructor:range
+		 * @todo other maybe done, check later
+		 */
 
 			/**
 			 * @brief constructor: default
@@ -182,6 +189,12 @@ namespace ft {
 			}
 
 		/* iterators */
+		/**
+		 * @todo begin
+		 * @todo end
+		 * @todo rbegin
+		 * @todo rend
+		 */
 
 			// begin
 			// end
@@ -189,6 +202,9 @@ namespace ft {
 			// rend
 
 		/* capacity */
+		/**
+		 * @todo almost done ... ?
+		 */
 
 			/**
 			 * @brief return size.
@@ -286,6 +302,9 @@ namespace ft {
 			}
 			
 		/* element access */
+		/**
+		 * @todo almost done ... ?
+		 */
 
 			/** 
 			 * @brief access element.
@@ -331,6 +350,11 @@ namespace ft {
 			const_reference		back(void) const { return *(_end - 1); }
 
 		/* modifiers */
+		/**
+		 * @todo assign:range
+		 * @todo insert
+		 * @todo erase
+		 */
 			
 			/** @brief assign vector content.
 			 * @note assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
@@ -421,6 +445,9 @@ namespace ft {
 			}
 
 		/* allocator */
+		/**
+		 * @todo almost done ... ?
+		 */
 
 			/** 
 			 * @brief returns a copy of the allocator object associated with the vector;
@@ -442,6 +469,9 @@ namespace ft {
 	/**
 	 * non-member function
 	 */
+	/**
+		 * @todo all need to do ...
+		 */
 	
 	template < class T, class Alloc >
 	bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs); // ==
@@ -461,8 +491,14 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator>= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs); // >=
 
+	/**
+	 * @brief exchange contents of vectors
+	 * @note the contents of container x are exchanged with those of y.
+	 */
 	template <class T, class Alloc>
-	void swap (vector<T,Alloc> & x, vector<T,Alloc> & y);
+	void swap (vector<T,Alloc> & x, vector<T,Alloc> & y) {
+		x.swap(y);
+	}
 }
 
 #endif
