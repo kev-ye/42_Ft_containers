@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/14 19:43:30 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/14 19:46:00 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -470,8 +470,8 @@ namespace ft {
 	 * non-member function
 	 */
 	/**
-		 * @todo all need to do ...
-		 */
+	 * @todo all need to do ...
+	 */
 	
 	template < class T, class Alloc >
 	bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs); // ==
