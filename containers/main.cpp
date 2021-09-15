@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/14 19:44:44 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/15 18:17:00 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -469,8 +469,10 @@ int main(void) {
 	// relationalOperator();
 	// vecAssignTest();
 	// vecPushPopTest();
-	vecSwapTest();
+	// vecSwapTest();
 	// vecAssignment();
+
+	
 
 	return 0;
 }

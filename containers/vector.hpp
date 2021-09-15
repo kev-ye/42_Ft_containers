@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/14 19:46:00 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/15 18:51:29 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 
 #include <iostream>
 #include <memory>
+#include <cstddef>
 #include <exception>
+#include "./utils/iterator.hpp"
 
 namespace ft {
 	
 	/**
-	 * @class vector
+	 * @class template: vector
 	 * @brief vectors are sequence containers representing arrays that can change in size.
+	 * @param T: type of the elements.
+	 * @param Alloc: type of the allocator object used to define the storage allocation model.
 	 */
 	template < class T, class Alloc = std::allocator<T> >
 	class vector {
@@ -33,66 +37,31 @@ namespace ft {
 		 * @todo iterator typedef
 		 */
 		
-			/** @brief the first template parameter (T) */
 			typedef 			T								value_type;
-
-			/**
-			 * @brief the second template parameter (Alloc)
-			 * @note defauls to: allocator<value_type> 
-			 */
 			typedef 			Alloc							allocator_type;
-
-			/**
-			 * @brief allocator_type::reference
-			 * @note for the default allocator: value_type&
-			 */
 			typedef typename	allocator_type::reference		reference;
-
-			/**
-			 * @brief allocator_type::const_reference
-			 * @note for the default allocator: const value_type&
-			 */
 			typedef typename	allocator_type::const_reference	const_reference;
-
-			/**
-			 * @brief allocator_type::pointer
-			 * @note for the default allocator: value_type*
-			 */
 			typedef typename	allocator_type::pointer			pointer;
-
-			/**
-			 * @brief allocator_type::cosnt_pointer
-			 * @note for the default allocator: const value_type*
-			 */
 			typedef typename	allocator_type::const_pointer	const_pointer;
-
-			/**
-			 * @brief a signed integral type, identical to: iterator_traits<iterator>::difference_type
-			 * @note usually the same as ptrdiff_t
-			 */
+			/** @note usually the same as ptrdiff_t */
 			typedef typename	allocator_type::difference_type	difference_type;
-
-			/**
-			 * @brief an unsigned integral type that can reprensent any non-negative value of difference_type
-			 * @note usually the same as size_t
-			 */
+			/** @note usually the same as size_t */
 			typedef typename	allocator_type::size_type		size_type;
 
+			typedef typename ft::random_access_iterator<T>::value_type iterator;
+			typedef typename ft::random_access_iterator<const T>::value_type const_iterator;
 			// coming soon ...
-			// typedef ? iterator;
-			// typedef ? const_iterator;
 			// typedef ? reverse_iterator;
 			// typedef ? const_reverse_iterator;
 
 		public:
 		/*
-		 *member functions
+		 * member functions
 		 */
 	
 		/* constructor / destructor / operator= */
 		/**
 		 * @todo constructor:range
-		 * @todo other maybe done, check later
 		 */
 
 			/**
