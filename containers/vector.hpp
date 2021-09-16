@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/15 18:51:29 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/16 19:24:48 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 #include <cstddef>
 #include <exception>
 #include "./utils/iterator.hpp"
+#include "./utils/lexicographical_compare.hpp"
 
 namespace ft {
 	
 	/**
 	 * @class template: vector
 	 * @brief vectors are sequence containers representing arrays that can change in size.
+	 * 
 	 * @param T: type of the elements.
 	 * @param Alloc: type of the allocator object used to define the storage allocation model.
 	 */
@@ -39,17 +41,20 @@ namespace ft {
 		
 			typedef 			T								value_type;
 			typedef 			Alloc							allocator_type;
+
 			typedef typename	allocator_type::reference		reference;
 			typedef typename	allocator_type::const_reference	const_reference;
 			typedef typename	allocator_type::pointer			pointer;
 			typedef typename	allocator_type::const_pointer	const_pointer;
+
 			/** @note usually the same as ptrdiff_t */
 			typedef typename	allocator_type::difference_type	difference_type;
 			/** @note usually the same as size_t */
 			typedef typename	allocator_type::size_type		size_type;
 
-			typedef typename ft::random_access_iterator<T>::value_type iterator;
-			typedef typename ft::random_access_iterator<const T>::value_type const_iterator;
+			typedef typename	ft::random_access_iterator<value_type> iterator;
+			typedef typename	ft::random_access_iterator<const value_type> const_iterator;
+
 			// coming soon ...
 			// typedef ? reverse_iterator;
 			// typedef ? const_reverse_iterator;
@@ -60,13 +65,11 @@ namespace ft {
 		 */
 	
 		/* constructor / destructor / operator= */
-		/**
-		 * @todo constructor:range
-		 */
 
 			/**
 			 * @brief constructor: default
 			 * @note constructs an empty container, with no elements.
+			 * 
 			 * @param alloc: allocator object.
 			 */
 			explicit vector(const allocator_type & alloc = allocator_type()) :
@@ -78,6 +81,7 @@ namespace ft {
 			/**
 			 * @brief constructor: fill
 			 * @note constructs a container with n elements. Each element is a copy of val.
+			 * 
 			 * @param n: initial container size.
 			 * @param val: value to fill the container with.
 			 * @param alloc: allocator object.
@@ -104,16 +108,33 @@ namespace ft {
 			/**
 			 * @brief constructor: range
 			 * @note constructs a container with as many elements as the range [first, last], with each element constructed from its corresponding element in that range, in the same order.
+			 * 
 			 * @param first: input iterators to the initial positions in a range.
 			 * @param last: input iterator to the final positions in a range.
 			 * @param alloc: allocator object.
 			 */
 			// template <class InputIterator>
-			// vector(InputIterator first, InputIterator last, const aloocator_type & alloc = allocator_type());
+			// vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
+			// 	difference_type n = ft::distance(first, last);
+
+			// 	try {
+			// 		_begin = _alloc.allocate(n);
+			// 	}
+			// 	catch (std::length_error &e) {
+			// 		throw std::length_error("vector");
+			// 	}
+
+			// 	_end = _begin;
+			// 	_capacity = _begin + n;
+
+			// 	for (; n != 0; n--)
+			// 		_alloc.construct(_end++, *first++);
+			// }
 
 			/**
 			 * @brief constructor: copy
 			 * @note constructs a container with a copy of each of the elements in x, in the same order.
+			 * 
 			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
 			 */
 			vector(const vector & x) {
@@ -140,6 +161,7 @@ namespace ft {
 			/**
 			 * @brief operator: copy
 			 * @note copies all the elements from x into the container.
+			 * 
 			 * @param x: a vector object of the same type.
 			 */
 			vector &	operator= (vector const & x) {
@@ -159,25 +181,53 @@ namespace ft {
 
 		/* iterators */
 		/**
-		 * @todo begin
-		 * @todo end
 		 * @todo rbegin
 		 * @todo rend
 		 */
 
-			// begin
-			// end
-			// rbegin
-			// rend
+			/**
+			 * @brief return iterator to beginning
+			 * @note returns an iterator pointing to the first element in the vector.
+			 * 
+			 * @return an iterator to the beginning of the sequence container.
+			 */
+			iterator		begin(void) { return iterator(_begin); }
+			const_iterator	begin(void) const { return iterator(_begin); }
+
+			/**
+			 * @brief return iterator to end
+			 * @note returns an iterator referring to the past-the-end element int the vector container.
+			 * 
+			 * @return an iterator to the past the end of the sequence.
+			 */
+			iterator		end(void) { return iterator(_end); }
+			const_iterator	end(void) const { return iterator(_end); }
+
+			
+			/**
+			 * @brief return reverse iterator to reverse beginning
+			 * @note returns a reverse iterator pointing to the last element in the vector.
+			 * 
+			 * @return a reverse iterator to the reverse beginning of the sequence container.
+			 */
+			// reverse_iterator		rbegin(void);
+			// const_reverse_iterator	rbegin(void) const;
+
+			/**
+			 * @brief return reverse iterator to reverse end.
+			 * @note returns a reverse iterator pointing to the theoretical element preceding the first element in the vector.
+			 * 
+			 * @return a reverse iterator to the reverse end of the sequence container.
+			 */
+			// reverse_iterator		rend(void);
+			// const_reverse_iterator	rend(void) const;
 
 		/* capacity */
-		/**
-		 * @todo almost done ... ?
-		 */
 
 			/**
 			 * @brief return size.
 			 * @note returns the number of elements in the vector.
+			 * 
 			 * @return the number of elements in the container. 
 			 */
 			size_type	size(void) const { return _end - _begin; }
@@ -185,6 +235,7 @@ namespace ft {
 			/**
 			 * @brief return maximum size.
 			 * @note return the maximum number of elements that the vector can hold.
+			 * 
 			 * @return the maximum number of elements a vector container can hold as content.
 			 */
 			size_type	max_size(void) const { return allocator_type().max_size(); }
@@ -192,6 +243,7 @@ namespace ft {
 			/**
 			 * @brief change size.
 			 * @note resizes the container so that it contains n elements
+			 * 
 			 * @param n: new container size, expressed in number of elements.
 			 * @param val: object whose content is copied to the added elements in case that n is greater than the current container size. If not specified, the default constructor is used instead.
 			 * @exception throw length_error exception
@@ -234,6 +286,7 @@ namespace ft {
 			/**
 			 * @brief return size of allocated storage capacity.
 			 * @note returns the size of the storage space currently allocated for the vector, expressed in terms of elements.
+			 * 
 			 * @return the size of the currently allocated storage capacity in the vector, measured in terms of the number elements it can hold.
 			 */
 			size_type	capacity(void) const { return _capacity - _begin; }
@@ -248,6 +301,7 @@ namespace ft {
 			/**
 			 * @brief request a change in capacity.
 			 * @note requests that the vector capacity be at least enough to contain n elements.
+			 * 
 			 * @exception length_error exception
 			 * @param n: minimum capacity fot the vector.
 			 */
@@ -271,13 +325,11 @@ namespace ft {
 			}
 			
 		/* element access */
-		/**
-		 * @todo almost done ... ?
-		 */
 
 			/** 
 			 * @brief access element.
 			 * @note returns a reference to the element at position n in the vector container.
+			 * 
 			 * @param n: position of an element in the container.
 			 * @return the element at the specified position in the vector.
 			 */
@@ -287,8 +339,9 @@ namespace ft {
 			/**
 			 * @brief access element.
 			 * @note returns a refenrece to the elelment at position n in the vector.
-			 * @param n: position of an element in the container.
+			 * 
 			 * @exception throw out_of_range exception
+			 * @param n: position of an element in the container.
 			 * @return the element at the specified position in the container.
 			 */
 			reference			at(size_type n) {
@@ -305,6 +358,7 @@ namespace ft {
 			/**
 			 * @brief access first element.
 			 * @note returns a reference to the first element in the vector.
+			 * 
 			 * @return a reference to hte first element in the vector container. 
 			 */
 			reference			front(void) { return *_begin; }
@@ -313,6 +367,7 @@ namespace ft {
 			/**
 			 * @brief access last element.
 			 * @note returns a reference to the last element in the vector.
+			 * 
 			 * @return a reference to the last element in the vector. 
 			 */
 			reference			back(void) { return *(_end - 1); }
@@ -343,6 +398,7 @@ namespace ft {
 			/**
 			 * @brief add element at the end.
 			 * @note add a new element at the end of the vector, after its current last element.
+			 * 
 			 * @param val: value to be copied to the new element.
 			 */
 			void push_back(const value_type & val) {
@@ -362,6 +418,7 @@ namespace ft {
 			/** 
 			 * @brief insert elements.
 			 * @note the vector is extended by inserting new elements before the element at the specified position, effectively increasing the container size by the number of elements inserted.
+			 * 
 			 * @param position: position in the vector where the new elements are inserted.
 			 * @param val: value to be copied(or moved) to the inserted elements.
 			 * @param first, last: iterators specifying a range of elements. Copies of the elements in the range [first, last] are inserted at position(in the same order).
@@ -375,6 +432,7 @@ namespace ft {
 			/** 
 			 * @brief erase elements.
 			 * @note removes from the vector either a single element or a range of elements.
+			 * 
 			 * @param position: iterator pointing to a single element to be removed from the vector.
 			 * @param first, last: Iterators specifying a range within the vector to be removed: [first, last].
 			 * @return an iterator pointing to the new location of the element that followed the last element erased by the function call.
@@ -385,6 +443,7 @@ namespace ft {
 			/** 
 			 * @brief swap content.
 			 * @note exchanges the content of the container by the content of x, which is another vector object of the same type.
+			 * 
 			 * @param x: another vector container of the same type.
 			 */
 			void swap(vector & x) {
@@ -414,12 +473,10 @@ namespace ft {
 			}
 
 		/* allocator */
-		/**
-		 * @todo almost done ... ?
-		 */
 
 			/** 
 			 * @brief returns a copy of the allocator object associated with the vector;
+			 * 
 			 * @return the allocator.
 			 */
 			allocator_type get_allocator() const { return allocator_type(); }
@@ -438,27 +495,46 @@ namespace ft {
 	/**
 	 * non-member function
 	 */
-	/**
-	 * @todo all need to do ...
-	 */
 	
 	template < class T, class Alloc >
-	bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs); // ==
+	bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+		if (lhs.size() != rhs.size())
+			return false;
+		for (typename vector<T>::size_type i = 0; i < lhs.size(); i++) {
+			if (lhs[i] != rhs[i])
+				return false;
+		}
+		return true;
+	}
 
 	template <class T, class Alloc>
-	bool operator!= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs); // !==
+	bool operator!= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+		return !(lhs == rhs);
+	}
 
+	/** @brief lexicographically compares the values in the vector */
 	template <class T, class Alloc>
-	bool operator< (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs); // <
+	bool operator< (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+		lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
 
+	/** @brief lexicographically compares the values in the vector */
 	template <class T, class Alloc>
-	bool operator<= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs); // <=
+	bool operator<= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+		return !(rhs < lhs);
+	}
 
+	/** @brief lexicographically compares the values in the vector */
 	template <class T, class Alloc>
-	bool operator> (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs); // >
+	bool operator> (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+		return rhs < lhs;
+	}
 
+	/** @brief lexicographically compares the values in the vector */
 	template <class T, class Alloc>
-	bool operator>= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs); // >=
+	bool operator>= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+		return !(lhs < rhs);
+	}
 
 	/**
 	 * @brief exchange contents of vectors

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/15 18:17:00 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/16 20:07:00 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -472,7 +472,31 @@ int main(void) {
 	// vecSwapTest();
 	// vecAssignment();
 
-	
+	using namespace std;
+
+	// vector<int> vec(5, 100);
+	// vec.pop_back();
+	// vec.pop_back();
+
+	// vector<int>::iterator it = vec.begin();
+
+	// for (; it != vec.end(); it++) {
+	// 	cout << *it << endl;
+	// }
+	ft::vector<int> vec(10, 100);
+
+	vec.assign(10, 10);
+
+	ft::vector<int>::iterator it = vec.begin();
+	ft::vector<int>::iterator ite = vec.end();;
+
+	for (; it != ite; it++)
+		cout << *it << " ";
+	cout << endl;
+
+	// cout << "dist: " << distance(it, ite) << endl;
+
+	// cout << "dist: " << ft::distance(it, ite) << endl;
 
 	return 0;
 }
