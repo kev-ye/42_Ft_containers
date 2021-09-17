@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/16 19:24:48 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/17 19:44:19 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@
 #include "./utils/lexicographical_compare.hpp"
 
 namespace ft {
-	
+	/*
+	 * class
+	 */
+
 	/**
 	 * @class template: vector
 	 * @brief vectors are sequence containers representing arrays that can change in size.
@@ -35,10 +38,7 @@ namespace ft {
 		/*
 		 * member types
 		 */
-		/**
-		 * @todo iterator typedef
-		 */
-		
+
 			typedef 			T								value_type;
 			typedef 			Alloc							allocator_type;
 
@@ -52,12 +52,12 @@ namespace ft {
 			/** @note usually the same as size_t */
 			typedef typename	allocator_type::size_type		size_type;
 
-			typedef typename	ft::random_access_iterator<value_type> iterator;
-			typedef typename	ft::random_access_iterator<const value_type> const_iterator;
+			/** @note convertible to const_iterator */
+			typedef typename	ft::random_access_iterator<value_type> 			iterator; // test iterator -> const iterator
+			typedef typename	ft::random_access_iterator<const value_type>	const_iterator;
 
-			// coming soon ...
-			// typedef ? reverse_iterator;
-			// typedef ? const_reverse_iterator;
+			typedef typename	ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef typename	ft::reverse_iterator<const iterator>	const_reverse_iterator;
 
 		public:
 		/*
@@ -210,8 +210,8 @@ namespace ft {
 			 * 
 			 * @return a reverse iterator to the reverse beginning of the sequence container.
 			 */
-			// reverse_iterator		rbegin(void);
-			// const_reverse_iterator	rbegin(void) const;
+			reverse_iterator		rbegin(void) { return reverse_iterator(begin()); }
+			const_reverse_iterator	rbegin(void) const { return reverse_iterator(begin()); }
 
 			/**
 			 * @brief return reverse iterator to reverse end.
@@ -219,8 +219,8 @@ namespace ft {
 			 * 
 			 * @return a reverse iterator to the reverse end of the sequence container.
 			 */
-			// reverse_iterator		rend(void);
-			// const_reverse_iterator	rend(void) const;
+			reverse_iterator		rend(void) { return reverse_iterator(end()); }
+			const_reverse_iterator	rend(void) const { return reverse_iterator(end()); }
 
 		/* capacity */
 
@@ -377,10 +377,10 @@ namespace ft {
 		/**
 		 * @todo assign:range
 		 * @todo insert
-		 * @todo erase
 		 */
 			
-			/** @brief assign vector content.
+			/**
+			 * @brief assign vector content.
 			 * @note assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 			 *
 			 * @remarks range version: the new contents are elements constructed from each of the elements in the range between first, in the same order.
@@ -392,8 +392,14 @@ namespace ft {
 			 * @param val: value to fill the container with. 
 			 */
 			// template <class InputIterator>
-			// void assign (InputIterator first, InputIterator last);
-			void assign(size_type n, const value_type & val) { resize(n, val); }
+			// void assign (InputIterator first, InputIterator last) {
+				
+			// }
+
+			void assign(size_type n, const value_type & val) {
+				clear();
+				resize(n, val);
+			}
 
 			/**
 			 * @brief add element at the end.
@@ -424,10 +430,10 @@ namespace ft {
 			 * @param first, last: iterators specifying a range of elements. Copies of the elements in the range [first, last] are inserted at position(in the same order).
 			 * @return an iterator that points to the first of the newly inserted elements.
 			 */
-			// iterator insert(iterator positionm const value_type & val);
-			// void insert(iterator positionm size_type n, const value_type & val);
+			// iterator insert(iterator position, const value_type & val);
+			// void insert(iterator position, size_type n, const value_type & val);
 			// template < class InputIterator >
-			// void insert(iterator positionm InputIterator first, InputIterator last);
+			// void insert(iterator position, InputIterator first, InputIterator last);
 
 			/** 
 			 * @brief erase elements.
@@ -437,8 +443,21 @@ namespace ft {
 			 * @param first, last: Iterators specifying a range within the vector to be removed: [first, last].
 			 * @return an iterator pointing to the new location of the element that followed the last element erased by the function call.
 			 */
-			// iterator erase(iterator position);
-			// iterator erase(iterator first, iterator last);
+			iterator erase(iterator position) {
+				iterator pos = position;
+				_alloc.destroy(&(*position));
+
+				for (; pos + 1 != end(); ++pos)
+					*pos = *(pos + 1);
+				--_end;
+				return iterator(position);
+			}
+
+			iterator erase(iterator first, iterator last) {
+				for (; first != last; --last)
+					erase(first);
+				return iterator(first);
+			}
 
 			/** 
 			 * @brief swap content.
@@ -467,9 +486,8 @@ namespace ft {
 			void	clear(void) {
 				size_type len = size();
 
-				for (size_type i = 0; i < len; i++) {
+				for (size_type i = 0; i < len; i++)
 					_alloc.destroy(--_end);
-				}
 			}
 
 		/* allocator */
@@ -507,32 +525,32 @@ namespace ft {
 		return true;
 	}
 
-	template <class T, class Alloc>
-	bool operator!= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+	template < class T, class Alloc >
+	bool operator!= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
 		return !(lhs == rhs);
 	}
 
 	/** @brief lexicographically compares the values in the vector */
-	template <class T, class Alloc>
-	bool operator< (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+	template < class T, class Alloc> 
+	bool operator< (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
 		lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
 	/** @brief lexicographically compares the values in the vector */
-	template <class T, class Alloc>
-	bool operator<= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+	template < class T, class Alloc >
+	bool operator<= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
 		return !(rhs < lhs);
 	}
 
 	/** @brief lexicographically compares the values in the vector */
-	template <class T, class Alloc>
-	bool operator> (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+	template < class T, class Alloc >
+	bool operator> (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
 		return rhs < lhs;
 	}
 
 	/** @brief lexicographically compares the values in the vector */
-	template <class T, class Alloc>
-	bool operator>= (const vector<T,Alloc> & lhs, const vector<T,Alloc> & rhs) {
+	template < class T, class Alloc >
+	bool operator>= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
 		return !(lhs < rhs);
 	}
 
@@ -540,8 +558,8 @@ namespace ft {
 	 * @brief exchange contents of vectors
 	 * @note the contents of container x are exchanged with those of y.
 	 */
-	template <class T, class Alloc>
-	void swap (vector<T,Alloc> & x, vector<T,Alloc> & y) {
+	template < class T, class Alloc >
+	void swap (vector<T, Alloc> & x, vector<T, Alloc> & y) {
 		x.swap(y);
 	}
 }
