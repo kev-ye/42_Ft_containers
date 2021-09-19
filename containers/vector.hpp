@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/17 19:44:19 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/19 20:30:29 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #include <cstddef>
 #include <exception>
 #include "./utils/iterator.hpp"
-#include "./utils/lexicographical_compare.hpp"
+#include "./utils/utils.hpp"
 
 namespace ft {
 	/*
-	 * class
+	 * class(template): vector
 	 */
 
 	/**
@@ -35,9 +35,7 @@ namespace ft {
 	template < class T, class Alloc = std::allocator<T> >
 	class vector {
 		public:
-		/*
-		 * member types
-		 */
+		/* member types */
 
 			typedef 			T								value_type;
 			typedef 			Alloc							allocator_type;
@@ -53,18 +51,14 @@ namespace ft {
 			typedef typename	allocator_type::size_type		size_type;
 
 			/** @note convertible to const_iterator */
-			typedef typename	ft::random_access_iterator<value_type> 			iterator; // test iterator -> const iterator
+			typedef typename	ft::random_access_iterator<value_type> 			iterator;
 			typedef typename	ft::random_access_iterator<const value_type>	const_iterator;
 
 			typedef typename	ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef typename	ft::reverse_iterator<const iterator>	const_reverse_iterator;
+			typedef typename	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 		public:
-		/*
-		 * member functions
-		 */
-	
-		/* constructor / destructor / operator= */
+		/* member functions: constructor / destructor / operator= */
 
 			/**
 			 * @brief constructor: default
@@ -113,7 +107,7 @@ namespace ft {
 			 * @param last: input iterator to the final positions in a range.
 			 * @param alloc: allocator object.
 			 */
-			// template <class InputIterator>
+			// template < class InputIterator >
 			// vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
 			// 	difference_type n = ft::distance(first, last);
 
@@ -130,6 +124,23 @@ namespace ft {
 			// 	for (; n != 0; n--)
 			// 		_alloc.construct(_end++, *first++);
 			// }
+			template < class InputIterator >
+			vector(typename std::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
+				difference_type n = ft::distance(first, last);
+
+				try {
+					_begin = _alloc.allocate(n);
+				}
+				catch (std::length_error &e) {
+					throw std::length_error("vector");
+				}
+
+				_end = _begin;
+				_capacity = _begin + n;
+
+				for (; n != 0; n--)
+					_alloc.construct(_end++, *first++);
+			}
 
 			/**
 			 * @brief constructor: copy
@@ -179,11 +190,7 @@ namespace ft {
 				return *this;
 			}
 
-		/* iterators */
-		/**
-		 * @todo rbegin
-		 * @todo rend
-		 */
+		/* member functions: iterators */
 
 			/**
 			 * @brief return iterator to beginning
@@ -210,8 +217,8 @@ namespace ft {
 			 * 
 			 * @return a reverse iterator to the reverse beginning of the sequence container.
 			 */
-			reverse_iterator		rbegin(void) { return reverse_iterator(begin()); }
-			const_reverse_iterator	rbegin(void) const { return reverse_iterator(begin()); }
+			reverse_iterator		rbegin(void) { return reverse_iterator(end()); }
+			const_reverse_iterator	rbegin(void) const { return reverse_iterator(end()); }
 
 			/**
 			 * @brief return reverse iterator to reverse end.
@@ -219,10 +226,10 @@ namespace ft {
 			 * 
 			 * @return a reverse iterator to the reverse end of the sequence container.
 			 */
-			reverse_iterator		rend(void) { return reverse_iterator(end()); }
-			const_reverse_iterator	rend(void) const { return reverse_iterator(end()); }
+			reverse_iterator		rend(void) { return reverse_iterator(begin()); }
+			const_reverse_iterator	rend(void) const { return reverse_iterator(begin()); }
 
-		/* capacity */
+		/* member functions: capacity */
 
 			/**
 			 * @brief return size.
@@ -324,7 +331,7 @@ namespace ft {
 				}
 			}
 			
-		/* element access */
+		/* member functions: element access */
 
 			/** 
 			 * @brief access element.
@@ -373,7 +380,7 @@ namespace ft {
 			reference			back(void) { return *(_end - 1); }
 			const_reference		back(void) const { return *(_end - 1); }
 
-		/* modifiers */
+		/* member functions: modifiers */
 		/**
 		 * @todo assign:range
 		 * @todo insert
@@ -490,7 +497,7 @@ namespace ft {
 					_alloc.destroy(--_end);
 			}
 
-		/* allocator */
+		/* member functions: allocator */
 
 			/** 
 			 * @brief returns a copy of the allocator object associated with the vector;
@@ -500,9 +507,7 @@ namespace ft {
 			allocator_type get_allocator() const { return allocator_type(); }
 		
 		private:
-		/**
-		 * attributes
-		 */
+		/* attributes */
 
 			allocator_type	_alloc;
 			pointer			_begin;
@@ -510,19 +515,13 @@ namespace ft {
 			pointer			_capacity;
 	};
 
-	/**
-	 * non-member function
-	 */
+	/* non-member function */
 	
 	template < class T, class Alloc >
 	bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
 		if (lhs.size() != rhs.size())
 			return false;
-		for (typename vector<T>::size_type i = 0; i < lhs.size(); i++) {
-			if (lhs[i] != rhs[i])
-				return false;
-		}
-		return true;
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	template < class T, class Alloc >
@@ -533,7 +532,7 @@ namespace ft {
 	/** @brief lexicographically compares the values in the vector */
 	template < class T, class Alloc> 
 	bool operator< (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 
 	/** @brief lexicographically compares the values in the vector */

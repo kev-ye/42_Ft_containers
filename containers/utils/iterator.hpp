@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/17 19:40:06 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/19 20:34:09 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 
 namespace ft {
 
-	/* category tags */
+	/*
+	 * category tags
+	 */
 
 	/** 
 	 * @brief input iterator category
@@ -49,7 +51,9 @@ namespace ft {
 	 */
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-	/* iterator traits */
+	/* 
+	 * template class: iterator traits
+	 */
 
 	/** 
 	 * @class template: iterator_traits
@@ -57,9 +61,7 @@ namespace ft {
 	 */
 	template < class Iterator >
 	struct iterator_traits {
-		/*
-		 * member types
-		 */
+		/* member types */
 
 		typedef typename Iterator::difference_type		difference_type;
 		typedef typename Iterator::value_type			value_type;
@@ -70,9 +72,7 @@ namespace ft {
 	
 	template < class T >
 	struct iterator_traits<T*> {
-		/*
-		 * member types
-		 */
+		/* member types */
 
 		typedef ptrdiff_t					difference_type;
 		typedef T							value_type;
@@ -83,9 +83,7 @@ namespace ft {
 
 	template < class T >
 	struct iterator_traits<const T*> {
-		/*
-		 * member types
-		 */
+		/* member types */
 
 		typedef ptrdiff_t					difference_type;
 		typedef T							value_type;
@@ -95,10 +93,8 @@ namespace ft {
 	};
 
 	/*
-	 * Functions
+	 * function - iterator operations:  iterator operations
 	 */
-
-	/* iterator operations */
 
 	/**
 	 * @brief advance iterator
@@ -117,7 +113,7 @@ namespace ft {
 	 * @param first: iterator pointing to the initial element.
 	 * @param last: iterator pointing to the final element. This must be reachable from first.
 	 */
-	template<class InputIterator> // don't run
+	template<class InputIterator>
 	typename iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last) {
 		typename iterator_traits<InputIterator>::difference_type count = 0;
 		for (; first != last; ++first)
@@ -127,7 +123,7 @@ namespace ft {
 	}
 
 	/*
-	 * class
+	 * class(template): iterator
 	 */
 
 	/**
@@ -146,9 +142,7 @@ namespace ft {
 	 */
 	template < class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
 	struct iterator {
-		/*
-		 * member types
-		 */
+		/* member types */
 
 		typedef T			value_type;
 		typedef Distance	difference_type;
@@ -157,7 +151,9 @@ namespace ft {
 		typedef Category	iterator_category;
 	};
 
-	/* Predefined iterators */
+	/*
+	 * class(template): random_access_iterator
+	 */
 	
 	/**
 	 * @class template: random_access_iterator
@@ -263,6 +259,11 @@ namespace ft {
 		/** @brief dereference value with offset  */
 		reference	operator[] (difference_type n) const { return *(_val + n); }
 
+		/** @brief cast random_access_iterator<T> to random_access_iterator<const T> */
+		operator random_access_iterator<const T> (void) {
+			return static_cast< random_access_iterator<const T> >(_val);
+		}
+
 		private:
 		/**
 		 * attributes
@@ -293,6 +294,10 @@ namespace ft {
 			return lhs._val - rhs._val;
 		}
 	};
+
+	/*
+	 * class(template) - predefined iterators: reverse_iterator
+	 */
 
 	/**
 	 * @class template: reverse_iterator
@@ -363,7 +368,11 @@ namespace ft {
 		 * 
 		 * @return a reference to the element pointed by the iterator.
 		 */
-		reference operator*(void) const { return *(_it - 1); }
+		reference operator*(void) const { 
+			iterator_type tmp = _it;
+
+			return *(--tmp);
+		}
 
 		/**
 		 * @brief addition operator
@@ -462,7 +471,7 @@ namespace ft {
 			iterator_type	_it;
 	};
 
-	/**
+	/*
 	 * non-member function
 	 */
 
@@ -514,7 +523,7 @@ namespace ft {
 	 */
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
-		return lhs.base() - rhs.base();
+		return rhs.base() - lhs.base();
 	}
 };
 
