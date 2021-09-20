@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/19 20:30:29 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/20 18:37:35 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ namespace ft {
 			 * @param val: value to fill the container with.
 			 * @param alloc: allocator object.
 			 */
-			explicit vector(size_type n, const value_type & val = value_type(), const allocator_type & alloc = allocator_type()) :
+			explicit vector(size_type n,
+				const value_type & val = value_type(),
+				const allocator_type & alloc = allocator_type()) :
 				_alloc(alloc),
 				_begin(NULL),
 				_end(NULL),
@@ -107,26 +109,11 @@ namespace ft {
 			 * @param last: input iterator to the final positions in a range.
 			 * @param alloc: allocator object.
 			 */
-			// template < class InputIterator >
-			// vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
-			// 	difference_type n = ft::distance(first, last);
-
-			// 	try {
-			// 		_begin = _alloc.allocate(n);
-			// 	}
-			// 	catch (std::length_error &e) {
-			// 		throw std::length_error("vector");
-			// 	}
-
-			// 	_end = _begin;
-			// 	_capacity = _begin + n;
-
-			// 	for (; n != 0; n--)
-			// 		_alloc.construct(_end++, *first++);
-			// }
 			template < class InputIterator >
-			vector(typename std::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last, const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
-				difference_type n = ft::distance(first, last);
+			vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+				InputIterator last,
+				const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
+				size_type n = static_cast<size_type>(ft::distance(first, last));
 
 				try {
 					_begin = _alloc.allocate(n);
@@ -382,7 +369,6 @@ namespace ft {
 
 		/* member functions: modifiers */
 		/**
-		 * @todo assign:range
 		 * @todo insert
 		 */
 			
@@ -398,10 +384,18 @@ namespace ft {
 			 * @param n: new size for the container.
 			 * @param val: value to fill the container with. 
 			 */
-			// template <class InputIterator>
-			// void assign (InputIterator first, InputIterator last) {
-				
-			// }
+			template <class InputIterator>
+			void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+				InputIterator last) {
+				clear();
+
+				size_type n = static_cast<size_type>(ft::distance(first, last));
+				reserve(n);
+
+				for (; first != last; first++) {
+					_alloc.construct(_end++, *first);
+				}
+			}
 
 			void assign(size_type n, const value_type & val) {
 				clear();
@@ -417,7 +411,8 @@ namespace ft {
 			void push_back(const value_type & val) {
 				if (_end == _capacity)
 					reserve(size() > 0 ? size() * 2 : 1);
-				_alloc.construct(_end++, val);
+				_alloc.construct(_end, val);
+				++_end;
 			}
 
 			/**
@@ -425,7 +420,8 @@ namespace ft {
 			 * @note removes the last element in the vector, effectively reducing the container size by one.
 			 */
 			void pop_back(void) {
-				_alloc.destroy(--_end);
+				_alloc.destroy(_end - 1);
+				--_end;
 			}
 
 			/** 
@@ -437,7 +433,21 @@ namespace ft {
 			 * @param first, last: iterators specifying a range of elements. Copies of the elements in the range [first, last] are inserted at position(in the same order).
 			 * @return an iterator that points to the first of the newly inserted elements.
 			 */
-			// iterator insert(iterator position, const value_type & val);
+			iterator insert(iterator position, const value_type & val) {
+				reverse_iterator rit = rbegin();
+				reverse_iterator rite(position);
+
+				if (size() < capacity()) {
+					for (; rit != rite; rit++)
+						*(rit - 1) = *rit;
+					*position = val;
+					++_end;
+				}
+				else {
+					// coming soon ...
+				}
+				return iterator(position);
+			}
 			// void insert(iterator position, size_type n, const value_type & val);
 			// template < class InputIterator >
 			// void insert(iterator position, InputIterator first, InputIterator last);

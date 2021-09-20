@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/19 20:31:24 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/20 15:41:33 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ namespace ft {
 	 * @param cond: a compile-time constant of type bool.
 	 * @param T: a type
 	 */
-	template<bool Cond, class T = void> struct enable_if {};
-	template<class T> struct enable_if<true, T> { typedef T type; };
+	template < bool Cond, class T = void > struct enable_if {};
+	template < class T > struct enable_if<true, T> { typedef T type; };
 
 	/*
 	 * class(template): integral_constant
@@ -39,9 +39,11 @@ namespace ft {
 	 * @param T: type of the integral constant.
 	 * @param v: value of the integral constant.
 	 */
-	template <class T, T v>
+	template < class T, T v >
 	struct integral_constant {
-		static constexpr T value = v;
+		/** @brief the value of the integral_constant */
+		// static constexpr T value = v;
+		static const T value = v;
 
 		/* member types */
 
@@ -59,7 +61,8 @@ namespace ft {
 		 * 
 		 * @return the value of the integral_constant.
 		 */
-		constexpr operator T(void) { return v; }
+		// constexpr operator T(void) { return v; }
+		operator T(void) { return v; }
 	};
 
 	/*
@@ -82,15 +85,26 @@ namespace ft {
 	 * class(template): is_integral
 	 */
 
-	// /** 
-	//  * @brief is integral
-	//  * @note trait class that identifies whether T is an integral type.
-	//  */
-	// template < class T >
-	// struct is_integral {
-	// 	bool	value_type
-		
-	// }
+	/** 
+	 * @brief is integral
+	 * @note trait class that identifies whether T is an integral type.
+	 */
+	template < class T > struct is_integral : public false_type {};
+	template <>			 struct is_integral<bool> : public true_type {};
+	template <>			 struct is_integral<char> : public true_type {};
+	template <>			 struct is_integral<char16_t> : public true_type {};
+	template <>			 struct is_integral<char32_t> : public true_type {};
+	template <>			 struct is_integral<wchar_t> : public true_type {};
+	template <>			 struct is_integral<signed char> : public true_type {};
+	template <>			 struct is_integral<short int> : public true_type {};
+	template <>			 struct is_integral<int> : public true_type {};
+	template <>			 struct is_integral<long int> : public true_type {};
+	template <>			 struct is_integral<long long int> : public true_type {};
+	template <>			 struct is_integral<unsigned char> : public true_type {};
+	template <>			 struct is_integral<unsigned short int> : public true_type {};
+	template <>			 struct is_integral<unsigned int> : public true_type {};
+	template <>			 struct is_integral<unsigned long int> : public true_type {};
+	template <>			 struct is_integral<unsigned long long int> : public true_type {};
 
 	/*
 	 * function: equal
@@ -106,7 +120,7 @@ namespace ft {
 	 * @return true if all the elements in the range [first1, last1] compare equal to those of the range starting at first2.
 	 * @return false otherwise.
 	 */
-	template <class InputIterator1, class InputIterator2>
+	template < class InputIterator1, class InputIterator2 >
 	bool equal(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2) {
 		for (; first1 != last1; ++first1, ++first2) {
 			if (!(*first1 == *first2)) {
@@ -140,7 +154,7 @@ namespace ft {
 	 * @return true if the first range compares lexicographically less than the second.
 	 * @return false otherwise.
 	 */
-	template<class InputIt1, class InputIt2>
+	template < class InputIt1, class InputIt2 >
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
 	{
 		for ( ; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2 ) {
@@ -152,7 +166,7 @@ namespace ft {
 		return (first1 == last1) && (first2 != last2);
 	}
 
-	template<class InputIt1, class InputIt2, class Compare>
+	template < class InputIt1, class InputIt2, class Compare >
 	bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Compare comp)
 	{
 		for ( ; (first1 != last1) && (first2 != last2); ++first1, (void) ++first2 ) {

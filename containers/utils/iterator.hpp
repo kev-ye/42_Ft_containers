@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/19 20:34:09 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/20 16:01:39 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,11 @@ namespace ft {
 	 * @param Pointer: type to represent a pointer to an element pointed by the iterator.
 	 * @param Reference: type to represent a reference to an element pointed by the iterator.
 	 */
-	template < class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T& >
+	template < class Category,
+		class T,
+		class Distance = ptrdiff_t,
+		class Pointer = T*,
+		class Reference = T& >
 	struct iterator {
 		/* member types */
 
@@ -510,7 +514,8 @@ namespace ft {
 	 * @return reverse iterator.
 	 */
 	template < class Iterator >
-	reverse_iterator<Iterator> operator+ (typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it) {
+	reverse_iterator<Iterator> operator+ (typename reverse_iterator<Iterator>::difference_type n,
+		const reverse_iterator<Iterator>& rev_it) {
 		return rev_it + n;
 	}
 
@@ -522,7 +527,8 @@ namespace ft {
 	 * @return the number of elements between lhs and rhs.
 	 */
 	template <class Iterator>
-	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs) {
+	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs,
+		const reverse_iterator<Iterator>& rhs) {
 		return rhs.base() - lhs.base();
 	}
 };
