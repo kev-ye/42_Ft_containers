@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 18:36:36 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/21 19:56:20 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,18 @@ namespace ft {
 
 	/**
 	 * @class template: vector
-	 * @brief vectors are sequence containers representing arrays that can change in size.
+	 * @brief vector
+	 * @note vectors are sequence containers representing arrays that can change in size.
+	 * 
+	 * container properties:
+	 *  - sequence:
+	 *   elements in sequence containers are ordered in a strict linear sequence.
+	 *   Individual elements are accessed by their position in this sequence.
+	 *  - dynamic array
+	 *   allows direct access to any element in the sequence, even through pointer arithmetics,
+	 *   and provides relatively fast addition/removal of elements at the end of the sequence.
+	 *  - allocator-aware
+	 *   the container uses an allocator object to dynamically handle its storage needs.
 	 * 
 	 * @param T: type of the elements.
 	 * @param Alloc: type of the allocator object used to define the storage allocation model.
