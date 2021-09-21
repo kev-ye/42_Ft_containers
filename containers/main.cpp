@@ -341,24 +341,28 @@ void vecInsertTest(void) {
 	vec.push_back(3);
 	vec.push_back(4);
 
-	vec.pop_back();
+	std::vector<int> vec1(4, 100);
 
-	cout << "size bfr insert: " << vec.size() << endl;
-	cout << "cap bfr insert:  " << vec.capacity() << endl << endl;
+	cout << "size bfr insert: " << vec1.size() << endl;
+	cout << "cap bfr insert:  " << vec1.capacity() << endl << endl;
 
 	std::vector<int>::iterator it = vec.begin();
 	std::vector<int>::iterator ite = vec.end();
 
-	it = vec.insert(ite, 100);
+	// vec.insert(it + 2, 5, 100);
+	std::vector<int>::iterator it1 = vec1.begin();
+	std::vector<int>::iterator ite1 = vec1.end();
 
-	it = vec.begin();
-	ite = vec.end();
+	vec1.insert(it1 + 2, it, ite);
 
-	cout << "size aft insert: " << vec.size() << endl;
-	cout << "cap aft insert:  " << vec.capacity() << endl << endl;
+	it1 = vec1.begin();
+	ite1 = vec1.end();
 
-	for(; it != ite; it++)
-		cout << *it << " ";
+	cout << "size aft insert: " << vec1.size() << endl;
+	cout << "cap aft insert:  " << vec1.capacity() << endl << endl;
+
+	for(; it1 != ite1; it1++)
+		cout << *it1 << " ";
 	cout << endl;
 }
 
@@ -373,9 +377,9 @@ int main(void) {
 	// vecPushPopTest();
 	// vecSwapTest();
 	// vecAssignment();
-	// vecEraseTest();
+	vecEraseTest();
 	// vecConstItTest();
-	vecInsertTest();
+	// vecInsertTest();
 
 	// using namespace std;
 

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/20 18:37:35 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/21 15:27:03 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,9 +368,6 @@ namespace ft {
 			const_reference		back(void) const { return *(_end - 1); }
 
 		/* member functions: modifiers */
-		/**
-		 * @todo insert
-		 */
 			
 			/**
 			 * @brief assign vector content.
@@ -434,23 +431,44 @@ namespace ft {
 			 * @return an iterator that points to the first of the newly inserted elements.
 			 */
 			iterator insert(iterator position, const value_type & val) {
-				reverse_iterator rit = rbegin();
-				reverse_iterator rite(position);
-
-				if (size() < capacity()) {
-					for (; rit != rite; rit++)
-						*(rit - 1) = *rit;
-					*position = val;
-					++_end;
-				}
-				else {
-					// coming soon ...
-				}
+				insert(position, 1, val);
 				return iterator(position);
 			}
-			// void insert(iterator position, size_type n, const value_type & val);
-			// template < class InputIterator >
-			// void insert(iterator position, InputIterator first, InputIterator last);
+
+			void insert(iterator position, size_type n, const value_type & val)  {
+				size_type pos = ft::distance(begin(), position);
+
+				resize(size() + n);
+				position = begin() + pos;
+				
+				size_type toMoveRight = ft::distance(position, end() - n);
+				pointer oldEnd = _end - n - 1;
+				for (size_type i = 0; i < toMoveRight; i++) {
+					*(_end - i - 1) = *oldEnd--;
+				}
+				for (size_type i = 0; i < n; i++) {
+					*(position + i) = val;
+				}
+			}
+			template < class InputIterator >
+			void insert(iterator position,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
+				InputIterator last) {
+				size_type pos = ft::distance(begin(), position);
+				size_type n = ft::distance(first, last);
+
+				resize(size() + n);
+				position = begin() + pos;
+				
+				size_type toMoveRight = ft::distance(position, end() - n);
+				pointer oldEnd = _end - n - 1;
+				for (size_type i = 0; i < toMoveRight; i++) {
+					*(_end - i - 1) = *oldEnd--;
+				}
+				for (size_type i = 0; i < n && first != last; i++, first++) {
+					*(position + i) = *first;
+				}
+			}
 
 			/** 
 			 * @brief erase elements.
@@ -462,7 +480,9 @@ namespace ft {
 			 */
 			iterator erase(iterator position) {
 				iterator pos = position;
-				_alloc.destroy(&(*position));
+				size_type toDestroyPos = ft::distance(begin(), position);
+
+				_alloc.destroy(_begin + toDestroyPos);
 
 				for (; pos + 1 != end(); ++pos)
 					*pos = *(pos + 1);
