@@ -6,14 +6,13 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 15:27:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/21 18:36:36 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-#include <iostream>
 #include <memory>
 #include <cstddef>
 #include <exception>
@@ -21,9 +20,9 @@
 #include "./utils/utils.hpp"
 
 namespace ft {
-	/*
-	 * class(template): vector
-	 */
+/*
+ * class(template): vector
+ */
 
 	/**
 	 * @class template: vector
@@ -103,7 +102,8 @@ namespace ft {
 
 			/**
 			 * @brief constructor: range
-			 * @note constructs a container with as many elements as the range [first, last], with each element constructed from its corresponding element in that range, in the same order.
+			 * @note constructs a container with as many elements as the range [first, last],
+			 * with each element constructed from its corresponding element in that range, in the same order.
 			 * 
 			 * @param first: input iterators to the initial positions in a range.
 			 * @param last: input iterator to the final positions in a range.
@@ -149,7 +149,8 @@ namespace ft {
 			
 			/**
 			 * @brief destructor
-			 * @note this destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
+			 * @note this destroys all container elements,
+			 * and deallocates all the storage capacity allocated by the vector using its allocator.
 			 */
 			~vector(void) {
 				clear();
@@ -239,7 +240,8 @@ namespace ft {
 			 * @note resizes the container so that it contains n elements
 			 * 
 			 * @param n: new container size, expressed in number of elements.
-			 * @param val: object whose content is copied to the added elements in case that n is greater than the current container size. If not specified, the default constructor is used instead.
+			 * @param val: object whose content is copied to the added elements in case that n is greater than the current container size.
+			 * If not specified, the default constructor is used instead.
 			 * @exception throw length_error exception
 			 */
 			void		resize(size_type n, value_type val = value_type()) {
@@ -281,7 +283,8 @@ namespace ft {
 			 * @brief return size of allocated storage capacity.
 			 * @note returns the size of the storage space currently allocated for the vector, expressed in terms of elements.
 			 * 
-			 * @return the size of the currently allocated storage capacity in the vector, measured in terms of the number elements it can hold.
+			 * @return the size of the currently allocated storage capacity in the vector,
+			 * measured in terms of the number elements it can hold.
 			 */
 			size_type	capacity(void) const { return _capacity - _begin; }
 
@@ -373,7 +376,8 @@ namespace ft {
 			 * @brief assign vector content.
 			 * @note assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 			 *
-			 * @remarks range version: the new contents are elements constructed from each of the elements in the range between first, in the same order.
+			 * @remarks range version: the new contents are elements constructed from each of the elements in the range between first,
+			 * in the same order.
 			 * @param first: input iterators to the initial positions in a sequence.
 			 * @param last: input iterators to the final positions in a sequence.
 			 * 
@@ -423,11 +427,13 @@ namespace ft {
 
 			/** 
 			 * @brief insert elements.
-			 * @note the vector is extended by inserting new elements before the element at the specified position, effectively increasing the container size by the number of elements inserted.
+			 * @note the vector is extended by inserting new elements before the element at the specified position,
+			 * effectively increasing the container size by the number of elements inserted.
 			 * 
 			 * @param position: position in the vector where the new elements are inserted.
 			 * @param val: value to be copied(or moved) to the inserted elements.
-			 * @param first, last: iterators specifying a range of elements. Copies of the elements in the range [first, last] are inserted at position(in the same order).
+			 * @param first, last: iterators specifying a range of elements.
+			 * Copies of the elements in the range [first, last] are inserted at position(in the same order).
 			 * @return an iterator that points to the first of the newly inserted elements.
 			 */
 			iterator insert(iterator position, const value_type & val) {
@@ -498,7 +504,8 @@ namespace ft {
 
 			/** 
 			 * @brief swap content.
-			 * @note exchanges the content of the container by the content of x, which is another vector object of the same type.
+			 * @note exchanges the content of the container by the content of x,
+			 * which is another vector object of the same type.
 			 * 
 			 * @param x: another vector container of the same type.
 			 */
@@ -545,52 +552,66 @@ namespace ft {
 			pointer			_capacity;
 	};
 
-	/* non-member function */
+	/* non-member function: vector */
 	
-	template < class T, class Alloc >
-	bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		if (lhs.size() != rhs.size())
-			return false;
-		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
-	}
+		/**
+		 * @brief relational operators for vector
+		 * @note performs the appropriate comparison operation between the vector containers lhs and rhs.
+		 * The other operations also use the operators == and < internally to compare the elements,
+		 * behaving as if the following equivalent operations were performed:
+		 * a != b : !(a == b)
+		 * a > b  : b < a
+		 * a <= b : !(b < a)
+		 * a >= b : !(a < b)
+		 * 
+		 * @param lhs, rhs: vector container, having both the same template parameters.
+		 * @return true if the condition holds, and false otherwise.
+		 */
 
-	template < class T, class Alloc >
-	bool operator!= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		return !(lhs == rhs);
-	}
+		template < class T, class Alloc >
+		bool operator== (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+			if (lhs.size() != rhs.size())
+				return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+		}
 
-	/** @brief lexicographically compares the values in the vector */
-	template < class T, class Alloc> 
-	bool operator< (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
-	}
+		template < class T, class Alloc >
+		bool operator!= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+			return !(lhs == rhs);
+		}
 
-	/** @brief lexicographically compares the values in the vector */
-	template < class T, class Alloc >
-	bool operator<= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		return !(rhs < lhs);
-	}
+		/** @brief lexicographically compares the values in the vector */
+		template < class T, class Alloc> 
+		bool operator< (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
 
-	/** @brief lexicographically compares the values in the vector */
-	template < class T, class Alloc >
-	bool operator> (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		return rhs < lhs;
-	}
+		/** @brief lexicographically compares the values in the vector */
+		template < class T, class Alloc >
+		bool operator<= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+			return !(rhs < lhs);
+		}
 
-	/** @brief lexicographically compares the values in the vector */
-	template < class T, class Alloc >
-	bool operator>= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
-		return !(lhs < rhs);
-	}
+		/** @brief lexicographically compares the values in the vector */
+		template < class T, class Alloc >
+		bool operator> (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+			return rhs < lhs;
+		}
 
-	/**
-	 * @brief exchange contents of vectors
-	 * @note the contents of container x are exchanged with those of y.
-	 */
-	template < class T, class Alloc >
-	void swap (vector<T, Alloc> & x, vector<T, Alloc> & y) {
-		x.swap(y);
-	}
+		/** @brief lexicographically compares the values in the vector */
+		template < class T, class Alloc >
+		bool operator>= (const vector<T, Alloc> & lhs, const vector<T, Alloc> & rhs) {
+			return !(lhs < rhs);
+		}
+
+		/**
+		 * @brief exchange contents of vectors
+		 * @note the contents of container x are exchanged with those of y.
+		 */
+		template < class T, class Alloc >
+		void swap (vector<T, Alloc> & x, vector<T, Alloc> & y) {
+			x.swap(y);
+		}
 }
 
 #endif

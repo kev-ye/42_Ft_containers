@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/20 15:41:33 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/21 19:00:54 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 # define UTILS_HPP
 
 namespace ft {
-	/* 
-	 * class(template): enable_if
-	 */
-	
+/* 
+ * class(template): enable_if
+ */
+
 	/**
 	 * @brief enable type if condition is met
 	 * @note the type T is enabled as member type enable_if::type if Cond is true.
@@ -28,9 +28,9 @@ namespace ft {
 	template < bool Cond, class T = void > struct enable_if {};
 	template < class T > struct enable_if<true, T> { typedef T type; };
 
-	/*
-	 * class(template): integral_constant
-	 */
+/*
+ * class(template): integral_constant
+ */
 	
 	/**
 	 * @brief Integral constant
@@ -45,7 +45,7 @@ namespace ft {
 		// static constexpr T value = v;
 		static const T value = v;
 
-		/* member types */
+	/* member types */
 
 		/** @brief the type of the constant */
 		typedef T value_type;
@@ -53,7 +53,7 @@ namespace ft {
 		/** @brief the integral_constant type itself */
 		typedef integral_constant<T, v> type;
 
-		/* instantiations */
+	/* instantiations */
 
 		/**
 		 * @brief returns value
@@ -65,10 +65,10 @@ namespace ft {
 		operator T(void) { return v; }
 	};
 
-	/*
-	 * class(template): integral_constant: instantiations
-	 */
-	
+/*
+ * class(template): integral_constant: instantiations
+ */
+
 	/**
 	 * @brief true type
 	 * @note Instantiation of integral_constant to represent the bool value true.
@@ -81,9 +81,9 @@ namespace ft {
 	 */
 	typedef integral_constant<bool, false>	false_type;
 
-	/*
-	 * class(template): is_integral
-	 */
+/*
+ * class(template): is_integral
+ */
 
 	/** 
 	 * @brief is integral
@@ -106,9 +106,9 @@ namespace ft {
 	template <>			 struct is_integral<unsigned long int> : public true_type {};
 	template <>			 struct is_integral<unsigned long long int> : public true_type {};
 
-	/*
-	 * function: equal
-	 */
+/*
+ * function: equal
+ */
 
 	/**
 	 * @brief test whether the elements in two ranges are equal
@@ -140,9 +140,9 @@ namespace ft {
 		return true;
 	}
 
-	/*
-	 * function: lexicographical_compare
-	 */
+/*
+ * function: lexicographical_compare
+ */
 
 	/**
 	 * @brief lexicographical less-than comparison
@@ -177,5 +177,5 @@ namespace ft {
 		}
 		return (first1 == last1) && (first2 != last2);
 	}
-};
+}
 #endif

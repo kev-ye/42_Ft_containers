@@ -377,29 +377,28 @@ int main(void) {
 	// vecPushPopTest();
 	// vecSwapTest();
 	// vecAssignment();
-	vecEraseTest();
+	// vecEraseTest();
 	// vecConstItTest();
 	// vecInsertTest();
 
-	// using namespace std;
+	using namespace std;
 
-	// std::vector<int> vec;
+	cout << "-- Const It --" << endl;
 
-	// vec.push_back(1);
-	// vec.push_back(2);
-	// vec.push_back(3);
-	// vec.push_back(4);
+	std::vector<int> vec;
 
-	// std::vector<int>::iterator it = vec.begin();
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+	vec.push_back(4);
 
-	// vec.erase(it + 1);
+	std::vector<int>::iterator it = vec.begin();
+	std::vector<int>::iterator ite = vec.begin();
 
-	// it = vec.begin();
-	// std::vector<int>::iterator ite = vec.end();
-
-	// for (; it != ite; it++ )
-	// 				std::cout << *it << " ";
-	// 			std::cout << std::endl;
+	if (1 + it == 1 + ite)
+		cout << "true\n";
+	else
+		cout << "false\n";
 
 	return 0;
 }
