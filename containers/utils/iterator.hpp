@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 18:57:54 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/21 19:41:42 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,13 @@ namespace ft {
 			/** @brief dereference value */
 			reference	operator* (void) const { return *_val; }
 
-			/** @brief derefence value */
-			pointer	operator-> (void) const { return &operator*(); }
+			/** @brief addition value */
+			random_access_iterator	operator+ (difference_type n) const {
+				random_access_iterator tmp(*this);
+
+				tmp._val += n;
+				return tmp;
+			}
 
 			/** @brief increment value position*/
 			random_access_iterator &	operator++ (void) {
@@ -212,6 +217,20 @@ namespace ft {
 			random_access_iterator	operator++ (int) {
 				random_access_iterator tmp(*this);
 				operator++();
+				return tmp;
+			}
+
+			/** @brief advance value */
+			random_access_iterator &	operator+= (difference_type n) {
+				_val += n;
+				return *this;
+			}
+
+			/** @brief subtraction value*/
+			random_access_iterator	operator- (difference_type n) const {
+				random_access_iterator tmp(*this);
+
+				tmp._val -= n;
 				return tmp;
 			}
 
@@ -227,33 +246,14 @@ namespace ft {
 				return tmp;
 			}
 
-			/** @brief addition value */
-			random_access_iterator	operator+ (difference_type n) const {
-				random_access_iterator tmp(*this);
-
-				tmp._val += n;
-				return tmp;
-			}
-
-			/** @brief subtraction value*/
-			random_access_iterator	operator- (difference_type n) const {
-				random_access_iterator tmp(*this);
-
-				tmp._val -= n;
-				return tmp;
-			}
-
-			/** @brief advance value */
-			random_access_iterator	operator+= (difference_type n) const {
-				_val += n;
-				return *this;
-			}
-
 			/** @brief retrocede value */
-			random_access_iterator	operator-= (difference_type n) const {
+			random_access_iterator &	operator-= (difference_type n) {
 				_val -= n;
 				return *this;
 			}
+
+			/** @brief derefence value */
+			pointer	operator-> (void) const { return &operator*(); }
 
 			/** @brief dereference value with offset  */
 			reference	operator[] (difference_type n) const { return *(_val + n); }

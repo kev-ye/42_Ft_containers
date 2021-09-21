@@ -383,22 +383,15 @@ int main(void) {
 
 	using namespace std;
 
-	cout << "-- Const It --" << endl;
-
 	std::vector<int> vec;
-
-	vec.push_back(1);
-	vec.push_back(2);
-	vec.push_back(3);
-	vec.push_back(4);
+	for (int i=0; i<10; i++)
+		vec.push_back(i * 10);
 
 	std::vector<int>::iterator it = vec.begin();
-	std::vector<int>::iterator ite = vec.begin();
 
-	if (1 + it == 1 + ite)
-		cout << "true\n";
-	else
-		cout << "false\n";
+	std::advance (it, 5);
+
+	cout << "The sixth element in vec is: " << *it << '\n';
 
 	return 0;
 }
