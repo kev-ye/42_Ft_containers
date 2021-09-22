@@ -380,18 +380,5 @@ int main(void) {
 	// vecEraseTest();
 	// vecConstItTest();
 	// vecInsertTest();
-
-	using namespace std;
-
-	std::vector<int> vec;
-	for (int i=0; i<10; i++)
-		vec.push_back(i * 10);
-
-	std::vector<int>::iterator it = vec.begin();
-
-	std::advance (it, 5);
-
-	cout << "The sixth element in vec is: " << *it << '\n';
-
 	return 0;
 }

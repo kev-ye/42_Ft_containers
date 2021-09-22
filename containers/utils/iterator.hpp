@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 19:47:50 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/22 16:20:32 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ namespace ft {
 	 */
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-/* 
- * template class: iterator traits
+/** 
+ * @class template: iterator traits
  */
 
 	/** 
@@ -60,7 +60,7 @@ namespace ft {
 	 */
 	template < class Iterator >
 	struct iterator_traits {
-		/* member types */
+	/* member types */
 
 		typedef typename Iterator::difference_type		difference_type;
 		typedef typename Iterator::value_type			value_type;
@@ -71,7 +71,7 @@ namespace ft {
 	
 	template < class T >
 	struct iterator_traits<T*> {
-		/* member types */
+	/* member types */
 
 		typedef ptrdiff_t					difference_type;
 		typedef T							value_type;
@@ -82,7 +82,7 @@ namespace ft {
 
 	template < class T >
 	struct iterator_traits<const T*> {
-		/* member types */
+	/* member types */
 
 		typedef ptrdiff_t					difference_type;
 		typedef T							value_type;
@@ -121,8 +121,8 @@ namespace ft {
 		return count;
 	}
 
-/*
- * class(template): iterator
+/** 
+ * @class template: iterator
  */
 
 	/**
@@ -145,7 +145,7 @@ namespace ft {
 		class Pointer = T*,
 		class Reference = T& >
 	struct iterator {
-		/* member types */
+	/* member types */
 
 		typedef T			value_type;
 		typedef Distance	difference_type;
@@ -154,8 +154,8 @@ namespace ft {
 		typedef Category	iterator_category;
 	};
 
-/*
- * class(template): random_access_iterator
+/** 
+ * @class template: random_access_iterator
  */
 	
 	/**
@@ -253,7 +253,7 @@ namespace ft {
 			}
 
 			/** @brief derefence value */
-			pointer	operator-> (void) const { return &operator*(); }
+			pointer	operator->() const { return &(operator*()); }
 
 			/** @brief dereference value with offset  */
 			reference	operator[] (difference_type n) const { return *(_val + n); }
@@ -311,8 +311,8 @@ namespace ft {
 			pointer _val;
 	};
 
-/*
- * class(template) - predefined iterators: reverse_iterator
+/** 
+ * @class template: predefined iterators: reverse_iterator
  */
 
 	/**
@@ -552,7 +552,7 @@ namespace ft {
 			}
 
 		private:
-		/** attributes */
+		/* attributes */
 		
 			iterator_type	_it;
 	};

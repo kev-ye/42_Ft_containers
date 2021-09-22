@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 19:56:20 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/22 17:06:08 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@
 #include "./utils/utils.hpp"
 
 namespace ft {
-/*
- * class(template): vector
+/**
+ * @class template: vector
  */
 
 	/**
-	 * @class template: vector
 	 * @brief vector
 	 * @note vectors are sequence containers representing arrays that can change in size.
 	 * 
@@ -173,6 +172,7 @@ namespace ft {
 			 * @note copies all the elements from x into the container.
 			 * 
 			 * @param x: a vector object of the same type.
+			 * @return *this.
 			 */
 			vector &	operator= (vector const & x) {
 				if (this == &x) return *this;

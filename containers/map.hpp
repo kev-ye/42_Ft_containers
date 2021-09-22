@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 20:05:11 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/22 17:22:44 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 #include <memory>
 #include <cstddef>
 #include <exception>
+#include "./utils/utils.hpp"
 
 namespace ft {
-/*
- * class(template): map
+/**
+ * @class template: map
  */
 
 	/**
-	 * @class template: map
 	 * @brief map
 	 * @note maps are associative containers that store elements formed by a combination of a key value and a mapped value,
 	 * following a specific order.
@@ -54,9 +54,9 @@ namespace ft {
 	 * by default, the allocator class template is used, which defines the simplest memory allocation model and is value-independent.
 	 */
 	template < class Key,
-		class T>
-		// class Compare = less<Key>,
-		// class Alloc = std::allocator<pair<const Key, T>>>
+		class T,
+		class Compare = ft::less<Key>,
+		class Alloc = std::allocator< ft::pair<const Key, T> > >
 	class map {
 
 	};

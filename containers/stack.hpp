@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:12 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/21 18:36:43 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/22 15:47:43 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 #include "vector.hpp"
 
 namespace ft {
-/*
- * class(template): stack
+/**
+ * @class template: stack
  */
 
 	/**
-	 * @class template: stack
-	 * @brief stacks are a type of container adaptor, specifically designed to operate in a LIFO context (last-in first-out),
+	 * @brief stack
+	 * @note stacks are a type of container adaptor, specifically designed to operate in a LIFO context (last-in first-out),
 	 * where elements are inserted and extracted only from one end of the containers.
 	 * 
 	 * @param T: type of the elements.
