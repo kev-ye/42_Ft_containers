@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 16:11:38 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 17:21:58 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <memory>
 #include <cstddef>
 #include <exception>
+#include <stdexcept>
 #include "./utils/iterator.hpp"
 #include "./utils/utils.hpp"
 

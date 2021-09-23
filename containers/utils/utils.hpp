@@ -6,12 +6,14 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 17:09:11 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 17:20:22 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_HPP
 # define UTILS_HPP
+
+#include <cstddef>
 
 namespace ft {
 /** 
