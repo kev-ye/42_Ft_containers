@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 17:25:36 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 17:27:43 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define UTILS_HPP
 
 #include <cstddef>
-#include <cuchar>
 
 namespace ft {
 /** 
@@ -98,8 +97,8 @@ namespace ft {
 	template < class T > struct is_integral : public false_type {};
 	template <>			 struct is_integral<bool> : public true_type {};
 	template <>			 struct is_integral<char> : public true_type {};
-	template <>			 struct is_integral<char16_t> : public true_type {};
-	template <>			 struct is_integral<char32_t> : public true_type {};
+	// template <>			 struct is_integral<char16_t> : public true_type {};
+	// template <>			 struct is_integral<char32_t> : public true_type {};
 	template <>			 struct is_integral<wchar_t> : public true_type {};
 	template <>			 struct is_integral<signed char> : public true_type {};
 	template <>			 struct is_integral<short int> : public true_type {};
