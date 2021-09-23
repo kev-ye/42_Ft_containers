@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 14:49:11 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 17:46:03 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,8 +270,18 @@ namespace ft {
 				return lhs.base() == rhs.base();
 			}
 
+			template < class _TL, class _TR >
+			friend bool operator== (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+				return lhs.base() == rhs.base();
+			}
+
 			template < class _T >
 			friend bool operator!= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+				return lhs.base() != rhs.base();
+			}
+
+			template < class _TL, class _TR >
+			friend bool operator!= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() != rhs.base();
 			}
 
@@ -280,8 +290,18 @@ namespace ft {
 				return lhs.base() < rhs.base();
 			}
 
+			template < class _TL, class _TR >
+			friend bool operator<  (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+				return lhs.base() < rhs.base();
+			}
+
 			template < class _T >
 			friend bool operator<= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+				return lhs.base() <= rhs.base();
+			}
+
+			template < class _TL, class _TR >
+			friend bool operator<= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() <= rhs.base();
 			}
 
@@ -290,8 +310,18 @@ namespace ft {
 				return lhs.base() > rhs.base();
 			}
 
+			template < class _TL, class _TR >
+			friend bool operator>  (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+				return lhs.base() > rhs.base();
+			}
+
 			template < class _T >
 			friend bool operator>= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+				return lhs.base() >= rhs.base();
+			}
+
+			template < class _TL, class _TR >
+			friend bool operator>= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() >= rhs.base();
 			}
 
@@ -302,6 +332,11 @@ namespace ft {
 
 			template < class _T >
 			friend difference_type operator- (const vecIterator<_T> lhs, const vecIterator<_T> rhs) {
+				return lhs.base() - rhs.base();
+			}
+
+			template < class _TL, class _TR >
+			friend difference_type operator- (const vecIterator<_TL> lhs, const vecIterator<_TR> rhs) {
 				return lhs.base() - rhs.base();
 			}
 
@@ -500,8 +535,18 @@ namespace ft {
 				return lhs.base() == rhs.base();
 			}
 
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator== (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
+				return lhs.base() == rhs.base();
+			}
+
 			template < class _Iterator >
 			friend bool operator!= (const reverse_iterator<_Iterator>& lhs, const reverse_iterator<_Iterator>& rhs) {
+				return lhs.base() != rhs.base();
+			}
+
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator!= (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
 				return lhs.base() != rhs.base();
 			}
 
@@ -510,8 +555,18 @@ namespace ft {
 				return lhs.base() > rhs.base();
 			}
 
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator<  (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
+				return lhs.base() > rhs.base();
+			}
+
 			template < class _Iterator >
 			friend bool operator<= (const reverse_iterator<_Iterator>& lhs, const reverse_iterator<_Iterator>& rhs) {
+				return lhs.base() >= rhs.base();
+			}
+
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator<= (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
 				return lhs.base() >= rhs.base();
 			}
 
@@ -520,8 +575,18 @@ namespace ft {
 				return lhs.base() < rhs.base();
 			}
 
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator>  (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
+				return lhs.base() < rhs.base();
+			}
+
 			template < class _Iterator >
 			friend bool operator>= (const reverse_iterator<_Iterator>& lhs, const reverse_iterator<_Iterator>& rhs) {
+				return lhs.base() <= rhs.base();
+			}
+
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator>= (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
 				return lhs.base() <= rhs.base();
 			}
 
@@ -549,6 +614,11 @@ namespace ft {
 			friend difference_type operator- (const reverse_iterator<_Iterator>& lhs,
 				const reverse_iterator<_Iterator>& rhs) {
 				return rhs.base() - lhs.base();
+			}
+
+			template < class _IteratorL, class _IteratorR >
+			friend bool operator- (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
+				return lhs.base() - rhs.base();
 			}
 
 		private:

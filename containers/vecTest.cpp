@@ -334,36 +334,63 @@ void vecInsertTest(void) {
 
 	cout << "-- Insert --" << endl;
 
-	std::vector<int> vec;
+	// std::vector<int> vec;
 
-	vec.push_back(1);
-	vec.push_back(2);
-	vec.push_back(3);
-	vec.push_back(4);
+	// vec.push_back(1);
+	// vec.push_back(2);
+	// vec.push_back(3);
+	// vec.push_back(4);
 
-	std::vector<int> vec1(4, 100);
+	// std::vector<int> vec1(4, 100);
 
-	cout << "size bfr insert: " << vec1.size() << endl;
-	cout << "cap bfr insert:  " << vec1.capacity() << endl << endl;
+	// cout << "size bfr insert: " << vec1.size() << endl;
+	// cout << "cap bfr insert:  " << vec1.capacity() << endl << endl;
 
-	std::vector<int>::iterator it = vec.begin();
-	std::vector<int>::iterator ite = vec.end();
+	// std::vector<int>::iterator it = vec.begin();
+	// std::vector<int>::iterator ite = vec.end();
 
-	// vec.insert(it + 2, 5, 100);
-	std::vector<int>::iterator it1 = vec1.begin();
-	std::vector<int>::iterator ite1 = vec1.end();
+	// // vec.insert(it + 2, 5, 100);
+	// std::vector<int>::iterator it1 = vec1.begin();
+	// std::vector<int>::iterator ite1 = vec1.end();
 
-	vec1.insert(it1 + 2, it, ite);
+	// vec1.insert(it1 + 2, it, ite);
 
-	it1 = vec1.begin();
-	ite1 = vec1.end();
+	// it1 = vec1.begin();
+	// ite1 = vec1.end();
 
-	cout << "size aft insert: " << vec1.size() << endl;
-	cout << "cap aft insert:  " << vec1.capacity() << endl << endl;
+	// cout << "size aft insert: " << vec1.size() << endl;
+	// cout << "cap aft insert:  " << vec1.capacity() << endl << endl;
 
-	for(; it1 != ite1; it1++)
-		cout << *it1 << " ";
-	cout << endl;
+	// for(; it1 != ite1; it1++)
+	// 	cout << *it1 << " ";
+	// cout << endl;
+
+	std::vector<int> vct;
+	std::vector<int> vct2;
+
+	vct2.insert(vct2.end(), 42);
+	vct2.insert(vct2.begin(), 2, 21);
+	cout << "size: "<< vct2.size() << endl;
+	cout << "cap:  "<< vct2.capacity() << endl << endl;
+
+	vct2.insert(vct2.end() - 2, 42);
+	cout << "size: "<< vct2.size() << endl;
+	cout << "cap:  "<< vct2.capacity() << endl << endl;
+
+	vct2.insert(vct2.end(), 2, 84);
+	cout << "size: "<< vct2.size() << endl;
+	cout << "cap:  "<< vct2.capacity() << endl << endl;
+
+	vct2.resize(4);
+	cout << "size: "<< vct2.size() << endl;
+	cout << "cap:  "<< vct2.capacity() << endl << endl;
+
+	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+	vct.clear();
+	cout << "size: "<< vct2.size() << endl;
+	cout << "cap:  "<< vct2.capacity() << endl << endl;
+
+	cout << vct.size() << endl;
 }
 
 int main(void) {
@@ -379,6 +406,7 @@ int main(void) {
 	// vecAssignment();
 	// vecEraseTest();
 	// vecConstItTest();
-	// vecInsertTest();
+	vecInsertTest();
+
 	return 0;
 }
