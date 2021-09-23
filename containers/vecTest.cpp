@@ -17,6 +17,14 @@
 #include <algorithm>
 #include <limits>
 
+#define TESTED_TYPE int
+
+void	ft_is_empty(std::vector<int> const &vct)
+{
+	using namespace std;
+	cout << "is_empty: " << vct.empty() << endl;
+}
+
 // #include <memory>
 
 void vecSizeTest(void) {
@@ -58,24 +66,75 @@ void vecResizeTest(void) {
 	cout << "-- Resize --" << endl;
 	cout << "-- real --\n" << endl;
 
-	std::vector<int> vec(10, 0);
+	// std::vector<int> vec(10, 0);
 
-	cout << "size: " << vec.size() << endl;
-	cout << "cap: " << vec.capacity() << endl;
+	// cout << "size: " << vec.size() << endl;
+	// cout << "cap: " << vec.capacity() << endl << endl;
 
-	vec.resize(1, 10);
-	cout << "--> resize 1, 10" << endl;
+	// vec.resize(11, 10);
+	// cout << "--> resize 11, 10" << endl;
 
-	cout << "size: " << vec.size() << endl;
-	cout << "cap: " << vec.capacity() << endl;
+	// cout << "size: " << vec.size() << endl;
+	// cout << "cap: " << vec.capacity() << endl << endl;
 	
-	vec.resize(20, 100);
-	cout << "--> resize 20, 100" << endl;
+	// vec.resize(21, 100);
+	// cout << "--> resize 20, 100" << endl;
 
-	cout << "size: " << vec.size() << endl;
-	cout << "cap: " << vec.capacity() << endl;
+	// cout << "size: " << vec.size() << endl;
+	// cout << "cap: " << vec.capacity() << endl << endl;
 
-	cout << endl;
+	// cout << endl;
+
+	const int start_size = 7;
+	std::vector<int> vct(start_size, 20);
+	std::vector<int> vct2;
+	std::vector<int>::iterator it = vct.begin();
+
+	for (int i = 2; i < start_size; ++i)
+		it[i] = (start_size - i) * 3;
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+
+	vct.resize(10, 42);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+
+	vct.resize(18, 43);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.resize(10);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.resize(23, 44);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.resize(5);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.reserve(5);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.reserve(3);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.resize(87);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	vct.resize(5);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+
+	ft_is_empty(vct2);
+	vct2 = vct;
+	ft_is_empty(vct2);
+	vct.reserve(vct.capacity() + 1);
+	cout << "size: " << vct.size() << endl;
+	cout << "cap: " << vct.capacity() << endl << endl;
+	cout << "size: " << vct2.size() << endl;
+
+	vct2.resize(0);
+	ft_is_empty(vct2);
+	cout << "cap: " << vct2.capacity() << endl << endl;
 }
 
 void vecReserveTest(void) {
@@ -365,30 +424,36 @@ void vecInsertTest(void) {
 	// 	cout << *it1 << " ";
 	// cout << endl;
 
-	std::vector<int> vct;
+	std::vector<int> vct(10);
 	std::vector<int> vct2;
 
+	cout << "befor size: " << vct2.size() << endl;
+	cout << "befor cap:  " << vct2.capacity() << endl << endl;
+
 	vct2.insert(vct2.end(), 42);
+	cout << "after size: " << vct2.size() << endl;
+	cout << "after cap:  " << vct2.capacity() << endl << endl;
+
 	vct2.insert(vct2.begin(), 2, 21);
-	cout << "size: "<< vct2.size() << endl;
-	cout << "cap:  "<< vct2.capacity() << endl << endl;
+	cout << "after size: " << vct2.size() << endl;
+	cout << "after cap:  " << vct2.capacity() << endl << endl;
 
 	vct2.insert(vct2.end() - 2, 42);
-	cout << "size: "<< vct2.size() << endl;
-	cout << "cap:  "<< vct2.capacity() << endl << endl;
+	cout << "after size: " << vct2.size() << endl;
+	cout << "after cap:  " << vct2.capacity() << endl << endl;
 
 	vct2.insert(vct2.end(), 2, 84);
-	cout << "size: "<< vct2.size() << endl;
-	cout << "cap:  "<< vct2.capacity() << endl << endl;
+	cout << "after size: " << vct2.size() << endl;
+	cout << "after cap:  " << vct2.capacity() << endl << endl;
 
 	vct2.resize(4);
-	cout << "size: "<< vct2.size() << endl;
-	cout << "cap:  "<< vct2.capacity() << endl << endl;
+	cout << "after size: " << vct2.size() << endl;
+	cout << "after cap:  " << vct2.capacity() << endl << endl;
 
 	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
 	vct.clear();
-	cout << "size: "<< vct2.size() << endl;
-	cout << "cap:  "<< vct2.capacity() << endl << endl;
+	cout << "after size: " << vct2.size() << endl;
+	cout << "after cap:  " << vct2.capacity() << endl << endl;
 
 	cout << vct.size() << endl;
 }
@@ -396,7 +461,7 @@ void vecInsertTest(void) {
 int main(void) {
 	// vecSizeTest();
 	// vecMaxSizeTest();
-	// vecResizeTest();
+	vecResizeTest();
 	// vecReserveTest();
 	// vecAccess();
 	// relationalOperator();
@@ -406,7 +471,7 @@ int main(void) {
 	// vecAssignment();
 	// vecEraseTest();
 	// vecConstItTest();
-	vecInsertTest();
+	// vecInsertTest();
 
 	return 0;
 }

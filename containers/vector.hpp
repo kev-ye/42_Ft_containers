@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 17:21:58 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 21:00:28 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,10 +265,10 @@ namespace ft {
 						_alloc.destroy(--_end);
 				}
 				else {
-					if (n < capacity()) {
+					if (n <= capacity()) {
 						size_type currentSize = size();
 
-						for (; n != currentSize; n--)
+						for (; currentSize < n; currentSize++)
 							_alloc.construct(_end++, val);
 					}
 					else {
@@ -277,9 +277,15 @@ namespace ft {
 						size_type oldN = size();
 						size_type oldCap = capacity();
 
-						_begin = _alloc.allocate(n);
+						if (oldCap * 2 >= n)
+							_begin = _alloc.allocate(oldCap * 2);
+						else
+							_begin = _alloc.allocate(n);
 						_end = _begin;
-						_capacity = _begin + n;
+						if (oldCap * 2 >= n)
+							_capacity = _begin + oldCap * 2;
+						else
+							_capacity = _begin + n;
 						for (size_type i = 0; i < n; i++) {
 							if (oldStart != oldEnd)
 								_alloc.construct(_end++, *oldStart++);
@@ -412,7 +418,11 @@ namespace ft {
 
 			void assign(size_type n, const value_type & val) {
 				clear();
-				resize(n, val);
+				reserve(n);
+				
+				for (; n != 0; n--) {
+					_alloc.construct(_end++, val);
+				}
 			}
 
 			/**
@@ -468,6 +478,7 @@ namespace ft {
 					*(position + i) = val;
 				}
 			}
+
 			template < class InputIterator >
 			void insert(iterator position,
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
