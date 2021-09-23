@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 17:20:22 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 17:25:36 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define UTILS_HPP
 
 #include <cstddef>
+#include <cuchar>
 
 namespace ft {
 /** 
