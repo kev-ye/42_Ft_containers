@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/22 17:19:48 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 17:09:11 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,7 @@ namespace ft {
 
 			first = pr.first;
 			second = pr.second;
-			return *this
+			return *this;
 		}
 	};
 	

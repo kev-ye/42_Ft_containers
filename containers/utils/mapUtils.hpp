@@ -6,14 +6,17 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/22 15:58:07 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 16:49:11 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAPUTILS_HPP
 # define MAPUTILS_HPP
 
+#include "utils.hpp"
+
 namespace ft {
+	
 }
 
 #endif

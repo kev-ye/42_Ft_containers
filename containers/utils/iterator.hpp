@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/22 16:20:32 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 14:49:11 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,15 @@ namespace ft {
 	};
 
 /** 
- * @class template: random_access_iterator
+ * @class template: vecIterator
  */
 	
 	/**
-	 * @class template: random_access_iterator
+	 * @class template: vecIterator
 	 * @brief random-access iterator
 	 */
 	template < class T >
-	class random_access_iterator : public iterator<random_access_iterator_tag, T> {
+	class vecIterator : public iterator<random_access_iterator_tag, T> {
 		public:
 		/* member types */
 
@@ -178,12 +178,12 @@ namespace ft {
 
 		/* constructor / destructor / operator= */
 
-			random_access_iterator(void) : _val(NULL) {}
-			random_access_iterator(pointer val) : _val(val) {}
-			random_access_iterator(random_access_iterator const & src) : _val(src._val) {}
-			virtual ~random_access_iterator(void) {}
+			vecIterator(void) : _val(NULL) {}
+			vecIterator(pointer val) : _val(val) {}
+			vecIterator(vecIterator const & src) : _val(src._val) {}
+			virtual ~vecIterator(void) {}
 
-			random_access_iterator & operator= (random_access_iterator const & rhs) {
+			vecIterator & operator= (vecIterator const & rhs) {
 				if (this == &rhs) return *this;
 
 				this->_val = rhs._val;
@@ -201,53 +201,53 @@ namespace ft {
 			reference	operator* (void) const { return *_val; }
 
 			/** @brief addition value */
-			random_access_iterator	operator+ (difference_type n) const {
-				random_access_iterator tmp(*this);
+			vecIterator	operator+ (difference_type n) const {
+				vecIterator tmp(*this);
 
 				tmp._val += n;
 				return tmp;
 			}
 
 			/** @brief increment value position*/
-			random_access_iterator &	operator++ (void) {
+			vecIterator &	operator++ (void) {
 				++_val;
 				return *this;
 			}
 			
-			random_access_iterator	operator++ (int) {
-				random_access_iterator tmp(*this);
+			vecIterator	operator++ (int) {
+				vecIterator tmp(*this);
 				operator++();
 				return tmp;
 			}
 
 			/** @brief advance value */
-			random_access_iterator &	operator+= (difference_type n) {
+			vecIterator &	operator+= (difference_type n) {
 				_val += n;
 				return *this;
 			}
 
 			/** @brief subtraction value*/
-			random_access_iterator	operator- (difference_type n) const {
-				random_access_iterator tmp(*this);
+			vecIterator	operator- (difference_type n) const {
+				vecIterator tmp(*this);
 
 				tmp._val -= n;
 				return tmp;
 			}
 
 			/** @brief decrease value position*/
-			random_access_iterator &	operator-- (void) {
+			vecIterator &	operator-- (void) {
 				--_val;
 				return *this;
 			}
 			
-			random_access_iterator	operator-- (int) {
-				random_access_iterator tmp(*this);
+			vecIterator	operator-- (int) {
+				vecIterator tmp(*this);
 				operator--();
 				return tmp;
 			}
 
 			/** @brief retrocede value */
-			random_access_iterator &	operator-= (difference_type n) {
+			vecIterator &	operator-= (difference_type n) {
 				_val -= n;
 				return *this;
 			}
@@ -258,50 +258,50 @@ namespace ft {
 			/** @brief dereference value with offset  */
 			reference	operator[] (difference_type n) const { return *(_val + n); }
 
-			/** @brief cast random_access_iterator<T> to random_access_iterator<const T> */
-			operator random_access_iterator<const T> (void) {
-				return static_cast< random_access_iterator<const T> >(_val);
+			/** @brief cast vecIterator<T> to vecIterator<const T> */
+			operator vecIterator<const T> (void) {
+				return static_cast< vecIterator<const T> >(_val);
 			}
 
-		/* non-member function: random_access_iterator */
+		/* non-member function: vecIterator */
 
 			template < class _T >
-			friend bool operator== (const random_access_iterator<_T> & lhs, const random_access_iterator<_T> & rhs) {
+			friend bool operator== (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
 				return lhs.base() == rhs.base();
 			}
 
 			template < class _T >
-			friend bool operator!= (const random_access_iterator<_T> & lhs, const random_access_iterator<_T> & rhs) {
+			friend bool operator!= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
 				return lhs.base() != rhs.base();
 			}
 
 			template < class _T >
-			friend bool operator<  (const random_access_iterator<_T> & lhs, const random_access_iterator<_T> & rhs) {
+			friend bool operator<  (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
 				return lhs.base() < rhs.base();
 			}
 
 			template < class _T >
-			friend bool operator<= (const random_access_iterator<_T> & lhs, const random_access_iterator<_T> & rhs) {
+			friend bool operator<= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
 				return lhs.base() <= rhs.base();
 			}
 
 			template < class _T >
-			friend bool operator>  (const random_access_iterator<_T> & lhs, const random_access_iterator<_T> & rhs) {
+			friend bool operator>  (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
 				return lhs.base() > rhs.base();
 			}
 
 			template < class _T >
-			friend bool operator>= (const random_access_iterator<_T> & lhs, const random_access_iterator<_T> & rhs) {
+			friend bool operator>= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
 				return lhs.base() >= rhs.base();
 			}
 
 			template < class _T >
-			friend random_access_iterator<_T> operator+ (difference_type n, const random_access_iterator<_T> & it) {
+			friend vecIterator<_T> operator+ (difference_type n, const vecIterator<_T> & it) {
 				return it + n;
 			}
 
 			template < class _T >
-			friend difference_type operator- (const random_access_iterator<_T> lhs, const random_access_iterator<_T> rhs) {
+			friend difference_type operator- (const vecIterator<_T> lhs, const vecIterator<_T> rhs) {
 				return lhs.base() - rhs.base();
 			}
 

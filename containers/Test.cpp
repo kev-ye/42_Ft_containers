@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/22 16:14:15 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/23 16:58:03 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,10 @@ using namespace std;
 
 int main()
 {
-       map<int, string> mapStudent;
-       mapStudent.insert(pair<int, string>(1, "student_one"));
-       mapStudent.insert(pair<int, string>(2, "student_two"));
-       mapStudent.insert(pair<int, string>(3, "student_three"));
-       map<int, string>::iterator  iter;
-       for(iter = mapStudent.begin(); iter != mapStudent.end(); iter++)
-       {
-            cout << iter->first << " " << iter->second << endl;
-       }
+       map<char, string> m;
+       m.insert(pair<int, string>('a', "student_one"));
+       m.insert(pair<int, string>('b', "student_two"));
+
+       cout << m.size() << endl;
        return 0;
 }
