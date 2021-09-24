@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 17:46:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/24 14:42:20 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -617,8 +617,9 @@ namespace ft {
 			}
 
 			template < class _IteratorL, class _IteratorR >
-			friend bool operator- (const reverse_iterator<_IteratorL>& lhs, const reverse_iterator<_IteratorR>& rhs) {
-				return lhs.base() - rhs.base();
+			friend difference_type operator- (const reverse_iterator<_IteratorL>& lhs,
+				const reverse_iterator<_IteratorR>& rhs) {
+				return rhs.base() - lhs.base();
 			}
 
 		private:

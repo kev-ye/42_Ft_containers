@@ -17,8 +17,6 @@
 #include <algorithm>
 #include <limits>
 
-#define TESTED_TYPE int
-
 void	ft_is_empty(std::vector<int> const &vct)
 {
 	using namespace std;
@@ -461,7 +459,7 @@ void vecInsertTest(void) {
 int main(void) {
 	// vecSizeTest();
 	// vecMaxSizeTest();
-	vecResizeTest();
+	// vecResizeTest();
 	// vecReserveTest();
 	// vecAccess();
 	// relationalOperator();
@@ -472,6 +470,17 @@ int main(void) {
 	// vecEraseTest();
 	// vecConstItTest();
 	// vecInsertTest();
+
+	using namespace std;
+
+	int size = 5;
+	std::vector<int> vct(size);
+	std::vector<int>::const_iterator it = vct.begin(); // <-- error expected
+
+	// for (int i = 0; i < size; ++i)
+	// 	it[i] = i;
+
+	// *ite = 42; // < -- error
 
 	return 0;
 }
