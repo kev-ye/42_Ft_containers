@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 16:58:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/26 17:18:15 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,11 @@
 #include <iostream>
 using namespace std;
 
-int main()
-{
-       map<char, string> m;
-       m.insert(pair<int, string>('a', "student_one"));
-       m.insert(pair<int, string>('b', "student_two"));
+int main () {
+  std::pair<int,char> foo (10, 'b');
+  std::pair<int,char> bar (90, 'a');
 
-       cout << m.size() << endl;
-       return 0;
+  if (foo < bar) std::cout << "foo is less than bar\n";
+
+  return 0;
 }

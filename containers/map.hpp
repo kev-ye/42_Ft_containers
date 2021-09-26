@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 16:36:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/26 17:39:52 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ namespace ft {
 	class map {
 		public:
 		/* member types */
+
 			typedef				Key										key_type;
 			typedef				T										mapped_type;
 			typedef				ft::pair<const	key_type, mapped_type>	value_type;
@@ -71,8 +72,11 @@ namespace ft {
 			typedef	typename	allocator_type::const_reference			const_reference;
 			typedef	typename	allocator_type::pointer					pointer;
 			typedef	typename	allocator_type::const_pointer			const_pointer;
-			typedef	typename	allocator_type::size_type				size_type;
+			
+			/** @note usually the same as ptrdiff_t */
 			typedef	typename	allocator_type::difference_type			difference_type;
+			/** @note usually the same as size_t */
+			typedef	typename	allocator_type::size_type				size_type;
 
 			// typedef	implementation-defined							iterator;
 			// typedef	implementation-defined							const_iterator;
@@ -91,6 +95,7 @@ namespace ft {
 					typedef bool 		result_type;
 					typedef value_type	first_argument_type;
 					typedef value_type	second_argument_type;
+
 					bool operator()(const value_type& x, const value_type& y) const {
 						return comp(x.first, y.first);
 					}
@@ -139,7 +144,7 @@ namespace ft {
 
 		/* member functions: modifiers */
 		
-			pair<iterator, bool> insert(const value_type& val);
+			ft::pair<iterator, bool> insert(const value_type& val);
 
 			iterator insert(iterator position, const value_type& val);
 
@@ -179,9 +184,9 @@ namespace ft {
 			
 			const_iterator upper_bound(const key_type& k) const;
 
-			pair<iterator, iterator> equal_range(const key_type& k);
+			ft::pair<iterator, iterator> equal_range(const key_type& k);
 			
-			pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
+			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
 
 		/* member functions: allocator */
 		

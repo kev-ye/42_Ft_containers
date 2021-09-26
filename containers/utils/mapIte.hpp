@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mapUtils.hpp                                       :+:      :+:    :+:   */
+/*   mapIte.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/23 16:49:11 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/26 14:41:48 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAPUTILS_HPP
-# define MAPUTILS_HPP
+#ifndef MAPITE_HPP
+# define MAPITE_HPP
 
+#include "iterator.hpp"
 #include "utils.hpp"
 
 namespace ft {
