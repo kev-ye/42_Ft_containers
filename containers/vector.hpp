@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/26 14:41:56 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/27 17:03:57 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -548,7 +548,7 @@ namespace ft {
 			 * 
 			 * @return the allocator.
 			 */
-			allocator_type get_allocator() const { return allocator_type(); }
+			allocator_type get_allocator() const { return _alloc; }
 		
 		private:
 		/* attributes */

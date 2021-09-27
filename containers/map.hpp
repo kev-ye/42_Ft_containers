@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/26 17:39:52 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/27 19:34:19 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 #include <memory>
 #include <cstddef>
 #include <exception>
-#include "./utils/iterator.hpp"
-#include "./utils/utils.hpp"
+#include "./utils/mapIte.hpp"
 
 namespace ft {
 /**
@@ -64,7 +63,7 @@ namespace ft {
 
 			typedef				Key										key_type;
 			typedef				T										mapped_type;
-			typedef				ft::pair<const	key_type, mapped_type>	value_type;
+			typedef				ft::pair<const key_type, mapped_type>	value_type;
 			typedef				Compare									key_compare;
 
 			typedef				Alloc									allocator_type;
@@ -104,39 +103,54 @@ namespace ft {
 		public:
 		/* member functions: constructor / destructor / operator= */
 		
-			explicit map(const key_compare& comp = key_compare()),
-				const allocator_type& alloc = allocator_type());
+			explicit map(const key_compare& comp = key_compare(),
+				const allocator_type& alloc = allocator_type()) :
+					_alloc(alloc),
+					_comp(comp),
+					_bst() {}
 		
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type());
 
-			map(const map& x);
+			map(const map& x) :
+				_alloc(x._alloc),
+				_comp(x._comp),
+				_bst(x._bst) {}
 			
    			~map(void) {}
 
-			map& operator=(const map& x);
+			map& operator=(const map& x) {
+				if (this == &x) return *this;
+
+				_alloc = x._alloc;
+				_comp = x._comp;
+				_bst = x._bst;
+				return *this;
+			}
 
 		/* member functions: iterators */
 		
-			iterator begin();
-			const_iterator begin() const;
+			// iterator begin();
+			// const_iterator begin() const;
 			
-			iterator end() ;
-			const_iterator end() const ;
+			// iterator end() ;
+			// const_iterator end() const ;
 
-			reverse_iterator rbegin();
-			const_reverse_iterator rbegin() const;
+			// reverse_iterator rbegin();
+			// const_reverse_iterator rbegin() const;
 			
-			reverse_iterator rend();
-			const_reverse_iterator rend() const;
+			// reverse_iterator rend();
+			// const_reverse_iterator rend() const;
 
 		/* member functions: capacity */
 		
-			bool	  empty() const;
-			size_type size() const;
-			size_type max_size() const;
+			bool		empty() const { return size() == 0 ? true : false; }
+
+			size_type	size() const { return _bst.getSize(); }
+
+			size_type	max_size(void) const { return _bst.getMax_size(); }
 
 		/* member functions: element access */
 			
@@ -144,18 +158,18 @@ namespace ft {
 
 		/* member functions: modifiers */
 		
-			ft::pair<iterator, bool> insert(const value_type& val);
+			// ft::pair<iterator, bool> insert(const value_type& val);
 
-			iterator insert(iterator position, const value_type& val);
+			// iterator insert(iterator position, const value_type& val);
 
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last);
 
-			iterator  erase(const_iterator position);
+			// iterator  erase(const_iterator position);
 			
 			size_type erase(const key_type& k);
 			
-			iterator  erase(iterator first, iterator last);
+			// iterator  erase(iterator first, iterator last);
 	
 			void swap (map& x);
 
@@ -170,33 +184,34 @@ namespace ft {
 
 		/* member functions: operations */
 		
-			iterator find(const key_type& k);
+			// iterator find(const key_type& k);
 
-			const_iterator find(const key_type& k) const;
+			// const_iterator find(const key_type& k) const;
 
 			size_type count(const key_type& k) const;
 			
-			iterator lower_bound(const key_type& k);
+			// iterator lower_bound(const key_type& k);
 			
-			const_iterator lower_bound(const key_type& k) const;
+			// const_iterator lower_bound(const key_type& k) const;
 
-			iterator upper_bound(const key_type& k);
+			// iterator upper_bound(const key_type& k);
 			
-			const_iterator upper_bound(const key_type& k) const;
+			// const_iterator upper_bound(const key_type& k) const;
 
-			ft::pair<iterator, iterator> equal_range(const key_type& k);
+			// // ft::pair<iterator, iterator> equal_range(const key_type& k);
 			
-			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
+			// // ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
 
 		/* member functions: allocator */
 		
-			allocator_type get_allocator() const;
+			allocator_type get_allocator() const { return _alloc; }
 
 		private:
 		/* attributes */
 
-			allocator_type	_alloc;
-			key_compare		_comp;
+			allocator_type		_alloc;
+			key_compare			_comp;
+			ft::BST<value_type>	_bst;
 	};
 	
 	/* non-member function: vector */

@@ -6,20 +6,32 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/26 17:18:15 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/27 20:23:18 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <map>
-#include <string>
 #include <iostream>
-using namespace std;
+#include <map>
+#include "map.hpp"
 
-int main () {
-  std::pair<int,char> foo (10, 'b');
-  std::pair<int,char> bar (90, 'a');
+int main(void) {
+	using namespace std;
 
-  if (foo < bar) std::cout << "foo is less than bar\n";
+	std::map<int, int> first;
 
-  return 0;
+	// first[1]=10;
+	// first[2]=30;
+	// first[3]=50;
+	// first[4]=70;
+
+	cout << boolalpha;
+	// cout << "empty: " << first.empty() << endl;
+	// cout << "size: " << first.size() << endl;
+	cout << "max_size: " << first.max_size() << endl;
+
+	cout << sizeof(first) << endl;
+
+	ft::BST< ft::pair<int, int> > t;
+
+	return 0;
 }
