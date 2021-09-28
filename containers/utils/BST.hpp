@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/27 20:53:12 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/28 19:38:36 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,17 @@
 
 #include <memory>
 #include "utils.hpp"
+#include "mapIte.hpp"
 
 #include <iostream> // debug
 
 namespace ft {
+/**
+ * @brief class declare
+ */
+	template < class T >
+	class mapIterator;
+
 /**
  * @class template: BST_Node
  */
@@ -115,26 +122,16 @@ namespace ft {
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
+			typedef				ft::mapIterator<Node>					iterator;
+
 		public:
-		/* member functions: constructor / destructor / operator= */
+		/* member functions: constructor / destructor */
 
 			BST(allocator_type const & alloc = allocator_type()) :
-			_root(NULL),
-			_alloc(alloc) {}
-
-			BST(BST const & src) : _root(NULL) {
-				preOrderDeepCopy(src._root);
-			}
+				_root(NULL),
+				_alloc(alloc) {}
 			
-			virtual ~BST(void) { clear(_root); }
-
-			BST & operator=(BST const & rhs) {
-				if (this == &rhs) return *this;
-
-				clear(_root);
-				preOrderDeepCopy(rhs._root);
-				return *this;
-			}
+			virtual ~BST(void) { destroy(); }
 
 		/* member functions: capacity */
 
@@ -148,17 +145,17 @@ namespace ft {
 
 		/* member functions: finder */
 
-			value_type	max(void) const {
+			pointer	max(void) const {
 				pointer node = max(_root);
 				if (node != NULL)
-					return node->val;
+					return node;
 				return NULL;
 			}
 
-			value_type	min(void) const {
+			pointer	min(void) const {
 				pointer node = min(_root);
 				if (node != NULL)
-					return node->val;
+					return node;
 				return NULL;
 			}
 
@@ -168,46 +165,71 @@ namespace ft {
 
 		/* member functions: predecessor / successor */
 
-			pointer	predecessor(pointer node) {
-				if (node->left != NULL)
-					return max(node->left);
+			// pointer	predecessor(pointer node) {
+			// 	if (node->left != NULL)
+			// 		return max(node->left);
 				
-				pointer pre = node->parent;
-				while (pre != NULL && node == pre->left) {
-					node = pre;
-					pre = pre->parent;
-				}
-				return pre;
-			}
+			// 	pointer pre = node->parent;
+			// 	while (pre != NULL && node == pre->left) {
+			// 		node = pre;
+			// 		pre = pre->parent;
+			// 	}
+			// 	return pre;
+			// }
 
-			pointer	successor(pointer node) {
-				if (node->right != NULL)
-					return min(node->right);
+			// pointer	successor(pointer node) {
+			// 	if (node->right != NULL)
+			// 		return min(node->right);
 				
-				pointer succ = node->parent;
-				while (succ != NULL && node == succ->left) {
-					node = succ;
-					succ = succ->parent;
-				}
-				return succ;
-			}
+			// 	pointer succ = node->parent;
+			// 	while (succ != NULL && node == succ->left) {
+			// 		node = succ;
+			// 		succ = succ->parent;
+			// 	}
+			// 	return succ;
+			// }
 
 		/* member functions: modifiers */
 
 			void	insert(value_type const & val) {
-				_root = insert(val, _root);
+				pointer toInsert = _alloc.allocate(1);
+				_alloc.construct(toInsert, node_type(val, NULL, NULL, NULL));
+
+				_root = insert(toInsert, _root);
 			}
 
 			void	erase(value_type const & val) {
-				_root = erase(val, _root);
+				pointer	toErase = search(val, _root);
+				pointer node = NULL;
+
+				if (toErase != NULL)
+					pointer	node = erase(toErase, _root);
+
+				if (node != NULL) {
+					_alloc.destroy(node);
+					_alloc.deallocate(node, 1);
+					node = NULL;
+				}
 			}
 
-			void	destroy(void) {}
+			void	destroy(void) {
+				destroy(_root);
+				_root = NULL;
+			}
+
+		/* member functions: other */
+		
+			void inOrderPrint(void) {
+				inOrderPrint(_root);
+			}
+
+		/* public attributes */
+
+			pointer			_root;
 
 		private:
-		/* attributes */
+		/* private attributes */
 			
-			pointer			_root;
 			allocator_type	_alloc;
 
 		/* private functions: capacity */
@@ -221,7 +243,7 @@ namespace ft {
 
 		/* private functions: finder */
 
-			pointer max(pointer node) {
+			pointer max(pointer node) const {
 				if(node == NULL)
 					return NULL;
 
@@ -230,7 +252,7 @@ namespace ft {
 				return node;
 			}
 
-			pointer min(pointer node) {
+			pointer min(pointer node) const {
 				if(node == NULL)
 					return NULL;
 
@@ -239,74 +261,85 @@ namespace ft {
 				return node;
 			}
 
-			pointer search(value_type const & val, pointer node) {
-				if(node == NULL || val.first == node->val.first)
+			pointer search(value_type const & val, pointer node) const {
+				if(node == NULL)
 					return node;
-
-				if(val.first < node->val.first)
-					return find(val, node->left);
+				else if(val.first < node->val.first)
+					return search(val, node->left);
 				else if(val.first > node->val.first)
-					return find(val, node->right);
+					return search(val, node->right);
+				else
+					return node;
 			}
 
 		/* private functions: modifiers */
 
-			void clear(pointer node) {
+			void destroy(pointer node) {
 				if (node == NULL)
 					return ;
-				clear(node->left);
-				clear(node->right);
+				destroy(node->left);
+				destroy(node->right);
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
 			}
 
-			pointer	insert(value_type const & val, pointer node) {
-				if (node == NULL) {
-					node = _alloc.allocate(1);
-					_alloc.construct(node, node_type(val, NULL, NULL));
+			pointer	insert(pointer toInsert, pointer node) {
+				pointer tmp = NULL;
+				pointer tmpNode = node;
+
+				while (tmpNode != NULL) {
+					tmp = tmpNode;
+					if (toInsert->val.first < tmpNode->val.first)
+						tmpNode = tmpNode->left;
+					else if (toInsert->val.first > tmpNode->val.first)
+						tmpNode = tmpNode->right;
+					else {
+						_alloc.destroy(toInsert);
+						_alloc.deallocate(toInsert, 1);
+						return  node;
+					}
 				}
-				else if (val.first < node->val.first)
-					node->left = insert(val, node->left);
-				else if (val.first > node->val.first)
-					node->right = insert(val, node->right);
+
+				toInsert->parent = tmp;
+				if (tmp == NULL)
+					node = toInsert;
+				else if (toInsert->val.first < tmp->val.first)
+					tmp->left = toInsert;
+				else
+					tmp->right = toInsert;
 				return node;
 			}
 
-			pointer erase(value_type const & val, pointer node) {
+			pointer erase(pointer toErase, pointer node) {
 				pointer tmp = NULL;
+				pointer tmpNode = NULL;
 
-				if(node == NULL)
-					return NULL;
-				else if(val.first < node->val.first)
-					node->left = erase(val, node->left);
-				else if(val.first > node->val.first)
-					node->right = erase(val, node->right);
-				else if(node->left && node->right) {
-					tmp = findMin(node->right);
-					node->val = tmp->val;
-					node->right = erase(node->val, node->right);
-				}
-				else {
-					tmp = node;
-					if(node->left == NULL)
-						node = node->right;
-					else if(node->right == NULL)
-						node = node->left;
-					_alloc.destroy(tmp);
-					_alloc.deallocate(tmp, 1);
-				}
-				return node;
+				if (toErase->left == NULL || toErase->right == NULL)
+					tmp = toErase;
+				else
+					tmp = successor(toErase);
+				
+				if (tmp->left != NULL)
+					tmpNode = tmp->left;
+				else
+					tmpNode = tmp->right;
+
+				if (tmpNode != NULL)
+					tmpNode->parent = tmp->parent;
+
+				if (tmp->parent == NULL)
+					node = tmpNode;
+				else if (tmp == tmp->parent->left)
+					tmp->parent->left = tmpNode;
+				else
+					tmp->parent->right = tmpNode;
+
+				if (tmp != toErase)
+					toErase->val = tmp->val;
+				return tmp;
 			}
 
 		/* private functions: others */
-
-			void preOrderDeepCopy(pointer src) {
-				if (src == NULL)
-					return ;
-				_root = insert(src->val, _root);
-				preOrderDeepCopy(src->left);
-				preOrderDeepCopy(src->right);
-			}
 
 			void inOrderPrint(pointer node) {
 				if(node == NULL)

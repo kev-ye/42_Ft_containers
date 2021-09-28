@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:37:08 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/27 16:51:33 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/28 19:10:16 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ namespace ft {
 	 * @brief random-access iterator
 	 */
 	template < class T >
-	class vecIterator : public iterator<random_access_iterator_tag, T> {
+	class vecIterator : public ft::iterator<random_access_iterator_tag, T> {
 		public:
 		/* member types */
 
-			typedef typename iterator<random_access_iterator_tag, T>::value_type		value_type;
-			typedef typename iterator<random_access_iterator_tag, T>::difference_type	difference_type;
-			typedef typename iterator<random_access_iterator_tag, T>::pointer			pointer;
-			typedef typename iterator<random_access_iterator_tag, T>::reference			reference;
-			typedef typename iterator<random_access_iterator_tag, T>::iterator_category	iterator_category;
+			typedef typename ft::iterator<random_access_iterator_tag, T>::value_type		value_type;
+			typedef typename ft::iterator<random_access_iterator_tag, T>::difference_type	difference_type;
+			typedef typename ft::iterator<random_access_iterator_tag, T>::pointer			pointer;
+			typedef typename ft::iterator<random_access_iterator_tag, T>::reference			reference;
+			typedef typename ft::iterator<random_access_iterator_tag, T>::iterator_category	iterator_category;
 
 		public:
 		/* member functions */
@@ -116,7 +116,7 @@ namespace ft {
 			}
 
 			/** @brief derefence value */
-			pointer	operator->() const { return &(operator*()); }
+			pointer	operator->(void) const { return &(operator*()); }
 
 			/** @brief dereference value with offset  */
 			reference	operator[] (difference_type n) const { return *(_val + n); }

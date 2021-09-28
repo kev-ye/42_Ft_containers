@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/27 19:34:19 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/28 16:23:42 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,24 +103,59 @@ namespace ft {
 		public:
 		/* member functions: constructor / destructor / operator= */
 		
+			/**
+			 * @brief constructor: default
+			 * @note constructs an empty container, with no elements.
+			 * 
+			 * @param comp: binary predicate that, taking two element keeys as argument,
+			 * returns true if the first argument goes before the second argument in the strict weak ordering it defines,
+			 * and false otherwise.
+			 * @param alloc: allocator object.
+			 */
 			explicit map(const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) :
 					_alloc(alloc),
 					_comp(comp),
 					_bst() {}
 		
+			/**
+			 * @brief constructor: range
+			 * @note constructs a container with as many elements as the range [first, last],
+			 * with each element constructed from its corresponding element in that range.
+			 * 
+			 * @param first, last: input iterators to the initial and final positions in a range.
+			 * @param alloc: allocator object.
+			 */
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type());
 
+			/**
+			 * @brief constructor: copy
+			 * @note constructs a container with a copy of each of the elements in x.
+			 * 
+			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
+			 */
 			map(const map& x) :
 				_alloc(x._alloc),
 				_comp(x._comp),
 				_bst(x._bst) {}
 			
+			/**
+			 * @brief destructor
+			 * @note this destroys all container elements,
+			 * and deallocates all the storage capacity allocated by the vector using its allocator.
+			 */
    			~map(void) {}
 
+			/**
+			 * @brief operator: copy
+			 * @note copies all the elements from x into the container.
+			 * 
+			 * @param x: a map object of the same type.
+			 * @return *this.
+			 */
 			map& operator=(const map& x) {
 				if (this == &x) return *this;
 
