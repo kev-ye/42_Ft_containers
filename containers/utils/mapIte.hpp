@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/28 19:56:59 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/30 19:51:30 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "BST.hpp"
 #include "iterator.hpp"
 #include "utils.hpp"
+
+#include <iostream>
 
 namespace ft {
 /**
@@ -116,6 +118,8 @@ namespace ft {
 			node_pointer	predecessor(node_pointer node) {
 				if (node->left != NULL)
 					return max(node->left);
+				// if (node == min(node))
+				// 	return NULL;
 				
 				node_pointer pre = node->parent;
 				while (pre != NULL && node == pre->left) {
@@ -128,9 +132,11 @@ namespace ft {
 			node_pointer	successor(node_pointer node) {
 				if (node->right != NULL)
 					return min(node->right);
+				// if (node == max(node)) // need last
+				// 	return NULL;
 				
 				node_pointer succ = node->parent;
-				while (succ != NULL && node == succ->left) {
+				while (succ != NULL && node == succ->right) {
 					node = succ;
 					succ = succ->parent;
 				}

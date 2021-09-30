@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/28 19:56:22 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/30 19:15:30 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int main(void) {
 
 	std::map<int, int> first;
 
-	first[2]=30;
+	first[2]=20;
 	first[1]=10;
-	first[3]=50;
-	first[4]=70;
+	first[3]=30;
+	first[4]=40;
 
 	// cout << boolalpha;
 	// cout << "empty: " << first.empty() << endl;
@@ -31,8 +31,11 @@ int main(void) {
 
 	// cout << sizeof(first) << endl;
 
-	// std::map<int, int>::iterator it = first.begin();
-	// cout << "it: " << it->first << endl;
+	std::map<int, int>::iterator it = first.end();
+
+	it--;
+
+	cout << "it: " << it->first << endl;
 	// it++;
 
 	// std::map<int, int>::iterator it2 = it;
@@ -42,16 +45,20 @@ int main(void) {
 	// cout << "it2: " << it2->first << endl;
 	// cout << "it: " << it->first << endl;
 
-	std::map<int, int>::iterator it = first.begin();
+	// first.erase(2);
 
-	cout << it->first << endl;
+	// std::map<int, int>::iterator it = first.begin();
+	// cout << first[1] << endl;
 
-	it++;
+	// cout << it->first << endl;
+
 	// it++;
 	// it++;
 	// it++;
+	// it++;
+	// it--;
 
-	cout << it->first << endl;
+	// cout << it->first << endl;
 
 	return 0;
 }

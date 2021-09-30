@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/28 19:38:36 by kaye             ###   ########.fr       */
+/*   Updated: 2021/09/30 19:47:41 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,17 +177,17 @@ namespace ft {
 			// 	return pre;
 			// }
 
-			// pointer	successor(pointer node) {
-			// 	if (node->right != NULL)
-			// 		return min(node->right);
+			pointer	successor(pointer node) {
+				if (node->right != NULL)
+					return min(node->right);
 				
-			// 	pointer succ = node->parent;
-			// 	while (succ != NULL && node == succ->left) {
-			// 		node = succ;
-			// 		succ = succ->parent;
-			// 	}
-			// 	return succ;
-			// }
+				pointer succ = node->parent;
+				while (succ != NULL && node == succ->right) {
+					node = succ;
+					succ = succ->parent;
+				}
+				return succ;
+			}
 
 		/* member functions: modifiers */
 
@@ -195,7 +195,8 @@ namespace ft {
 				pointer toInsert = _alloc.allocate(1);
 				_alloc.construct(toInsert, node_type(val, NULL, NULL, NULL));
 
-				_root = insert(toInsert, _root);
+				// the second param is a reference.
+				insert(toInsert, _root);
 			}
 
 			void	erase(value_type const & val) {
@@ -203,7 +204,7 @@ namespace ft {
 				pointer node = NULL;
 
 				if (toErase != NULL)
-					pointer	node = erase(toErase, _root);
+					node = erase(toErase, _root);
 
 				if (node != NULL) {
 					_alloc.destroy(node);
@@ -214,13 +215,17 @@ namespace ft {
 
 			void	destroy(void) {
 				destroy(_root);
-				_root = NULL;
+				// _root = NULL;
 			}
 
 		/* member functions: other */
 		
 			void inOrderPrint(void) {
 				inOrderPrint(_root);
+			}
+
+			void preOrderPrint(void) {
+				preOrderPrint(_root);
 			}
 
 		/* public attributes */
@@ -272,23 +277,38 @@ namespace ft {
 					return node;
 			}
 
+			// pointer search(value_type const & val, pointer node) const {
+			// 	while (node != NULL && node->val.first != val.first) {
+			// 		if (val.first < node->val.first)
+			// 			node = node->left;
+			// 		else
+			// 			node = node->right;
+			// 	}
+			// 	return node;
+			// }
+
 		/* private functions: modifiers */
 
-			void destroy(pointer node) {
+			void destroy(pointer &node) {
 				if (node == NULL)
 					return ;
-				destroy(node->left);
-				destroy(node->right);
+
+				if (node->left != NULL)
+					return destroy(node->left);
+				if (node->right != NULL)
+					return destroy(node->right);
+	
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
+				node = NULL;
 			}
 
-			pointer	insert(pointer toInsert, pointer node) {
-				pointer tmp = NULL;
+			pointer	insert(pointer toInsert, pointer &node) {
+				pointer currentNode = NULL;
 				pointer tmpNode = node;
 
 				while (tmpNode != NULL) {
-					tmp = tmpNode;
+					currentNode = tmpNode;
 					if (toInsert->val.first < tmpNode->val.first)
 						tmpNode = tmpNode->left;
 					else if (toInsert->val.first > tmpNode->val.first)
@@ -296,47 +316,55 @@ namespace ft {
 					else {
 						_alloc.destroy(toInsert);
 						_alloc.deallocate(toInsert, 1);
+						toInsert = NULL;
 						return  node;
 					}
 				}
 
-				toInsert->parent = tmp;
-				if (tmp == NULL)
+				toInsert->parent = currentNode;
+				if (currentNode == NULL) {
 					node = toInsert;
-				else if (toInsert->val.first < tmp->val.first)
-					tmp->left = toInsert;
+					// node->parent = toInsert;
+				}
+				else if (toInsert->val.first < currentNode->val.first)
+					currentNode->left = toInsert;
 				else
-					tmp->right = toInsert;
+					currentNode->right = toInsert;
 				return node;
 			}
 
-			pointer erase(pointer toErase, pointer node) {
-				pointer tmp = NULL;
-				pointer tmpNode = NULL;
+			pointer erase(pointer toErase, pointer &node) {
+				pointer replaceNode = NULL;
+				pointer nodeToErase = NULL;
 
+				// get the node to delete.
 				if (toErase->left == NULL || toErase->right == NULL)
-					tmp = toErase;
+					nodeToErase = toErase;
 				else
-					tmp = successor(toErase);
+					nodeToErase = successor(toErase);
 				
-				if (tmp->left != NULL)
-					tmpNode = tmp->left;
+				// save the replace node.
+				if (nodeToErase->left != NULL)
+					replaceNode = nodeToErase->left;
 				else
-					tmpNode = tmp->right;
+					replaceNode = nodeToErase->right;
 
-				if (tmpNode != NULL)
-					tmpNode->parent = tmp->parent;
+				// save the parent node if replace is not a NULL node.
+				if (replaceNode != NULL)
+					replaceNode->parent = nodeToErase->parent;
 
-				if (tmp->parent == NULL)
-					node = tmpNode;
-				else if (tmp == tmp->parent->left)
-					tmp->parent->left = tmpNode;
+				// replace node.
+				if (nodeToErase->parent == NULL)
+					node = replaceNode;
+				else if (nodeToErase == nodeToErase->parent->left)
+					nodeToErase->parent->left = replaceNode;
 				else
-					tmp->parent->right = tmpNode;
+					nodeToErase->parent->right = replaceNode;
 
-				if (tmp != toErase)
-					toErase->val = tmp->val;
-				return tmp;
+				// save value if node does not match param node.
+				if (nodeToErase != toErase)
+					toErase->val = nodeToErase->val;
+				return nodeToErase;
 			}
 
 		/* private functions: others */
@@ -345,7 +373,15 @@ namespace ft {
 				if(node == NULL)
 					return ;
 				inOrderPrint(node->left);
-				std::cout << node->val.second << " ";
+				std::cout << node->val.first << " ";
+				inOrderPrint(node->right);
+			}
+
+			void preOrderPrint(pointer node) {
+				if(node == NULL)
+					return ;
+				std::cout << node->val.first << " ";
+				inOrderPrint(node->left);
 				inOrderPrint(node->right);
 			}
 	};

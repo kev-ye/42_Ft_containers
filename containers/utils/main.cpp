@@ -10,6 +10,14 @@ void f(void) {
 	t.insert(ft::make_pair<int, int>(3, 30));
 	t.insert(ft::make_pair<int, int>(4, 50));
 
+	// t.erase(ft::make_pair<int, int>(2, 20));
+	// t.erase(ft::make_pair<int, int>(3, 30));
+	// t.erase(ft::make_pair<int, int>(4, 50));
+
+	// cout << t._root->val.first << endl;
+	// t.preOrderPrint();
+	// cout << "\n";
+
 	// std::cout << t.getSize() << std::endl;
 
 	// t.erase(ft::make_pair<int, int>(2, 20));
@@ -26,20 +34,29 @@ void f(void) {
 
 	ft::BST< ft::pair<int, int> >::iterator it;
 
-	it = t._root;
+	it = t.min();
+
+	// cout << t.min()->parent->val.first << endl;
 
 	// it--;
+	// it++;
+
+	// cout << it->first << endl;
+
 	it++;
+	it++;
+	it++;
+	it--;
+
+	// cout << t._root->val.first << endl;
+
+	// it++;
+	// it++;
+	// it--;
 
 	cout << it->first << endl;
 
-	// it++;
-	// it++;
-	// it++;
-	// it++;
-	// it--;
 
-	// cout << it->first << endl;
 
 	// t._node = t.predecessor(t._node);
 
