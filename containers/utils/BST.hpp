@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/30 19:47:41 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 13:44:43 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ namespace ft {
 
 			void	destroy(void) {
 				destroy(_root);
-				// _root = NULL;
+				_root = NULL;
 			}
 
 		/* member functions: other */
@@ -277,7 +277,7 @@ namespace ft {
 					return node;
 			}
 
-			// pointer search(value_type const & val, pointer node) const {
+			// pointer search(value_type const & val, pointer node) const { // iterative
 			// 	while (node != NULL && node->val.first != val.first) {
 			// 		if (val.first < node->val.first)
 			// 			node = node->left;

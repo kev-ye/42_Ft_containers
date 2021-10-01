@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/30 19:51:30 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 14:27:42 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft {
 		public:
 		/* member types */
 
-			typedef typename T::value_type													value_type;
+			typedef typename T::value_type															value_type;
 
 			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::difference_type	difference_type;
 			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::pointer			pointer;
@@ -118,8 +118,6 @@ namespace ft {
 			node_pointer	predecessor(node_pointer node) {
 				if (node->left != NULL)
 					return max(node->left);
-				// if (node == min(node))
-				// 	return NULL;
 				
 				node_pointer pre = node->parent;
 				while (pre != NULL && node == pre->left) {
@@ -132,8 +130,6 @@ namespace ft {
 			node_pointer	successor(node_pointer node) {
 				if (node->right != NULL)
 					return min(node->right);
-				// if (node == max(node)) // need last
-				// 	return NULL;
 				
 				node_pointer succ = node->parent;
 				while (succ != NULL && node == succ->right) {
@@ -141,6 +137,18 @@ namespace ft {
 					succ = succ->parent;
 				}
 				return succ;
+			}
+
+			/* non-member function: mapIterator */
+
+			template < class _T >
+			friend bool operator== (const mapIterator<_T> & lhs, const mapIterator<_T> & rhs) {
+				return lhs->_node == rhs->_node;
+			}
+
+			template < class _T >
+			friend bool operator!= (const mapIterator<_T> & lhs, const mapIterator<_T> & rhs) {
+				return lhs->_node != rhs->_node;
 			}
 	};
 }

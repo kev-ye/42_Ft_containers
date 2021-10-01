@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/30 19:15:30 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 14:27:49 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,16 @@ int main(void) {
 
 	// cout << sizeof(first) << endl;
 
-	std::map<int, int>::iterator it = first.end();
+	// std::map<int, int>::iterator it = first.begin();
+	// std::map<int, int>::const_iterator cit = first.begin();
 
-	it--;
+	// it--;
 
-	cout << "it: " << it->first << endl;
+	// cout << "it: " << it->first << endl;
 	// it++;
+
+	// if (it == cit)
+	// 	cout << "ok\n";
 
 	// std::map<int, int>::iterator it2 = it;
 	// cout << "it2: " << it2->first << endl;
