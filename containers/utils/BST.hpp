@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 18:07:57 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 18:42:44 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,12 +194,15 @@ namespace ft {
 
 		/* member functions: modifiers */
 
+
 			ft::pair<iterator, bool>	insert(value_type const & val) {
 				pointer toInsert = _alloc.allocate(1);
 				_alloc.construct(toInsert, node_type(val, NULL, NULL, NULL));
 
-				// the second param is a reference.
-				return insert(toInsert, _root).second;
+				// insert: the second param is a reference.
+				ft:pair<pointer, bool> tmp = insert(toInsert, _root);
+		
+				return ft::make_pair<iterator, bool>(iterator(tmp.first), tmp.second);
 			}
 
 			void	erase(value_type const & val) {
@@ -333,7 +336,7 @@ namespace ft {
 						_alloc.destroy(toInsert);
 						_alloc.deallocate(toInsert, 1);
 						toInsert = NULL;
-						return ft::make_pair<pointer, bool>(node, false);
+						return ft::make_pair<pointer, bool>(currentNode, false);
 					}
 				}
 
@@ -346,7 +349,7 @@ namespace ft {
 					currentNode->right = toInsert;
 				max()->right = _last;
 				_last->parent = max();
-				return ft::make_pair<pointer, bool>(node, true);
+				return ft::make_pair<pointer, bool>(currentNode, true);
 			}
 
 

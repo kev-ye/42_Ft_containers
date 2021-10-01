@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 18:06:41 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 18:59:15 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,32 +189,26 @@ namespace ft {
 
 		/* member functions: element access */
 			
-			mapped_type& operator[](const key_type& k);
+			mapped_type& operator[](const key_type& k) {
+				
+			}
 
 		/* member functions: modifiers */
 		
 			ft::pair<iterator, bool> insert(const value_type& val) {
-				bool check = _bst.insert(val);
-				iterator it(_bst.search(val));
-
-				if (check == false)
-					return ft::make_pair<iterator, bool>(it, false);
-				return ft::make_pair<iterator, bool>(it, true);
+				return _bst.insert(val);
 			}
 
 			iterator insert(iterator position, const value_type& val) {
 				(void)position;
-				_bst.insert(val);
-				iterator it(_bst.search(val));
-
-				return it;
+				return _bst.insert(val).first;
 			}
 
-			// template <class InputIterator>
-			// void insert(InputIterator first, InputIterator last) {
-			// 	// for(; first != last; first++)
-				
-			// }
+			template <class InputIterator>
+			void insert(InputIterator first, InputIterator last) {
+				for(; first != last; first++)
+					_bst.insert(*first);
+			}
 
 			// iterator  erase(const_iterator position);
 			
@@ -235,11 +229,17 @@ namespace ft {
 
 		/* member functions: operations */
 		
-			// iterator find(const key_type& k);
+			iterator find(const key_type& k) {
+				return iterator(_bst.search(ft::make_pair(k, mapped_type())));
+			}
 
 			// const_iterator find(const key_type& k) const;
 
-			size_type count(const key_type& k) const;
+			size_type count(const key_type& k) const {
+				if (_bst.search(ft::make_pair(k, mapped_type())) == NULL)
+					return 0;
+				return 1;
+			}
 			
 			// iterator lower_bound(const key_type& k);
 			
