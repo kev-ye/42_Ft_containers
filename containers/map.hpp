@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/28 16:23:42 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 18:06:41 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ namespace ft {
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
-			// typedef	implementation-defined							iterator;
+			typedef	typename	ft::BST<value_type>::iterator			iterator;
 			// typedef	implementation-defined							const_iterator;
 			// typedef	std::reverse_iterator<iterator>					reverse_iterator;
 			// typedef	std::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -167,10 +167,10 @@ namespace ft {
 
 		/* member functions: iterators */
 		
-			// iterator begin();
+			iterator begin() { return _bst.min(); }
 			// const_iterator begin() const;
 			
-			// iterator end() ;
+			iterator end() { return _bst._last; }
 			// const_iterator end() const ;
 
 			// reverse_iterator rbegin();
@@ -193,12 +193,28 @@ namespace ft {
 
 		/* member functions: modifiers */
 		
-			// ft::pair<iterator, bool> insert(const value_type& val);
+			ft::pair<iterator, bool> insert(const value_type& val) {
+				bool check = _bst.insert(val);
+				iterator it(_bst.search(val));
 
-			// iterator insert(iterator position, const value_type& val);
+				if (check == false)
+					return ft::make_pair<iterator, bool>(it, false);
+				return ft::make_pair<iterator, bool>(it, true);
+			}
 
-			template <class InputIterator>
-			void insert(InputIterator first, InputIterator last);
+			iterator insert(iterator position, const value_type& val) {
+				(void)position;
+				_bst.insert(val);
+				iterator it(_bst.search(val));
+
+				return it;
+			}
+
+			// template <class InputIterator>
+			// void insert(InputIterator first, InputIterator last) {
+			// 	// for(; first != last; first++)
+				
+			// }
 
 			// iterator  erase(const_iterator position);
 			
@@ -208,7 +224,7 @@ namespace ft {
 	
 			void swap (map& x);
 
-			void clear();
+			void clear() { _bst.destroy(); }
 
 
 		/* member functions: observers */

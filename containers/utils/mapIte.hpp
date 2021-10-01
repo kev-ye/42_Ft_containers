@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 14:27:42 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 16:58:07 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ namespace ft {
 		public:
 		/* member types */
 
-			typedef typename T::value_type															value_type;
+			typedef typename T::value_type																value_type;
 
-			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::difference_type	difference_type;
-			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::pointer			pointer;
+			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::difference_type		difference_type;
+			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::pointer				pointer;
 			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::reference			reference;
 			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
 
@@ -97,6 +97,12 @@ namespace ft {
 
 		/** private function */
 
+			/**
+			 * @brief return the last node
+			 * 
+			 * @param node: the root node.
+			 * @return the last node.
+			 */
 			node_pointer max(node_pointer node) const {
 				if(node == NULL)
 					return NULL;
@@ -106,6 +112,12 @@ namespace ft {
 				return node;
 			}
 
+			/**
+			 * @brief return the first node
+			 * 
+			 * @param node: the root node.
+			 * @return the first node.
+			 */
 			node_pointer min(node_pointer node) const {
 				if(node == NULL)
 					return NULL;
@@ -115,6 +127,13 @@ namespace ft {
 				return node;
 			}
 
+
+			/**
+			 * @brief decrease node position
+			 * 
+			 * @param node: the current node.
+			 * @return the decrease node position.
+			 */
 			node_pointer	predecessor(node_pointer node) {
 				if (node->left != NULL)
 					return max(node->left);
@@ -127,6 +146,12 @@ namespace ft {
 				return pre;
 			}
 
+			/**
+			 * @brief increment node position
+			 * 
+			 * @param node: the current node.
+			 * @return the increment node position.
+			 */
 			node_pointer	successor(node_pointer node) {
 				if (node->right != NULL)
 					return min(node->right);
@@ -139,17 +164,17 @@ namespace ft {
 				return succ;
 			}
 
-			/* non-member function: mapIterator */
+			public:
+			// here the compare operator is member function
+			// because the template 'T' is not the type we want to compare
 
-			template < class _T >
-			friend bool operator== (const mapIterator<_T> & lhs, const mapIterator<_T> & rhs) {
-				return lhs->_node == rhs->_node;
-			}
+				bool operator== (const mapIterator & rhs) {
+					return _node == rhs._node;
+				}
 
-			template < class _T >
-			friend bool operator!= (const mapIterator<_T> & lhs, const mapIterator<_T> & rhs) {
-				return lhs->_node != rhs->_node;
-			}
+				bool operator!= (const mapIterator & rhs) {
+					return _node != rhs._node;
+				}
 	};
 }
 

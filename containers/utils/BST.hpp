@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 13:44:43 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 18:07:57 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,10 @@ namespace ft {
 
 			BST(allocator_type const & alloc = allocator_type()) :
 				_root(NULL),
-				_alloc(alloc) {}
+				_alloc(alloc) {
+					_last = _alloc.allocate(1);
+					_alloc.construct(_last, node_type(NULL, NULL, NULL));
+				}
 			
 			virtual ~BST(void) { destroy(); }
 
@@ -159,8 +162,8 @@ namespace ft {
 				return NULL;
 			}
 
-			void	search(value_type const & val) {
-				_root = search(val, _root);
+			pointer	search(value_type const & val) {
+				return search(val, _root);
 			}
 
 		/* member functions: predecessor / successor */
@@ -178,7 +181,7 @@ namespace ft {
 			// }
 
 			pointer	successor(pointer node) {
-				if (node->right != NULL)
+				if (node->right != NULL && node->right != _last)
 					return min(node->right);
 				
 				pointer succ = node->parent;
@@ -191,12 +194,12 @@ namespace ft {
 
 		/* member functions: modifiers */
 
-			void	insert(value_type const & val) {
+			ft::pair<iterator, bool>	insert(value_type const & val) {
 				pointer toInsert = _alloc.allocate(1);
 				_alloc.construct(toInsert, node_type(val, NULL, NULL, NULL));
 
 				// the second param is a reference.
-				insert(toInsert, _root);
+				return insert(toInsert, _root).second;
 			}
 
 			void	erase(value_type const & val) {
@@ -231,6 +234,7 @@ namespace ft {
 		/* public attributes */
 
 			pointer			_root;
+			pointer			_last;
 
 		private:
 		/* private attributes */
@@ -240,7 +244,7 @@ namespace ft {
 		/* private functions: capacity */
 
 			size_type size(pointer node) const {
-				if (node == NULL)
+				if (node == NULL || node == _last)
 					return 0;
 				else
 					return size(node->left) + 1 + size(node->right);
@@ -249,10 +253,10 @@ namespace ft {
 		/* private functions: finder */
 
 			pointer max(pointer node) const {
-				if(node == NULL)
+				if(node == NULL || node == _last)
 					return NULL;
 
-				while (node->right != NULL)
+				while (node->right != NULL && node->right != _last)
 					node = node->right;
 				return node;
 			}
@@ -269,6 +273,8 @@ namespace ft {
 			pointer search(value_type const & val, pointer node) const {
 				if(node == NULL)
 					return node;
+				else if (node == _last)
+					return NULL;
 				else if(val.first < node->val.first)
 					return search(val, node->left);
 				else if(val.first > node->val.first)
@@ -284,26 +290,33 @@ namespace ft {
 			// 		else
 			// 			node = node->right;
 			// 	}
+			// 	if (node == _last)
+			// 		return NULL;
 			// 	return node;
 			// }
 
 		/* private functions: modifiers */
 
 			void destroy(pointer &node) {
-				if (node == NULL)
+				if (node == NULL || node == _last)
+				{
+					if (node == _last) {
+						_alloc.destroy(_last);
+						_alloc.deallocate(_last, 1);
+						_last = NULL;
+					}
 					return ;
+				}
 
-				if (node->left != NULL)
-					return destroy(node->left);
-				if (node->right != NULL)
-					return destroy(node->right);
+				destroy(node->left);
+				destroy(node->right);
 	
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
 				node = NULL;
 			}
 
-			pointer	insert(pointer toInsert, pointer &node) {
+			ft::pair<pointer, bool>	insert(pointer toInsert, pointer &node) {
 				pointer currentNode = NULL;
 				pointer tmpNode = node;
 
@@ -311,27 +324,31 @@ namespace ft {
 					currentNode = tmpNode;
 					if (toInsert->val.first < tmpNode->val.first)
 						tmpNode = tmpNode->left;
-					else if (toInsert->val.first > tmpNode->val.first)
+					else if (toInsert->val.first > tmpNode->val.first) {
 						tmpNode = tmpNode->right;
+						if (tmpNode == _last)
+							tmpNode = NULL;
+					}
 					else {
 						_alloc.destroy(toInsert);
 						_alloc.deallocate(toInsert, 1);
 						toInsert = NULL;
-						return  node;
+						return ft::make_pair<pointer, bool>(node, false);
 					}
 				}
 
 				toInsert->parent = currentNode;
-				if (currentNode == NULL) {
+				if (currentNode == NULL)
 					node = toInsert;
-					// node->parent = toInsert;
-				}
-				else if (toInsert->val.first < currentNode->val.first)
+				else if (toInsert->val.first < currentNode->val.first) 
 					currentNode->left = toInsert;
 				else
 					currentNode->right = toInsert;
-				return node;
+				max()->right = _last;
+				_last->parent = max();
+				return ft::make_pair<pointer, bool>(node, true);
 			}
+
 
 			pointer erase(pointer toErase, pointer &node) {
 				pointer replaceNode = NULL;
@@ -358,8 +375,10 @@ namespace ft {
 					node = replaceNode;
 				else if (nodeToErase == nodeToErase->parent->left)
 					nodeToErase->parent->left = replaceNode;
-				else
+				else {
 					nodeToErase->parent->right = replaceNode;
+					// maybe add here the _last ...
+				}
 
 				// save value if node does not match param node.
 				if (nodeToErase != toErase)
@@ -370,7 +389,7 @@ namespace ft {
 		/* private functions: others */
 
 			void inOrderPrint(pointer node) {
-				if(node == NULL)
+				if(node == NULL || node == _last)
 					return ;
 				inOrderPrint(node->left);
 				std::cout << node->val.first << " ";
@@ -378,7 +397,7 @@ namespace ft {
 			}
 
 			void preOrderPrint(pointer node) {
-				if(node == NULL)
+				if(node == NULL || node == _last)
 					return ;
 				std::cout << node->val.first << " ";
 				inOrderPrint(node->left);

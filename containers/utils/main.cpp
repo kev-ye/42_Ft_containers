@@ -36,18 +36,22 @@ void f(void) {
 
 	it = t.min();
 
+	// ft::BST< ft::pair<int, int> >::iterator it2 = t.search(*it);
+
 	// cout << t.min()->parent->val.first << endl;
 
 	// it--;
 	// it++;
 
-	// cout << it->first << endl;
+	// if (it2 != NULL)
+	// 	cout << it2->first << endl;
 
-	it++;
+	// it++;
 	// it--;
-	it++;
-	it++;
+	// it++;
+	// it++;
 	// it--;
+	// it++;
 	// it++;
 	// it--;
 
@@ -57,9 +61,10 @@ void f(void) {
 	// it++;
 	// it--;
 
-	cout << it->first << endl;
+	// ft::pair<int, int> a;
 
-
+	// cout << a.first << endl;
+	// cout << a.second << endl;
 
 	// t._node = t.predecessor(t._node);
 
@@ -81,6 +86,8 @@ void f(void) {
 	// cout << "val second: "<< t2._node->val.second << endl;
 
 }
+
+#include <map>
 
 int main(void) {
 	f();

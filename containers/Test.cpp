@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 14:27:49 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/01 18:08:40 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 int main(void) {
 	using namespace std;
 
-	std::map<int, int> first;
+	// std::map<int, int> first;
 
-	first[2]=20;
-	first[1]=10;
-	first[3]=30;
-	first[4]=40;
+	// first[2]=20;
+	// first[1]=10;
+	// first[3]=30;
+	// first[4]=40;
 
 	// cout << boolalpha;
 	// cout << "empty: " << first.empty() << endl;
@@ -63,6 +63,39 @@ int main(void) {
 	// it--;
 
 	// cout << it->first << endl;
+
+	std::map<int,int> mymap;
+
+	// first insert function version (single parameter):
+	mymap.insert ( std::pair<int,int>(1,100) );
+	mymap.insert ( std::pair<int,int>(2,200) );
+
+	std::pair<std::map<int,int>::iterator,bool> ret;
+	ret = mymap.insert ( std::pair<int,int>(3, 500) );
+	// if (ret.second==false) {
+	// 	cout << "element 'z' already existed";
+	// 	cout << " with a value of " << ret.first->second << '\n';
+	// }
+	// else {
+	// 	cout << " with a value of " << ret.first->second << '\n';
+	// }
+
+	// second insert function version (with hint position):
+	std::map<int,int>::iterator it = mymap.begin();
+
+	it++;
+
+	mymap.insert (it, std::pair<int,int>(4,300));  // max efficiency inserting
+	mymap.insert (it, std::pair<int,int>(5,400));  // no max efficiency inserting
+	int i = 0;
+	while (i < 30)
+		mymap.insert (it, std::pair<int,int>(6 + i++, 400));  // no max efficiency inserting
+
+	it = mymap.begin();
+
+	for (;it != mymap.end(); it++)
+		cout << it->first << endl;
+
 
 	return 0;
 }
