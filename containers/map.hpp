@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 18:59:15 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/03 19:45:48 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ namespace ft {
 			explicit map(const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) :
 					_alloc(alloc),
-					_comp(comp),
+					// _comp(comp),
 					_bst() {}
 		
 			/**
@@ -139,7 +139,7 @@ namespace ft {
 			 */
 			map(const map& x) :
 				_alloc(x._alloc),
-				_comp(x._comp),
+				// _comp(x._comp),
 				_bst(x._bst) {}
 			
 			/**
@@ -147,7 +147,7 @@ namespace ft {
 			 * @note this destroys all container elements,
 			 * and deallocates all the storage capacity allocated by the vector using its allocator.
 			 */
-   			~map(void) {}
+   			~map(void) { clear(); }
 
 			/**
 			 * @brief operator: copy
@@ -160,7 +160,7 @@ namespace ft {
 				if (this == &x) return *this;
 
 				_alloc = x._alloc;
-				_comp = x._comp;
+				// _comp = x._comp;
 				_bst = x._bst;
 				return *this;
 			}
@@ -190,7 +190,10 @@ namespace ft {
 		/* member functions: element access */
 			
 			mapped_type& operator[](const key_type& k) {
+				insert(ft::make_pair(k, mapped_type()));
 				
+				iterator it = find(k);
+				return ((*it).second);
 			}
 
 		/* member functions: modifiers */
@@ -210,11 +213,20 @@ namespace ft {
 					_bst.insert(*first);
 			}
 
-			// iterator  erase(const_iterator position);
+			void  erase(iterator position) {
+				erase(position->first);
+			}
 			
-			size_type erase(const key_type& k);
-			
-			// iterator  erase(iterator first, iterator last);
+			size_type erase(const key_type& k) {
+				return _bst.erase(ft::make_pair(k, mapped_type()));
+			}
+
+			void  erase(iterator first, iterator last) {
+				for (; first != last; first++) {
+					std::cout << "toE: " << first->first << std::endl;
+					erase(first);
+				}
+			}
 	
 			void swap (map& x);
 
@@ -230,7 +242,11 @@ namespace ft {
 		/* member functions: operations */
 		
 			iterator find(const key_type& k) {
-				return iterator(_bst.search(ft::make_pair(k, mapped_type())));
+				iterator it(_bst.search(ft::make_pair(k, mapped_type())));
+
+				if (it == NULL)
+					return end();
+				return it;
 			}
 
 			// const_iterator find(const key_type& k) const;
@@ -241,11 +257,25 @@ namespace ft {
 				return 1;
 			}
 			
-			// iterator lower_bound(const key_type& k);
+			iterator lower_bound(const key_type& k) {
+				iterator begin = begin();
+
+				for (; begin != end(); begin++)
+					if (key_comp()(begin->first, k) == false)
+						break ;
+				return begin;
+			}
 			
 			// const_iterator lower_bound(const key_type& k) const;
 
-			// iterator upper_bound(const key_type& k);
+			iterator upper_bound(const key_type& k) {
+				iterator begin = begin();
+
+				for (; begin != end(); begin++)
+					if (key_comp()(k, begin->first) == true)
+						break ;
+				return begin;
+			}
 			
 			// const_iterator upper_bound(const key_type& k) const;
 
@@ -261,7 +291,7 @@ namespace ft {
 		/* attributes */
 
 			allocator_type		_alloc;
-			key_compare			_comp;
+			// key_compare			_comp;
 			ft::BST<value_type>	_bst;
 	};
 	

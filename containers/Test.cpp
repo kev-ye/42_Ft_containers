@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 19:01:40 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/03 19:44:41 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,34 @@ int main(void) {
 	std::map<char,int> mymap;
 	std::map<char,int>::iterator it;
 
-	mymap.insert(std::make_pair<char, int>('a', 50));
-	mymap.insert(std::make_pair<char, int>('b', 100));
-	mymap.insert(std::make_pair<char, int>('c', 150));
-	mymap.insert(std::make_pair<char, int>('d', 200));
+	// insert some values:
+	mymap['c']=30;
+	mymap['a']=10;
+	mymap['b']=20;
+	mymap['d']=40;
+	mymap['e']=50;
+	mymap['f']=60;
+	// mymap.insert(std::make_pair<char, int>('a', 10));
+	// mymap.insert(std::make_pair<char, int>('b', 20));
+	// mymap.insert(std::make_pair<char, int>('c', 30));
+	// mymap.insert(std::make_pair<char, int>('d', 40));
+	// mymap.insert(std::make_pair<char, int>('e', 50));
+	// mymap.insert(std::make_pair<char, int>('f', 60));
 
-	it = mymap.find('f');
-	// if (it != mymap.end())
-	// 	mymap.erase (it);
-	cout << it->first << endl;
+	it = mymap.find('b');
+	mymap.erase (it);                   // erasing by iterator
 
-	// print content:
-	cout << "elements in mymap:" << '\n';
-	cout << "a => " << mymap.find('a')->second << '\n';
-	cout << "c => " << mymap.find('c')->second << '\n';
-	cout << "d => " << mymap.find('d')->second << '\n';
+	mymap.erase ('f');                  // erasing by key
+
+	it = mymap.find ('c');
+	// std::map<char,int>::iterator ite = mymap.find('f');
+	std::map<char,int>::iterator ite = mymap.end();
+	mymap.erase ( it, ite );    // erasing by range
+
+	// show content:
+	for (it = mymap.begin(); it != mymap.end(); ++it) {
+		cout << it->first << " => " << it->second << '\n';
+	}
 
 	return 0;
 }

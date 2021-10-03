@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 16:58:07 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/03 19:28:58 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,17 @@ namespace ft {
 				return tmp;
 			}
 
+		// here the compare operator is member function
+		// because the template 'T' is not the type we want to compare
+
+			bool operator== (const mapIterator & rhs) {
+				return _node == rhs._node;
+			}
+
+			bool operator!= (const mapIterator & rhs) {
+				return _node != rhs._node;
+			}
+
 		private:
 		/** attributes */
 			
@@ -152,6 +163,17 @@ namespace ft {
 			 * @param node: the current node.
 			 * @return the increment node position.
 			 */
+			// node_pointer	successor(node_pointer node) {
+			// 	if (node->right != NULL)
+			// 		return min(node->right);
+				
+			// 	node_pointer succ = node->parent;
+			// 	while (succ != NULL && node == succ->right) {
+			// 		node = succ;
+			// 		succ = succ->parent;
+			// 	}
+			// 	return succ;
+			// }
 			node_pointer	successor(node_pointer node) {
 				if (node->right != NULL)
 					return min(node->right);
@@ -163,18 +185,6 @@ namespace ft {
 				}
 				return succ;
 			}
-
-			public:
-			// here the compare operator is member function
-			// because the template 'T' is not the type we want to compare
-
-				bool operator== (const mapIterator & rhs) {
-					return _node == rhs._node;
-				}
-
-				bool operator!= (const mapIterator & rhs) {
-					return _node != rhs._node;
-				}
 	};
 }
 

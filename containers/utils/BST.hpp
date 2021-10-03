@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/01 18:42:44 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/03 19:44:09 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ namespace ft {
 					_alloc.construct(_last, node_type(NULL, NULL, NULL));
 				}
 			
-			virtual ~BST(void) { destroy(); }
+			virtual ~BST(void) {}
 
 		/* member functions: capacity */
 
@@ -146,7 +146,7 @@ namespace ft {
 				return _alloc.max_size();
 			}
 
-		/* member functions: finder */
+		/* member functions: operator / finder */
 
 			pointer	max(void) const {
 				pointer node = max(_root);
@@ -201,11 +201,11 @@ namespace ft {
 
 				// insert: the second param is a reference.
 				ft:pair<pointer, bool> tmp = insert(toInsert, _root);
-		
+
 				return ft::make_pair<iterator, bool>(iterator(tmp.first), tmp.second);
 			}
 
-			void	erase(value_type const & val) {
+			size_type	erase(value_type const & val) {
 				pointer	toErase = search(val, _root);
 				pointer node = NULL;
 
@@ -216,7 +216,9 @@ namespace ft {
 					_alloc.destroy(node);
 					_alloc.deallocate(node, 1);
 					node = NULL;
+					return 0;
 				}
+				return 1;
 			}
 
 			void	destroy(void) {
@@ -253,7 +255,7 @@ namespace ft {
 					return size(node->left) + 1 + size(node->right);
 			}
 
-		/* private functions: finder */
+		/* private functions: operation / finder */
 
 			pointer max(pointer node) const {
 				if(node == NULL || node == _last)
@@ -273,7 +275,7 @@ namespace ft {
 				return node;
 			}
 
-			pointer search(value_type const & val, pointer node) const {
+			pointer search(value_type const & val, pointer node) {
 				if(node == NULL)
 					return node;
 				else if (node == _last)
@@ -347,8 +349,11 @@ namespace ft {
 					currentNode->left = toInsert;
 				else
 					currentNode->right = toInsert;
+				
+				// std::cout << "max: " << max()->val.first << "\n"; 
 				max()->right = _last;
 				_last->parent = max();
+
 				return ft::make_pair<pointer, bool>(currentNode, true);
 			}
 
@@ -374,18 +379,39 @@ namespace ft {
 					replaceNode->parent = nodeToErase->parent;
 
 				// replace node.
-				if (nodeToErase->parent == NULL)
+				if (nodeToErase->parent == NULL) {
 					node = replaceNode;
-				else if (nodeToErase == nodeToErase->parent->left)
+					std::cout << "?" << std::endl;
+				}
+				else if (nodeToErase == nodeToErase->parent->left) {
 					nodeToErase->parent->left = replaceNode;
+					std::cout << "??" << std::endl;
+				}
 				else {
 					nodeToErase->parent->right = replaceNode;
-					// maybe add here the _last ...
+					std::cout << "???" << std::endl;
 				}
 
 				// save value if node does not match param node.
-				if (nodeToErase != toErase)
-					toErase->val = nodeToErase->val;
+				// here need replace the node because, the key(first) is a const value
+				if (nodeToErase != toErase) {
+					// pointer toReplace = _alloc.allocate(1);
+					// _alloc.construct(toReplace, node_type(nodeToErase->val, toErase->parent, toErase->left, toErase->right));
+					
+					// pointer parent = toErase->parent;
+					// if (parent->left == toErase)
+					// 	parent->left = toReplace;
+					// else
+					// 	parent->right = toReplace;
+
+					// _alloc.destroy(toErase);
+					// _alloc.deallocate(toErase, 1);
+					// toErase = NULL;
+					
+					// toErase = toReplace;
+
+					toErase->val.second = nodeToErase->val.second;
+				}
 				return nodeToErase;
 			}
 
@@ -395,14 +421,15 @@ namespace ft {
 				if(node == NULL || node == _last)
 					return ;
 				inOrderPrint(node->left);
-				std::cout << node->val.first << " ";
+				//
 				inOrderPrint(node->right);
 			}
 
 			void preOrderPrint(pointer node) {
 				if(node == NULL || node == _last)
 					return ;
-				std::cout << node->val.first << " ";
+				
+				//
 				inOrderPrint(node->left);
 				inOrderPrint(node->right);
 			}
