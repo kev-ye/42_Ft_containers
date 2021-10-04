@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:12 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/22 15:47:43 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 15:47:24 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define STACK_HPP
 
 #include "vector.hpp"
+#include "utils.hpp"
 
-namespace ft {
+_BEGIN_NS_FT
+
 /**
  * @class template: stack
  */
@@ -137,6 +139,7 @@ namespace ft {
 
 			container_type _c;
 	};
-}
+
+_END_NS_FT
 
 #endif

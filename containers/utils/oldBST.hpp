@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   BST.hpp                                            :+:      :+:    :+:   */
+/*   oldBST.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/03 19:44:09 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 14:35:14 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,10 +230,12 @@ namespace ft {
 		
 			void inOrderPrint(void) {
 				inOrderPrint(_root);
+				std::cout << "\n";
 			}
 
 			void preOrderPrint(void) {
 				preOrderPrint(_root);
+				std::cout << "\n";
 			}
 
 		/* public attributes */
@@ -421,15 +423,14 @@ namespace ft {
 				if(node == NULL || node == _last)
 					return ;
 				inOrderPrint(node->left);
-				//
+				std::cout << node->val.first << " ";
 				inOrderPrint(node->right);
 			}
 
 			void preOrderPrint(pointer node) {
 				if(node == NULL || node == _last)
 					return ;
-				
-				//
+				std::cout << node->val.first << " ";
 				inOrderPrint(node->left);
 				inOrderPrint(node->right);
 			}

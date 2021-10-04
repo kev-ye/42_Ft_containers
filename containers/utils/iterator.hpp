@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 15:13:21 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/26 14:38:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 15:46:19 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define ITERATOR_HPP
 
 #include <cstddef>
+#include "utils.hpp"
 
-namespace ft {
+_BEGIN_NS_FT
+
 /*
  * category tags
  */
@@ -435,6 +437,7 @@ namespace ft {
 		
 			iterator_type	_it;
 	};
-}
+
+_END_NS_FT
 
 #endif

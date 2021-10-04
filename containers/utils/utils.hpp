@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/03 16:40:05 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 15:46:06 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,37 @@
 
 #include <cstddef>
 
-namespace ft {
+#define _BEGIN_NS_FT namespace ft {
+#define _END_NS_FT }
+
+_BEGIN_NS_FT
+
+/** 
+ * @class nullptr_t
+ */
+
+	struct  nullptr_t {
+		void *_ptr;
+
+		struct __nat { int __for_bool_; };
+
+		nullptr_t() : _ptr(0) {}
+		nullptr_t(int __nat::*) : _ptr(0) {}
+
+		operator int __nat::*() const { return 0; }
+
+		template <class _T>
+		operator _T* () const {return 0;}
+
+		template <class _T, class _U>
+		operator _T _U::* () const {return 0;}
+
+		friend  bool operator==(nullptr_t, nullptr_t) { return true; }
+		friend  bool operator!=(nullptr_t, nullptr_t) { return false; }
+	};
+
+	#define ft_nullptr nullptr_t(0)
+
 /** 
  * @class template: enable_if
  */
@@ -352,5 +382,7 @@ namespace ft {
 	pair<T1, T2> make_pair (T1 x, T2 y) {
 		return pair<T1, T2>(x, y);
 	}
-}
+
+_END_NS_FT
+
 #endif

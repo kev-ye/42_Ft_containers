@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/04 19:43:41 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 14:43:51 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,29 +48,15 @@ namespace ft {
 
 		/* constructor / destructor / operator= */
 			
-			mapIterator(void) :
-				_root(ft_nullptr),
-				_node(ft_nullptr),
-				_null(ft_nullptr) {}
-
-			mapIterator(node_pointer root, node_pointer node, node_pointer null) :
-				_root(root),
-				_node(node),
-				_null(null) {}
-
-			mapIterator(mapIterator const & src) :
-				_root(src._root),
-				_node(src._node),
-				_null(src._null) {}
-
+			mapIterator(void) : _node(NULL) {}
+			mapIterator(node_pointer node) : _node(node) {}
+			mapIterator(mapIterator const & src) : _node(src._node) {}
 			virtual ~mapIterator(void) {}
 
 			mapIterator & operator= (mapIterator const & rhs) {
 				if (this == &rhs) return *this;
 
-				_root = rhs._root;
-				_node = rhs._node;
-				_null = rhs._null;
+				this->_node = rhs._node;
 				return *this;
 			}
 		
@@ -82,42 +68,31 @@ namespace ft {
 
 			/** @brief increment node position*/
 			mapIterator &	operator++ (void) {
-				if (_node == max(_root)) {
-					_node = _null;
-					return *this;
-				}
-				else if (_node == _null) {
-					_node = ft_nullptr;
-					return *this;
-				}
 				_node = successor(_node);
 				return *this;
 			}
 			
 			mapIterator	operator++ (int) {
-				mapIterator tmp(_root, _node, _null);
+				node_pointer tmp = _node;
 				operator++();
 				return tmp;
 			}
 
 			/** @brief decrease node position*/
 			mapIterator &	operator-- (void) {
-				if (_node == _null) {
-					_node = max(_root);
-					return *this;
-				}
 				_node = predecessor(_node);
 				return *this;
 			}
 			
 			mapIterator	operator-- (int) {
-				mapIterator tmp(_root, _node, _null);
+				node_pointer tmp = _node;
 				operator--();
 				return tmp;
 			}
 
 		// here the compare operator is member function
 		// because the template 'T' is not the type we want to compare
+
 			bool operator== (const mapIterator & rhs) {
 				return _node == rhs._node;
 			}
@@ -129,58 +104,86 @@ namespace ft {
 		private:
 		/** attributes */
 			
-			node_pointer _root;
 			node_pointer _node;
-			node_pointer _null;
 
 		/** private function */
-		
-			// find the node with the minimum key
-			node_pointer	min(node_pointer s) {
-				while (s->left != _null)
-					s = s->left;
-				return s;
+
+			/**
+			 * @brief return the last node
+			 * 
+			 * @param node: the root node.
+			 * @return the last node.
+			 */
+			node_pointer max(node_pointer node) const {
+				if(node == NULL)
+					return NULL;
+
+				while (node->right != NULL)
+					node = node->right;
+				return node;
 			}
 
-			// find the node with the maximum key
-			node_pointer	max(node_pointer s) {
-				while (s->right != _null)
-					s = s->right;
-				return s;
+			/**
+			 * @brief return the first node
+			 * 
+			 * @param node: the root node.
+			 * @return the first node.
+			 */
+			node_pointer min(node_pointer node) const {
+				if(node == NULL)
+					return NULL;
+
+				while (node->left != NULL)
+					node = node->left;
+				return node;
 			}
 
-			// find the successor of a given node
-			node_pointer	successor(node_pointer x) {
-				// if the right subtree is not null,
-				// the successor is the leftmost node in the
-				// right subtree
-				if (x->right != _null)
-					return min(x->right);
 
-				// else it is the lowest ancestor of x whose
-				// left child is also an ancestor of x.
-				node_pointer y = x->parent;
-				while (y != _null && x == y->right) {
-					x = y;
-					y = y->parent;
+			/**
+			 * @brief decrease node position
+			 * 
+			 * @param node: the current node.
+			 * @return the decrease node position.
+			 */
+			node_pointer	predecessor(node_pointer node) {
+				if (node->left != NULL)
+					return max(node->left);
+				
+				node_pointer pre = node->parent;
+				while (pre != NULL && node == pre->left) {
+					node = pre;
+					pre = pre->parent;
 				}
-				return y;
+				return pre;
 			}
 
-			// find the predecessor of a given node
-			node_pointer	predecessor(node_pointer s) {
-				// if the left subtree is not null,
-				// the predecessor is the rightmost node in the 
-				// left subtree
-				if (s->left != _null)
-					return max(s->left);
-
-				node_pointer	tmp = s->parent;
-				while (tmp != _null && s == tmp->left) {
-					s = tmp;
-					tmp = tmp->parent;
+			/**
+			 * @brief increment node position
+			 * 
+			 * @param node: the current node.
+			 * @return the increment node position.
+			 */
+			// node_pointer	successor(node_pointer node) {
+			// 	if (node->right != NULL)
+			// 		return min(node->right);
+				
+			// 	node_pointer succ = node->parent;
+			// 	while (succ != NULL && node == succ->right) {
+			// 		node = succ;
+			// 		succ = succ->parent;
+			// 	}
+			// 	return succ;
+			// }
+			node_pointer	successor(node_pointer node) {
+				if (node->right != NULL)
+					return min(node->right);
+				
+				node_pointer succ = node->parent;
+				while (succ != NULL && node == succ->right) {
+					node = succ;
+					succ = succ->parent;
 				}
-				return tmp;
+				return succ;
 			}
 	};
 }

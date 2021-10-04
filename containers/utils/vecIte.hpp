@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:37:08 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/28 19:10:16 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 15:49:51 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 #include "iterator.hpp"
 #include "utils.hpp"
 
-namespace ft {
+_BEGIN_NS_FT
+
 /** 
  * @class template: vecIterator
  */
@@ -41,7 +42,7 @@ namespace ft {
 
 		/* constructor / destructor / operator= */
 
-			vecIterator(void) : _val(NULL) {}
+			vecIterator(void) : _val(ft_nullptr) {}
 			vecIterator(pointer val) : _val(val) {}
 			vecIterator(vecIterator const & src) : _val(src._val) {}
 			virtual ~vecIterator(void) {}
@@ -208,6 +209,7 @@ namespace ft {
 
 			pointer _val;
 	};
-}
+
+_END_NS_FT
 
 #endif

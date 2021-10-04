@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/09/27 17:03:57 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 15:50:50 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #include <stdexcept>
 #include "./utils/vecIte.hpp"
 
-namespace ft {
+_BEGIN_NS_FT
+
 /**
  * @class template: vector
  */
@@ -77,9 +78,9 @@ namespace ft {
 			 */
 			explicit vector(const allocator_type & alloc = allocator_type()) :
 				_alloc(alloc),
-				_begin(NULL),
-				_end(NULL),
-				_capacity(NULL) {}
+				_begin(ft_nullptr),
+				_end(ft_nullptr),
+				_capacity(ft_nullptr) {}
 
 			/**
 			 * @brief constructor: fill
@@ -93,9 +94,9 @@ namespace ft {
 				const value_type & val = value_type(),
 				const allocator_type & alloc = allocator_type()) :
 				_alloc(alloc),
-				_begin(NULL),
-				_end(NULL),
-				_capacity(NULL) {
+				_begin(ft_nullptr),
+				_end(ft_nullptr),
+				_capacity(ft_nullptr) {
 					try {
 						_begin = _alloc.allocate(n);
 					}
@@ -618,6 +619,7 @@ namespace ft {
 		void swap (vector<T, Alloc> & x, vector<T, Alloc> & y) {
 			x.swap(y);
 		}
-}
+
+_END_NS_FT
 
 #endif

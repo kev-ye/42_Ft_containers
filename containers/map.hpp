@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/03 19:45:48 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/04 19:29:41 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 #include <exception>
 #include "./utils/mapIte.hpp"
 
-namespace ft {
+_BEGIN_NS_FT
+
 /**
  * @class template: map
  */
@@ -77,7 +78,7 @@ namespace ft {
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
-			typedef	typename	ft::BST<value_type>::iterator			iterator;
+			typedef	typename	ft::RBT<value_type>::iterator			iterator;
 			// typedef	implementation-defined							const_iterator;
 			// typedef	std::reverse_iterator<iterator>					reverse_iterator;
 			// typedef	std::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -102,7 +103,7 @@ namespace ft {
 
 		public:
 		/* member functions: constructor / destructor / operator= */
-		
+
 			/**
 			 * @brief constructor: default
 			 * @note constructs an empty container, with no elements.
@@ -116,7 +117,7 @@ namespace ft {
 				const allocator_type& alloc = allocator_type()) :
 					_alloc(alloc),
 					// _comp(comp),
-					_bst() {}
+					_rbt() {}
 		
 			/**
 			 * @brief constructor: range
@@ -140,7 +141,7 @@ namespace ft {
 			map(const map& x) :
 				_alloc(x._alloc),
 				// _comp(x._comp),
-				_bst(x._bst) {}
+				_rbt(x._rbt) {}
 			
 			/**
 			 * @brief destructor
@@ -161,16 +162,16 @@ namespace ft {
 
 				_alloc = x._alloc;
 				// _comp = x._comp;
-				_bst = x._bst;
+				_rbt = x._rbt; // .... ??? maybe here get some pb
 				return *this;
 			}
 
 		/* member functions: iterators */
 		
-			iterator begin() { return _bst.min(); }
+			iterator begin() { return iterator(_rbt.getRoot(), _rbt.min(), _rbt.getNull()); }
 			// const_iterator begin() const;
 			
-			iterator end() { return _bst._last; }
+			iterator end() { return iterator(_rbt.getRoot(), _rbt.getNull(), _rbt.getNull()); }
 			// const_iterator end() const ;
 
 			// reverse_iterator rbegin();
@@ -181,56 +182,36 @@ namespace ft {
 
 		/* member functions: capacity */
 		
-			bool		empty() const { return size() == 0 ? true : false; }
+			bool		empty() const;
 
-			size_type	size() const { return _bst.getSize(); }
+			size_type	size() const;
 
-			size_type	max_size(void) const { return _bst.getMax_size(); }
+			size_type	max_size(void) const;
 
 		/* member functions: element access */
 			
-			mapped_type& operator[](const key_type& k) {
-				insert(ft::make_pair(k, mapped_type()));
-				
-				iterator it = find(k);
-				return ((*it).second);
-			}
+			mapped_type& operator[](const key_type& k);
 
 		/* member functions: modifiers */
 		
 			ft::pair<iterator, bool> insert(const value_type& val) {
-				return _bst.insert(val);
+				return _rbt.insert(val);
 			}
 
-			iterator insert(iterator position, const value_type& val) {
-				(void)position;
-				return _bst.insert(val).first;
-			}
+			iterator insert(iterator position, const value_type& val);
 
 			template <class InputIterator>
-			void insert(InputIterator first, InputIterator last) {
-				for(; first != last; first++)
-					_bst.insert(*first);
-			}
+			void insert(InputIterator first, InputIterator last);
 
-			void  erase(iterator position) {
-				erase(position->first);
-			}
+			void  erase(iterator position);
 			
-			size_type erase(const key_type& k) {
-				return _bst.erase(ft::make_pair(k, mapped_type()));
-			}
+			size_type erase(const key_type& k);
 
-			void  erase(iterator first, iterator last) {
-				for (; first != last; first++) {
-					std::cout << "toE: " << first->first << std::endl;
-					erase(first);
-				}
-			}
+			void  erase(iterator first, iterator last);
 	
 			void swap (map& x);
 
-			void clear() { _bst.destroy(); }
+			void clear() { _rbt.destroyTree(); }
 
 
 		/* member functions: observers */
@@ -241,41 +222,17 @@ namespace ft {
 
 		/* member functions: operations */
 		
-			iterator find(const key_type& k) {
-				iterator it(_bst.search(ft::make_pair(k, mapped_type())));
-
-				if (it == NULL)
-					return end();
-				return it;
-			}
+			iterator find(const key_type& k);
 
 			// const_iterator find(const key_type& k) const;
 
-			size_type count(const key_type& k) const {
-				if (_bst.search(ft::make_pair(k, mapped_type())) == NULL)
-					return 0;
-				return 1;
-			}
+			size_type count(const key_type& k) const;
 			
-			iterator lower_bound(const key_type& k) {
-				iterator begin = begin();
-
-				for (; begin != end(); begin++)
-					if (key_comp()(begin->first, k) == false)
-						break ;
-				return begin;
-			}
+			iterator lower_bound(const key_type& k);
 			
 			// const_iterator lower_bound(const key_type& k) const;
 
-			iterator upper_bound(const key_type& k) {
-				iterator begin = begin();
-
-				for (; begin != end(); begin++)
-					if (key_comp()(k, begin->first) == true)
-						break ;
-				return begin;
-			}
+			iterator upper_bound(const key_type& k);
 			
 			// const_iterator upper_bound(const key_type& k) const;
 
@@ -292,7 +249,7 @@ namespace ft {
 
 			allocator_type		_alloc;
 			// key_compare			_comp;
-			ft::BST<value_type>	_bst;
+			ft::RBT<value_type>	_rbt;
 	};
 	
 	/* non-member function: vector */
@@ -324,6 +281,6 @@ namespace ft {
 		template <class Key, class T, class Compare, class Allocator>
 		void swap(map<Key, T, Compare, Allocator>& x, map<Key, T, Compare, Allocator>& y);
 
-}
+_END_NS_FT
 
 #endif
