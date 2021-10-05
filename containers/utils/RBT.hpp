@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/04 19:25:41 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/05 19:37:29 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include <memory>
 #include "utils.hpp"
 #include "mapIte.hpp"
-
-#include <iostream> // debug
 
 _BEGIN_NS_FT
 
@@ -119,7 +117,7 @@ _BEGIN_NS_FT
 	 * @brief Red Black Tree
 	 */
 	template < class T,
-		// class Compare = ft::less<T>,
+		class Compare = ft::less<T>,
 		class Node = ft::RBT_Node<T>,
 		class AllocNode = std::allocator<Node> >
 	class RBT {
@@ -150,80 +148,23 @@ _BEGIN_NS_FT
 			}
 
 			virtual ~RBT() {}
-			
-			// Pre-Order traversal
-			// node->Left Subtree->Right Subtree
-			void	preorder() {
-				preOrderHelper(_root);
-				std::cout << std::endl;
+
+			pointer	getRoot() { return _root; }
+
+			pointer	getNull() { return _null; }
+
+			// size_type	max_size() const { return allocator_type().max_size(); }
+			size_type	max_size() const {
+				return std::numeric_limits<difference_type>::max() / sizeof(value_type);
 			}
 
-			// In-Order traversal
-			// Left Subtree -> node -> Right Subtree
-			void	inorder() {
-				inOrderHelper(_root);
-				std::cout << std::endl;
-			}
+			pointer	min() { return min(_root); }
 
-			// Post-Order traversal
-			// Left Subtree -> Right Subtree -> node
-			void	postorder() {
-				postOrderHelper(_root);
-				std::cout << std::endl;
-			}
+			pointer	max() { return max(_root); }
 
-			pointer	min() {
-				return min(_root);
-			}
+			pointer	searchTree(value_type key) { return searchTreeHelper(_root, key); }
 
-			pointer	max() {
-				return max(_root);
-			}
-
-			// search the tree for the key key
-			// and return the corresponding node
-			pointer	searchTree(value_type key) {
-				return searchTreeHelper(_root, key);
-			}
-
-			// find the successor of a given node
-			pointer	successor(pointer x) {
-				// if the right subtree is not null,
-				// the successor is the leftmost node in the
-				// right subtree
-				if (x->right != _null)
-					return min(x->right);
-
-				// else it is the lowest ancestor of x whose
-				// left child is also an ancestor of x.
-				pointer y = x->parent;
-				while (y != _null && x == y->right) {
-					x = y;
-					y = y->parent;
-				}
-				return y;
-			}
-
-			// find the predecessor of a given node
-			pointer	predecessor(pointer s) {
-				// if the left subtree is not null,
-				// the predecessor is the rightmost node in the 
-				// left subtree
-				if (s->left != _null)
-					return max(s->left);
-
-				pointer	tmp = s->parent;
-				while (tmp != _null && s == tmp->left) {
-					s = tmp;
-					tmp = tmp->parent;
-				}
-				return tmp;
-			}
-
-			// insert the key to the tree in its appropriate position
-			// and fix the tree
 			ft::pair<iterator, bool>	insert(value_type const & key) {
-				// Ordinary Binary Search Insertion
 				pointer s = _alloc.allocate(1);
 				_alloc.construct(s, node_type(key, RED_NODE, ft_nullptr, _null, _null)); // new node must be red
 
@@ -243,7 +184,6 @@ _BEGIN_NS_FT
 					}
 				}
 
-				// y is parent of x
 				s->parent = y;
 				if (y == ft_nullptr)
 					_root = s;
@@ -252,33 +192,19 @@ _BEGIN_NS_FT
 				else
 					y->right = s;
 
-				// if new node is a _root node, simply return
 				if (s->parent == ft_nullptr) {
 					s->color = BLACK_NODE;
 					return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), true);
 				}
 
-				// if the grandparent is null, simply return
 				if (s->parent->parent == ft_nullptr)
 					return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), true);
 
-				// Fix the tree
 				fixInsert(s);
 				return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), true);
 			}
 
-			pointer	getRoot() {
-				return _root;
-			}
-
-			pointer	getNull() {
-				return _null;
-			}
-
-			// delete the node from the tree
-			void	deleteNode(value_type const & key) {
-				deleteNodeHelper(_root, key);
-			}
+			void	deleteNode(value_type const & key) { deleteNodeHelper(_root, key); }
 
 			void	destroyTree() {
 				destroyTree(_root);
@@ -287,7 +213,6 @@ _BEGIN_NS_FT
 				_alloc.deallocate(_null, 1);
 			}
 
-			// print the tree structure on the screen
 			void	prettyPrint() {
 				if (_root)
 					printHelper(_root, "", true);
@@ -295,38 +220,12 @@ _BEGIN_NS_FT
 
 		private:
 
-			void	preOrderHelper(pointer node) {
-				if (node != _null) {
-					std::cout << node->val.first << " ";
-					preOrderHelper(node->left);
-					preOrderHelper(node->right);
-				} 
-			}
-
-			void	inOrderHelper(pointer node) {
-				if (node != _null) {
-					inOrderHelper(node->left);
-					std::cout << node->val.first << " ";
-					inOrderHelper(node->right);
-				} 
-			}
-
-			void	postOrderHelper(pointer node) {
-				if (node != _null) {
-					postOrderHelper(node->left);
-					postOrderHelper(node->right);
-					std::cout << node->val.first << " ";
-				} 
-			}
-
-			// find the node with the minimum key
 			pointer	min(pointer s) {
 				while (s->left != _null)
 					s = s->left;
 				return s;
 			}
 
-			// find the node with the maximum key
 			pointer	max(pointer s) {
 				while (s->right != _null)
 					s = s->right;
@@ -341,7 +240,6 @@ _BEGIN_NS_FT
 				return searchTreeHelper(node->right, key);
 			}
 
-			// rotate left at node x
 			void	leftRotate(pointer s) {
 				pointer	tmp = s->right;
 				
@@ -359,7 +257,6 @@ _BEGIN_NS_FT
 				s->parent = tmp;
 			}
 
-			// rotate right at node x
 			void	rightRotate(pointer x) {
 				pointer	y = x->left;
 				
@@ -377,15 +274,13 @@ _BEGIN_NS_FT
 				x->parent = y;
 			}
 
-			// fix the red-black tree
 			void	fixInsert(pointer k) {
 				pointer	u;
 				
 				while (k->parent->color == RED_NODE) {
 					if (k->parent == k->parent->parent->right) {
-						u = k->parent->parent->left; // uncle
+						u = k->parent->parent->left;
 						if (u->color == RED_NODE) {
-							// case 3.1
 							u->color = BLACK_NODE;
 							k->parent->color = BLACK_NODE;
 							k->parent->parent->color = RED_NODE;
@@ -393,21 +288,18 @@ _BEGIN_NS_FT
 						}
 						else {
 							if (k == k->parent->left) {
-								// case 3.2.2
 								k = k->parent;
 								rightRotate(k);
 							}
-							// case 3.2.1
 							k->parent->color = BLACK_NODE;
 							k->parent->parent->color = RED_NODE;
 							leftRotate(k->parent->parent);
 						}
 					}
 					else {
-						u = k->parent->parent->right; // uncle
+						u = k->parent->parent->right;
 
 						if (u->color == RED_NODE) {
-							// mirror case 3.1
 							u->color = BLACK_NODE;
 							k->parent->color = BLACK_NODE;
 							k->parent->parent->color = RED_NODE;
@@ -415,11 +307,9 @@ _BEGIN_NS_FT
 						}
 						else {
 							if (k == k->parent->right) {
-								// mirror case 3.2.2
 								k = k->parent;
 								leftRotate(k);
 							}
-							// mirror case 3.2.1
 							k->parent->color = BLACK_NODE;
 							k->parent->parent->color = RED_NODE;
 							rightRotate(k->parent->parent);
@@ -431,14 +321,12 @@ _BEGIN_NS_FT
 				_root->color = BLACK_NODE;
 			}
 
-			// fix the rb tree modified by the delete operation
 			void	fixDelete(pointer x) {
 				pointer	s;
 				while (x != _root && x->color == BLACK_NODE) {
 					if (x == x->parent->left) {
 						s = x->parent->right;
 						if (s->color == RED_NODE) {
-							// case 3.1
 							s->color = BLACK_NODE;
 							x->parent->color = RED_NODE;
 							leftRotate(x->parent);
@@ -446,20 +334,16 @@ _BEGIN_NS_FT
 						}
 
 						if (s->left->color == BLACK_NODE && s->right->color == BLACK_NODE) {
-							// case 3.2
 							s->color = RED_NODE;
 							x = x->parent;
 						}
 						else {
 							if (s->right->color == BLACK_NODE) {
-								// case 3.3
 								s->left->color = BLACK_NODE;
 								s->color = RED_NODE;
 								rightRotate(s);
 								s = x->parent->right;
-							} 
-
-							// case 3.4
+							}
 							s->color = x->parent->color;
 							x->parent->color = BLACK_NODE;
 							s->right->color = BLACK_NODE;
@@ -470,7 +354,6 @@ _BEGIN_NS_FT
 					else {
 						s = x->parent->left;
 						if (s->color == RED_NODE) {
-							// case 3.1
 							s->color = BLACK_NODE;
 							x->parent->color = RED_NODE;
 							rightRotate(x->parent);
@@ -478,20 +361,17 @@ _BEGIN_NS_FT
 						}
 
 						if (s->left->color == BLACK_NODE && s->right->color == BLACK_NODE) {
-							// case 3.2
 							s->color = RED_NODE;
 							x = x->parent;
 						}
 						else {
 							if (s->left->color == BLACK_NODE) {
-								// case 3.3
 								s->right->color = BLACK_NODE;
 								s->color = RED_NODE;
 								leftRotate(s);
 								s = x->parent->left;
 							} 
 
-							// case 3.4
 							s->color = x->parent->color;
 							x->parent->color = BLACK_NODE;
 							s->left->color = BLACK_NODE;
@@ -515,7 +395,6 @@ _BEGIN_NS_FT
 			}
 
 			void	deleteNodeHelper(pointer node, value_type const & key) {
-				// find the node containing key
 				pointer z = _null;
 				pointer x;
 				pointer y;
@@ -567,7 +446,6 @@ _BEGIN_NS_FT
 					y->color = z->color;
 				}
 
-				// delete z;
 				_alloc.destroy(z);
 				_alloc.deallocate(z, 1);
 
@@ -576,7 +454,6 @@ _BEGIN_NS_FT
 			}
 
 			void	printHelper(pointer root, std::string indent, bool last) {
-				// print the tree structure on the screen
 				if (root != _null) {
 					std::cout << indent;
 					if (last) {
@@ -593,7 +470,6 @@ _BEGIN_NS_FT
 					printHelper(root->left, indent, false);
 					printHelper(root->right, indent, true);
 				}
-				// std::cout << root->left->val << std::endl;
 			}
 
 			void destroyTree(pointer root) {

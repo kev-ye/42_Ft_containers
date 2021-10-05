@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/04 19:29:41 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/05 19:16:24 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,23 @@ _BEGIN_NS_FT
 		public:
 		/* member types */
 
-			typedef				Key										key_type;
-			typedef				T										mapped_type;
-			typedef				ft::pair<const key_type, mapped_type>	value_type;
-			typedef				Compare									key_compare;
+			typedef				Key											key_type;
+			typedef				T											mapped_type;
+			typedef				ft::pair<const key_type, mapped_type>		value_type;
+			typedef				Compare										key_compare;
 
-			typedef				Alloc									allocator_type;
-			typedef	typename	allocator_type::reference				reference;
-			typedef	typename	allocator_type::const_reference			const_reference;
-			typedef	typename	allocator_type::pointer					pointer;
-			typedef	typename	allocator_type::const_pointer			const_pointer;
+			typedef				Alloc										allocator_type;
+			typedef	typename	allocator_type::reference					reference;
+			typedef	typename	allocator_type::const_reference				const_reference;
+			typedef	typename	allocator_type::pointer						pointer;
+			typedef	typename	allocator_type::const_pointer				const_pointer;
 			
 			/** @note usually the same as ptrdiff_t */
-			typedef	typename	allocator_type::difference_type			difference_type;
+			typedef	typename	allocator_type::difference_type				difference_type;
 			/** @note usually the same as size_t */
-			typedef	typename	allocator_type::size_type				size_type;
+			typedef	typename	allocator_type::size_type					size_type;
 
-			typedef	typename	ft::RBT<value_type>::iterator			iterator;
+			typedef	typename	ft::RBT<value_type, key_compare>::iterator	iterator;
 			// typedef	implementation-defined							const_iterator;
 			// typedef	std::reverse_iterator<iterator>					reverse_iterator;
 			// typedef	std::reverse_iterator<const_iterator>			const_reverse_iterator;
@@ -186,7 +186,9 @@ _BEGIN_NS_FT
 
 			size_type	size() const;
 
-			size_type	max_size(void) const;
+			size_type	max_size(void) const {
+				return _rbt.max_size();
+			}
 
 		/* member functions: element access */
 			
@@ -198,16 +200,35 @@ _BEGIN_NS_FT
 				return _rbt.insert(val);
 			}
 
-			iterator insert(iterator position, const value_type& val);
+			iterator insert(iterator position, const value_type& val) {
+				(void)position;
+				return insert(val).first;
+			}
 
 			template <class InputIterator>
-			void insert(InputIterator first, InputIterator last);
+			void insert(InputIterator first, InputIterator last) {
+				for (; first != last; first++)
+					insert(*first);
+			}
 
-			void  erase(iterator position);
+			void  erase(iterator position) {
+				erase(position->first);
+			}
 			
-			size_type erase(const key_type& k);
+			size_type erase(const key_type& k) {
+				if (find(k) == end())
+					return 0;
+				_rbt.deleteNode(ft::make_pair(k, mapped_type()));
+				return 1;
+			}
 
-			void  erase(iterator first, iterator last);
+			void  erase(iterator first, iterator last) {
+				while (first != last) {
+					erase(first++);
+					// first++;
+					// seg if we advance the ptr after "erase", because we lost the ptr.
+				}
+			}
 	
 			void swap (map& x);
 
@@ -222,7 +243,9 @@ _BEGIN_NS_FT
 
 		/* member functions: operations */
 		
-			iterator find(const key_type& k);
+			iterator find(const key_type& k) {
+				return iterator(_rbt.getRoot(), _rbt.searchTree(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			}
 
 			// const_iterator find(const key_type& k) const;
 
