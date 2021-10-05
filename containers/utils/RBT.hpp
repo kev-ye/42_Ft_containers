@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/05 19:37:29 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/05 19:41:08 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,10 @@ _BEGIN_NS_FT
 
 			pointer	getNull() { return _null; }
 
-			// size_type	max_size() const { return allocator_type().max_size(); }
-			size_type	max_size() const {
-				return std::numeric_limits<difference_type>::max() / sizeof(value_type);
-			}
+			size_type	max_size() const { return allocator_type().max_size(); }
+			// size_type	max_size() const {
+			// 	return std::numeric_limits<difference_type>::max() / sizeof(value_type);
+			// }
 
 			pointer	min() { return min(_root); }
 
