@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/05 17:28:02 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/06 14:32:16 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft {
 	 * @class template: mapIterator
 	 * @brief bidirectional iterator
 	 */
-	template < class T >
+	template < class T, class Compare >
 	class mapIterator : public ft::iterator<bidirectional_iterator_tag, T> {
 		public:
 		/* member types */
@@ -63,7 +63,7 @@ namespace ft {
 				_node(src._node),
 				_null(src._null) {}
 
-			virtual ~mapIterator(void) {}
+			~mapIterator(void) {}
 
 			mapIterator & operator= (mapIterator const & rhs) {
 				if (this == &rhs) return *this;

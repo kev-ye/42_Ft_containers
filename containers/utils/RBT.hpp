@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/05 19:41:08 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/06 14:36:41 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ _BEGIN_NS_FT
 /**
  * @brief class declare
  */
-	template < class T >
+	template < class T, class Compare >
 	class mapIterator;
 
 /**
@@ -88,7 +88,7 @@ _BEGIN_NS_FT
 				left(src.left),
 				right(src.right) {}
 
-			virtual ~RBT_Node(void) {}
+			~RBT_Node(void) {}
 
 			RBT_Node & operator=(RBT_Node const & rhs) {
 				if (this == &rhs) return *this;
@@ -127,6 +127,8 @@ _BEGIN_NS_FT
 			typedef				T			value_type;
 			typedef				Node		node_type;
 
+			typedef				Compare									key_compare;
+
 			typedef				AllocNode								allocator_type;
 			typedef	typename	allocator_type::reference				reference;
 			typedef	typename	allocator_type::const_reference			const_reference;
@@ -138,7 +140,7 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
-			typedef				ft::mapIterator<Node>					iterator;
+			typedef				ft::mapIterator<Node, Compare>			iterator;
 
 		public:
 			RBT(allocator_type const & alloc = allocator_type()) : _alloc(alloc) {
@@ -147,16 +149,13 @@ _BEGIN_NS_FT
 				_root = _null;
 			}
 
-			virtual ~RBT() {}
+			~RBT() {}
 
 			pointer	getRoot() { return _root; }
 
 			pointer	getNull() { return _null; }
 
 			size_type	max_size() const { return allocator_type().max_size(); }
-			// size_type	max_size() const {
-			// 	return std::numeric_limits<difference_type>::max() / sizeof(value_type);
-			// }
 
 			pointer	min() { return min(_root); }
 
@@ -173,9 +172,11 @@ _BEGIN_NS_FT
 
 				while (x != _null) {
 					y = x;
-					if (s->val.first < x->val.first)
+					// if (s->val.first < x->val.first)
+					if (key_compare()(s->val.first, x->val.first))
 						x = x->left;
-					else if (s->val.first > x->val.first)
+					// else if (s->val.first > x->val.first)
+					else if (key_compare()(x->val.first, s->val.first))
 						x = x->right;
 					else {
 						_alloc.destroy(s);
@@ -187,7 +188,8 @@ _BEGIN_NS_FT
 				s->parent = y;
 				if (y == ft_nullptr)
 					_root = s;
-				else if (s->val.first < y->val.first)
+				// else if (s->val.first < y->val.first)
+				else if (key_compare()(s->val.first, y->val.first))
 					y->left = s;
 				else
 					y->right = s;
@@ -235,7 +237,8 @@ _BEGIN_NS_FT
 			pointer	searchTreeHelper(pointer node, value_type const & key) {
 				if (node == _null || key.first == node->val.first)
 					return node;
-				if (key.first < node->val.first)
+				// if (key.first < node->val.first)
+				if (key_compare()(key.first, node->val.first))
 					return searchTreeHelper(node->left, key);
 				return searchTreeHelper(node->right, key);
 			}

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/05 19:16:24 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/06 14:41:12 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ _BEGIN_NS_FT
 			 */
 			explicit map(const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) :
-					_alloc(alloc),
+					// _alloc(alloc),
 					// _comp(comp),
 					_rbt() {}
 		
@@ -138,10 +138,7 @@ _BEGIN_NS_FT
 			 * 
 			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
 			 */
-			map(const map& x) :
-				_alloc(x._alloc),
-				// _comp(x._comp),
-				_rbt(x._rbt) {}
+			map(const map& x) { insert(x.begin(), x.end()) }
 			
 			/**
 			 * @brief destructor
@@ -160,9 +157,8 @@ _BEGIN_NS_FT
 			map& operator=(const map& x) {
 				if (this == &x) return *this;
 
-				_alloc = x._alloc;
-				// _comp = x._comp;
-				_rbt = x._rbt; // .... ??? maybe here get some pb
+				clear();
+				insert(x.begin(), x.end());
 				return *this;
 			}
 
@@ -182,17 +178,17 @@ _BEGIN_NS_FT
 
 		/* member functions: capacity */
 		
-			bool		empty() const;
+			bool		empty() const { return begin() == end(); }
 
-			size_type	size() const;
+			size_type	size() const { return ft::distance(begin(), end()); }
 
-			size_type	max_size(void) const {
-				return _rbt.max_size();
-			}
+			size_type	max_size(void) const { return _rbt.max_size(); }
 
 		/* member functions: element access */
 			
-			mapped_type& operator[](const key_type& k);
+			mapped_type& operator[](const key_type& k) {
+				
+			}
 
 		/* member functions: modifiers */
 		
@@ -237,9 +233,9 @@ _BEGIN_NS_FT
 
 		/* member functions: observers */
 
-			key_compare	key_comp() const;
+			key_compare	key_comp() const { return key_compare(); }
 			
-			value_compare  value_comp() const;
+			value_compare  value_comp() const { return value_compare(); }
 
 		/* member functions: operations */
 		
@@ -265,14 +261,14 @@ _BEGIN_NS_FT
 
 		/* member functions: allocator */
 		
-			allocator_type get_allocator() const { return _alloc; }
+			allocator_type get_allocator() const { return allocator_type(); }
 
 		private:
 		/* attributes */
 
-			allocator_type		_alloc;
+			// allocator_type		_alloc;
 			// key_compare			_comp;
-			ft::RBT<value_type>	_rbt;
+			ft::RBT<value_type, key_compare>	_rbt;
 	};
 	
 	/* non-member function: vector */
