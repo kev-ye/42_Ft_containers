@@ -471,16 +471,5 @@ int main(void) {
 	// vecConstItTest();
 	// vecInsertTest();
 
-	using namespace std;
-
-	int size = 5;
-	std::vector<int> vct(size);
-	std::vector<int>::const_iterator it = vct.begin(); // <-- error expected
-
-	// for (int i = 0; i < size; ++i)
-	// 	it[i] = i;
-
-	// *ite = 42; // < -- error
-
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 15:11:04 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/06 23:29:54 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,18 +121,11 @@ _BEGIN_NS_FT
 			 * @param alloc: allocator object.
 			 */
 			template < class InputIterator >
-			vector(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
-				InputIterator last,
-				const allocator_type & alloc = allocator_type()) : _alloc(alloc) {
+			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(),
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = ft_nullptr) : _alloc(alloc) {
 				size_type n = static_cast<size_type>(ft::distance(first, last));
 
-				try {
-					_begin = _alloc.allocate(n);
-				}
-				catch (std::length_error &e) {
-					throw std::length_error("vector");
-				}
-
+				_begin = _alloc.allocate(n);
 				_end = _begin;
 				_capacity = _begin + n;
 
@@ -389,8 +382,8 @@ _BEGIN_NS_FT
 			 * @param val: value to fill the container with. 
 			 */
 			template <class InputIterator>
-			void assign(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
-				InputIterator last) {
+			void assign(InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = ft_nullptr) {
 				clear();
 
 				size_type n = static_cast<size_type>(ft::distance(first, last));
@@ -465,9 +458,8 @@ _BEGIN_NS_FT
 			}
 
 			template < class InputIterator >
-			void insert(iterator position,
-				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first,
-				InputIterator last) {
+			void insert(iterator position, InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = ft_nullptr) {
 				size_type pos = ft::distance(begin(), position);
 				size_type n = ft::distance(first, last);
 
