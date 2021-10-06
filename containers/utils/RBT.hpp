@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 14:36:41 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/06 20:12:01 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 _BEGIN_NS_FT
 
-#define RED_NODE	1
+#define RED_NODE 1
 #define BLACK_NODE 0
 
 /**
@@ -27,6 +27,9 @@ _BEGIN_NS_FT
  */
 	template < class T, class Compare >
 	class mapIterator;
+
+	template < class T, class Compare >
+	class const_mapIterator;
 
 /**
  * @class template: RBT_Node
@@ -40,12 +43,11 @@ _BEGIN_NS_FT
 		/* member types */
 		
 			typedef T		value_type;
-			typedef size_t	size_type;
 
 		/* attributes */
 
 			value_type	val;
-			size_type	color;
+			bool		color;
 			RBT_Node	*parent;
 			RBT_Node	*left;
 			RBT_Node	*right;
@@ -60,7 +62,7 @@ _BEGIN_NS_FT
 				left(ft_nullptr),
 				right(ft_nullptr) {}
 
-			RBT_Node(size_type color = BLACK_NODE,
+			RBT_Node(bool color = BLACK_NODE,
 				RBT_Node *parent = ft_nullptr,
 				RBT_Node *left = ft_nullptr,
 				RBT_Node *right = ft_nullptr) :
@@ -71,7 +73,7 @@ _BEGIN_NS_FT
 					right(right) {}
 			
 			RBT_Node(value_type val,
-				size_type color = BLACK_NODE,
+				bool color = BLACK_NODE,
 				RBT_Node *parent = ft_nullptr,
 				RBT_Node *left = ft_nullptr,
 				RBT_Node *right = ft_nullptr) :
@@ -117,17 +119,17 @@ _BEGIN_NS_FT
 	 * @brief Red Black Tree
 	 */
 	template < class T,
-		class Compare = ft::less<T>,
+		class Compare,
 		class Node = ft::RBT_Node<T>,
 		class AllocNode = std::allocator<Node> >
 	class RBT {
 		public:
 		/* member types */
 
-			typedef				T			value_type;
-			typedef				Node		node_type;
+			typedef				T										value_type;
+			typedef				Node									node_type;
 
-			typedef				Compare									key_compare;
+			typedef				Compare									value_compare;
 
 			typedef				AllocNode								allocator_type;
 			typedef	typename	allocator_type::reference				reference;
@@ -141,11 +143,12 @@ _BEGIN_NS_FT
 			typedef	typename	allocator_type::size_type				size_type;
 
 			typedef				ft::mapIterator<Node, Compare>			iterator;
+			typedef				ft::const_mapIterator<Node, Compare>	const_iterator;
 
 		public:
-			RBT(allocator_type const & alloc = allocator_type()) : _alloc(alloc) {
-				_null = _alloc.allocate(1);
-				_alloc.construct(_null, node_type(BLACK_NODE, ft_nullptr, ft_nullptr, ft_nullptr)); // null node is a black node
+			RBT(value_compare const & comp = value_compare()) : _comp(comp) {
+				_null = allocator_type().allocate(1);
+				allocator_type().construct(_null, node_type(BLACK_NODE, ft_nullptr, ft_nullptr, ft_nullptr)); // null node is a black node
 				_root = _null;
 			}
 
@@ -155,32 +158,43 @@ _BEGIN_NS_FT
 
 			pointer	getNull() { return _null; }
 
+			size_type	size() const { return size(_root); }
+
 			size_type	max_size() const { return allocator_type().max_size(); }
 
 			pointer	min() { return min(_root); }
 
 			pointer	max() { return max(_root); }
 
+			void	swap(RBT const & x) {
+				pointer root_ = _root;
+				pointer null_ = _null;
+
+				_root = x.getRoot();
+				_null = x.getNull();
+
+				x._root = root_;
+				x._null = null_;
+			}
+
 			pointer	searchTree(value_type key) { return searchTreeHelper(_root, key); }
 
 			ft::pair<iterator, bool>	insert(value_type const & key) {
-				pointer s = _alloc.allocate(1);
-				_alloc.construct(s, node_type(key, RED_NODE, ft_nullptr, _null, _null)); // new node must be red
+				pointer s = allocator_type().allocate(1);
+				allocator_type().construct(s, node_type(key, RED_NODE, ft_nullptr, _null, _null)); // new node must be red
 
 				pointer y = ft_nullptr;
 				pointer x = _root;
 
 				while (x != _null) {
 					y = x;
-					// if (s->val.first < x->val.first)
-					if (key_compare()(s->val.first, x->val.first))
+					if (_comp(s->val, x->val))
 						x = x->left;
-					// else if (s->val.first > x->val.first)
-					else if (key_compare()(x->val.first, s->val.first))
+					else if (_comp(x->val, s->val))
 						x = x->right;
 					else {
-						_alloc.destroy(s);
-						_alloc.deallocate(s, 1);
+						allocator_type().destroy(s);
+						allocator_type().deallocate(s, 1);
 						return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), false);
 					}
 				}
@@ -188,8 +202,7 @@ _BEGIN_NS_FT
 				s->parent = y;
 				if (y == ft_nullptr)
 					_root = s;
-				// else if (s->val.first < y->val.first)
-				else if (key_compare()(s->val.first, y->val.first))
+				else if (_comp(s->val, y->val))
 					y->left = s;
 				else
 					y->right = s;
@@ -211,8 +224,8 @@ _BEGIN_NS_FT
 			void	destroyTree() {
 				destroyTree(_root);
 
-				_alloc.destroy(_null);
-				_alloc.deallocate(_null, 1);
+				allocator_type().destroy(_null);
+				allocator_type().deallocate(_null, 1);
 			}
 
 			void	prettyPrint() {
@@ -221,6 +234,12 @@ _BEGIN_NS_FT
 			}
 
 		private:
+
+			size_type size(pointer root) const {
+				if (root == _null)
+					return 0;
+				return size(root->left) + 1 + size(root->right);
+			}
 
 			pointer	min(pointer s) {
 				while (s->left != _null)
@@ -235,12 +254,14 @@ _BEGIN_NS_FT
 			}
 
 			pointer	searchTreeHelper(pointer node, value_type const & key) {
-				if (node == _null || key.first == node->val.first)
+				if (node == _null)
 					return node;
-				// if (key.first < node->val.first)
-				if (key_compare()(key.first, node->val.first))
+				else if (_comp(key, node->val))
 					return searchTreeHelper(node->left, key);
-				return searchTreeHelper(node->right, key);
+				else if (_comp(node->val, key))
+					return searchTreeHelper(node->right, key);
+				else
+					return node;
 			}
 
 			void	leftRotate(pointer s) {
@@ -386,7 +407,6 @@ _BEGIN_NS_FT
 				x->color = BLACK_NODE;
 			}
 
-
 			void	rbTransplant(pointer u, pointer v) {
 				if (u->parent == ft_nullptr)
 					_root = v;
@@ -403,15 +423,13 @@ _BEGIN_NS_FT
 				pointer y;
 
 				while (node != _null) {
-					if (node->val.first == key.first) {
-						z = node;
-					}
-
-					if (node->val.first <= key.first) {
+					if (_comp(node->val, key))
 						node = node->right;
-					}
-					else {
+					else if (_comp(key, node->val))
 						node = node->left;
+					else {
+						z = node;
+						node = node->right;
 					}
 				}
 
@@ -449,8 +467,8 @@ _BEGIN_NS_FT
 					y->color = z->color;
 				}
 
-				_alloc.destroy(z);
-				_alloc.deallocate(z, 1);
+				allocator_type().destroy(z);
+				allocator_type().deallocate(z, 1);
 
 				if (y_original_color == BLACK_NODE)
 					fixDelete(x);
@@ -469,7 +487,7 @@ _BEGIN_NS_FT
 					}
 					
 					std::string	sColor = root->color ? "RED" : "BLACK";
-					std::cout << root->val.first << "(" << sColor << ")" << std::endl;
+					std::cout << root->val << "(" << sColor << ")" << std::endl;
 					printHelper(root->left, indent, false);
 					printHelper(root->right, indent, true);
 				}
@@ -483,14 +501,14 @@ _BEGIN_NS_FT
 				destroyTree(root->left);
 				destroyTree(root->right);
 
-				_alloc.destroy(root);
-				_alloc.deallocate(root, 1);
+				allocator_type().destroy(root);
+				allocator_type().deallocate(root, 1);
 			}
 
 		private:
 			pointer			_root;
 			pointer			_null;
-			allocator_type	_alloc;
+			value_compare	_comp;
 	};
 
 _END_NS_FT

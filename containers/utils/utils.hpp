@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/04 15:46:06 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/06 17:45:08 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ _BEGIN_NS_FT
 	 * @note binary function object class whose call returns
 	 * whether the its first argument compares less than the second (as returned by operator <).
 	 * 
-	 * @param T type of the arguments to compare by the unctional call.
+	 * @param T type of the arguments to compare by the functional call.
 	 */
 	template < class T >
 	struct less : binary_function <T, T, bool> {
