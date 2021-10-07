@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 20:12:01 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 18:55:04 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ _BEGIN_NS_FT
 /**
  * @brief class declare
  */
-	template < class T, class Compare >
+	template < class T, class Node >
 	class mapIterator;
 
-	template < class T, class Compare >
-	class const_mapIterator;
+	// template < class T, class Node >
+	// class const_mapIterator;
 
 /**
  * @class template: RBT_Node
@@ -142,8 +142,8 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
-			typedef				ft::mapIterator<Node, Compare>			iterator;
-			typedef				ft::const_mapIterator<Node, Compare>	const_iterator;
+			typedef				ft::mapIterator<T, Node>						iterator;
+			typedef				ft::mapIterator<const T, Node>					const_iterator;
 
 		public:
 			RBT(value_compare const & comp = value_compare()) : _comp(comp) {
@@ -154,17 +154,17 @@ _BEGIN_NS_FT
 
 			~RBT() {}
 
-			pointer	getRoot() { return _root; }
+			pointer	getRoot() const { return _root; }
 
-			pointer	getNull() { return _null; }
+			pointer	getNull() const { return _null; }
 
 			size_type	size() const { return size(_root); }
 
 			size_type	max_size() const { return allocator_type().max_size(); }
 
-			pointer	min() { return min(_root); }
+			pointer	min() const { return min(_root); }
 
-			pointer	max() { return max(_root); }
+			pointer	max() const { return max(_root); }
 
 			void	swap(RBT const & x) {
 				pointer root_ = _root;
@@ -228,11 +228,6 @@ _BEGIN_NS_FT
 				allocator_type().deallocate(_null, 1);
 			}
 
-			void	prettyPrint() {
-				if (_root)
-					printHelper(_root, "", true);
-			}
-
 		private:
 
 			size_type size(pointer root) const {
@@ -241,13 +236,13 @@ _BEGIN_NS_FT
 				return size(root->left) + 1 + size(root->right);
 			}
 
-			pointer	min(pointer s) {
+			pointer	min(pointer s) const {
 				while (s->left != _null)
 					s = s->left;
 				return s;
 			}
 
-			pointer	max(pointer s) {
+			pointer	max(pointer s) const {
 				while (s->right != _null)
 					s = s->right;
 				return s;
@@ -434,7 +429,6 @@ _BEGIN_NS_FT
 				}
 
 				if (z == _null) {
-					std::cout << "Couldn't find key in the tree" << std::endl;
 					return ;
 				} 
 
@@ -472,25 +466,6 @@ _BEGIN_NS_FT
 
 				if (y_original_color == BLACK_NODE)
 					fixDelete(x);
-			}
-
-			void	printHelper(pointer root, std::string indent, bool last) {
-				if (root != _null) {
-					std::cout << indent;
-					if (last) {
-						std::cout << "R----";
-						indent += "     ";
-					}
-					else {
-						std::cout << "L----";
-						indent += "|    ";
-					}
-					
-					std::string	sColor = root->color ? "RED" : "BLACK";
-					std::cout << root->val << "(" << sColor << ")" << std::endl;
-					printHelper(root->left, indent, false);
-					printHelper(root->right, indent, true);
-				}
 			}
 
 			void destroyTree(pointer root) {

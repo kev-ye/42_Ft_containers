@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:12 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/04 15:47:24 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 15:23:27 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define STACK_HPP
 
 #include "vector.hpp"
-#include "utils.hpp"
 
 _BEGIN_NS_FT
 

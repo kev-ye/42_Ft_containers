@@ -6,14 +6,14 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/06 23:28:40 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/07 15:11:57 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 if [ $1 = 'r' ] ; then
 	clear
 	rm a.out 2>/dev/null
-	clang++ -std=c++98 ../containers/vecTest.cpp
+	clang++ -std=c++98 ../containers/Test.cpp
 	./a.out
 	
 	rm a.out 2>/dev/null
@@ -21,7 +21,7 @@ elif [ $1 = 'm' ] ; then
 	rm a.out 2>/dev/null
 	clear
 	clang++ -std=c++98 creatFile.cpp -o replace
-	./replace ../containers/vecTest.cpp tmp.cpp "std::" "ft::"
+	./replace ../containers/Test.cpp tmp.cpp "std::" "ft::"
 	./replace tmp.cpp mytest.cpp "real" "my"
 	rm tmp.cpp 2>/dev/null
 

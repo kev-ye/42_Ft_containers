@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 23:29:54 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 18:31:50 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,25 @@ _BEGIN_NS_FT
 		public:
 		/* member types */
 
-			typedef 			T												value_type;
-			typedef 			Alloc											allocator_type;
+			typedef 			T										value_type;
+			typedef 			Alloc									allocator_type;
 
-			typedef typename	allocator_type::reference						reference;
-			typedef typename	allocator_type::const_reference					const_reference;
-			typedef typename	allocator_type::pointer							pointer;
-			typedef typename	allocator_type::const_pointer					const_pointer;
+			typedef typename	allocator_type::reference				reference;
+			typedef typename	allocator_type::const_reference			const_reference;
+			typedef typename	allocator_type::pointer					pointer;
+			typedef typename	allocator_type::const_pointer			const_pointer;
 
 			/** @note usually the same as ptrdiff_t */
-			typedef typename	allocator_type::difference_type					difference_type;
+			typedef typename	allocator_type::difference_type			difference_type;
 			/** @note usually the same as size_t */
-			typedef typename	allocator_type::size_type						size_type;
+			typedef typename	allocator_type::size_type				size_type;
 
 			/** @note convertible to const_iterator */
 			typedef typename	ft::vecIterator<value_type> 			iterator;
 			typedef typename	ft::vecIterator<const value_type>		const_iterator;
 
-			typedef typename	ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef typename	ft::reverse_iterator<const_iterator>			const_reverse_iterator;
+			typedef typename	ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef typename	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 		public:
 		/* member functions: constructor / destructor / operator= */

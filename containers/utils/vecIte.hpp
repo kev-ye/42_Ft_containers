@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:37:08 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/04 15:49:51 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 18:08:09 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ _BEGIN_NS_FT
 		/* constructor / destructor / operator= */
 
 			vecIterator(void) : _val(ft_nullptr) {}
-			vecIterator(pointer val) : _val(val) {}
+			explicit vecIterator(pointer val) : _val(val) {}
 			vecIterator(vecIterator const & src) : _val(src._val) {}
-			virtual ~vecIterator(void) {}
+			~vecIterator(void) {}
 
 			vecIterator & operator= (vecIterator const & rhs) {
 				if (this == &rhs) return *this;
@@ -124,7 +124,7 @@ _BEGIN_NS_FT
 
 			/** @brief cast vecIterator<T> to vecIterator<const T> */
 			operator vecIterator<const T> (void) {
-				return static_cast< vecIterator<const T> >(_val);
+				return vecIterator<const T>(_val);
 			}
 
 		/* non-member function: vecIterator */
