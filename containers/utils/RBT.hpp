@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 19:06:09 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 21:22:56 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,6 @@ _BEGIN_NS_FT
  */
 	template < class T, class Node >
 	class mapIterator;
-
-	// template < class T, class Node >
-	// class const_mapIterator;
 
 /**
  * @class template: RBT_Node

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 19:21:05 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 21:35:05 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,10 +191,7 @@ _BEGIN_NS_FT
 		/* member functions: element access */
 			
 			mapped_type& operator[](const key_type& k) {
-				insert(ft::make_pair(k, mapped_type()));
-				
-				iterator it = find(k);
-				return ((*it).second);
+				return insert(ft::make_pair(k, mapped_type())).first->second;
 			}
 
 		/* member functions: modifiers */

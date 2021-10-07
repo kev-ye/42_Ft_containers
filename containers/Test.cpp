@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 17:11:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 19:55:14 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 21:39:19 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,10 +179,6 @@ int main(void) {
 
 	// ft_bound(mp, 5);
 	// ft_bound(mp, 7);
-
-	// mymap['b'] = 100;
-	// mymap['a'] = 200;  
-	// mymap['c'] = 300;
 
 	// // show content:
 	// std::map<char, int>::const_iterator it = mymap.begin();
