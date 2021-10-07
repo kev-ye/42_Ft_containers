@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 18:55:04 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 19:06:09 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
-			typedef				ft::mapIterator<T, Node>						iterator;
-			typedef				ft::mapIterator<const T, Node>					const_iterator;
+			// typedef				ft::mapIterator<T, Node>						iterator;
+			// typedef				ft::mapIterator<const T, Node>					const_iterator;
 
 		public:
 			RBT(value_compare const & comp = value_compare()) : _comp(comp) {
@@ -179,7 +179,7 @@ _BEGIN_NS_FT
 
 			pointer	searchTree(value_type key) { return searchTreeHelper(_root, key); }
 
-			ft::pair<iterator, bool>	insert(value_type const & key) {
+			bool	insert(value_type const & key) {
 				pointer s = allocator_type().allocate(1);
 				allocator_type().construct(s, node_type(key, RED_NODE, ft_nullptr, _null, _null)); // new node must be red
 
@@ -195,7 +195,7 @@ _BEGIN_NS_FT
 					else {
 						allocator_type().destroy(s);
 						allocator_type().deallocate(s, 1);
-						return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), false);
+						return false;
 					}
 				}
 
@@ -209,17 +209,17 @@ _BEGIN_NS_FT
 
 				if (s->parent == ft_nullptr) {
 					s->color = BLACK_NODE;
-					return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), true);
+					return true;
 				}
 
 				if (s->parent->parent == ft_nullptr)
-					return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), true);
+					return true;
 
 				fixInsert(s);
-				return ft::make_pair<iterator, bool>(iterator(getRoot(), y, getNull()), true);
+				return true;
 			}
 
-			void	deleteNode(value_type const & key) { deleteNodeHelper(_root, key); }
+			bool	deleteNode(value_type const & key) { return deleteNodeHelper(_root, key); }
 
 			void	destroyTree() {
 				destroyTree(_root);
@@ -412,7 +412,7 @@ _BEGIN_NS_FT
 				v->parent = u->parent;
 			}
 
-			void	deleteNodeHelper(pointer node, value_type const & key) {
+			bool	deleteNodeHelper(pointer node, value_type const & key) {
 				pointer z = _null;
 				pointer x;
 				pointer y;
@@ -429,7 +429,7 @@ _BEGIN_NS_FT
 				}
 
 				if (z == _null) {
-					return ;
+					return false;
 				} 
 
 				y = z;
@@ -466,6 +466,7 @@ _BEGIN_NS_FT
 
 				if (y_original_color == BLACK_NODE)
 					fixDelete(x);
+				return true;
 			}
 
 			void destroyTree(pointer root) {

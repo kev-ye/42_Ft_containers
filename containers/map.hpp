@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 18:56:33 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/07 19:21:05 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,10 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type							size_type;
 
-			typedef	typename	ft::RBT<value_type, value_compare>::iterator		iterator;
-			typedef	typename	ft::RBT<value_type, value_compare>::const_iterator	const_iterator;
+			// typedef	typename	ft::RBT<value_type, value_compare>::iterator		iterator;
+			// typedef	typename	ft::RBT<value_type, value_compare>::const_iterator	const_iterator;
+			typedef				ft::mapIterator<value_type, ft::RBT_Node<value_type> >				iterator;
+			typedef				ft::mapIterator<const value_type, ft::RBT_Node<value_type> >				const_iterator;
 			typedef				ft::reverse_iterator<iterator>						reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
@@ -198,7 +200,9 @@ _BEGIN_NS_FT
 		/* member functions: modifiers */
 		
 			ft::pair<iterator, bool> insert(const value_type& val) {
-				return _rbt.insert(val);
+				if (_rbt.insert(val) == false)
+					return ft::make_pair(find(val.first), false);
+				return ft::make_pair(find(val.first), true);
 			}
 
 			iterator insert(iterator position, const value_type& val) {
@@ -217,9 +221,8 @@ _BEGIN_NS_FT
 			}
 			
 			size_type erase(const key_type& k) {
-				if (find(k) == end())
+				if (_rbt.deleteNode(ft::make_pair(k, mapped_type())) == false)
 					return 0;
-				_rbt.deleteNode(ft::make_pair(k, mapped_type()));
 				return 1;
 			}
 
