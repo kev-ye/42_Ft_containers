@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 18:31:50 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/08 18:05:30 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ _BEGIN_NS_FT
 			 * @return an iterator to the beginning of the sequence container.
 			 */
 			iterator		begin(void) { return iterator(_begin); }
-			const_iterator	begin(void) const { return iterator(_begin); }
+			const_iterator	begin(void) const { return const_iterator(_begin); }
 
 			/**
 			 * @brief return iterator to end
@@ -201,7 +201,7 @@ _BEGIN_NS_FT
 			 * @return an iterator to the past the end of the sequence.
 			 */
 			iterator		end(void) { return iterator(_end); }
-			const_iterator	end(void) const { return iterator(_end); }
+			const_iterator	end(void) const { return const_iterator(_end); }
 
 			
 			/**
@@ -211,7 +211,7 @@ _BEGIN_NS_FT
 			 * @return a reverse iterator to the reverse beginning of the sequence container.
 			 */
 			reverse_iterator		rbegin(void) { return reverse_iterator(end()); }
-			const_reverse_iterator	rbegin(void) const { return reverse_iterator(end()); }
+			const_reverse_iterator	rbegin(void) const { return const_reverse_iterator(end()); }
 
 			/**
 			 * @brief return reverse iterator to reverse end.
@@ -220,7 +220,7 @@ _BEGIN_NS_FT
 			 * @return a reverse iterator to the reverse end of the sequence container.
 			 */
 			reverse_iterator		rend(void) { return reverse_iterator(begin()); }
-			const_reverse_iterator	rend(void) const { return reverse_iterator(begin()); }
+			const_reverse_iterator	rend(void) const { return const_reverse_iterator(begin()); }
 
 		/* member functions: capacity */
 

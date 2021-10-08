@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 19:22:46 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/08 17:10:22 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ _BEGIN_NS_FT
 		public:
 		/* member types */
 
-			typedef 		T																			value_type;
+			typedef 			T																		value_type;
 
-			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::difference_type		difference_type;
-			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::pointer				pointer;
-			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::reference			reference;
-			typedef typename ft::iterator<bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
+			typedef typename	ft::iterator<bidirectional_iterator_tag, value_type>::difference_type	difference_type;
+			typedef typename 	ft::iterator<bidirectional_iterator_tag, value_type>::pointer			pointer;
+			typedef typename 	ft::iterator<bidirectional_iterator_tag, value_type>::reference			reference;
+			typedef typename 	ft::iterator<bidirectional_iterator_tag, value_type>::iterator_category	iterator_category;
 
 			typedef Node	node_type;
 			typedef Node*	node_pointer;
@@ -117,16 +117,28 @@ _BEGIN_NS_FT
 				return tmp;
 			}
 
-			bool operator== (const mapIterator & rhs) {
-				return _node == rhs._node;
-			}
-
-			bool operator!= (const mapIterator & rhs) {
-				return _node != rhs._node;
-			}
-
 			operator mapIterator<const T, Node> (void) {
 				return mapIterator<const T, Node>(_root, _node, _null);
+			}
+
+			template < class _T, class _Node >
+			friend bool operator== (const mapIterator<_T, _Node> & lhs, const mapIterator<_T, _Node> & rhs) {
+				return lhs._node == rhs._node;
+			}
+
+			template < class _TL, class _TR, class _Node >
+			friend bool operator== (const mapIterator<_TL, _Node> & lhs, const mapIterator<_TR, _Node> & rhs) {
+				return lhs._node == rhs._node;
+			}
+
+			template < class _T, class _Node >
+			friend bool operator!= (const mapIterator<_T, _Node> & lhs, const mapIterator<_T, _Node> & rhs) {
+				return lhs._node != rhs._node;
+			}
+
+			template < class _TL, class _TR, class _Node >
+			friend bool operator!= (const mapIterator<_TL, _Node> & lhs, const mapIterator<_TR, _Node> & rhs) {
+				return lhs._node != rhs._node;
 			}
 
 		private:

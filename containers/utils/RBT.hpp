@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 21:22:56 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/08 20:55:18 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,6 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type				size_type;
 
-			// typedef				ft::mapIterator<T, Node>						iterator;
-			// typedef				ft::mapIterator<const T, Node>					const_iterator;
-
 		public:
 			RBT(value_compare const & comp = value_compare()) : _comp(comp) {
 				_null = allocator_type().allocate(1);
@@ -163,7 +160,29 @@ _BEGIN_NS_FT
 
 			pointer	max() const { return max(_root); }
 
-			void	swap(RBT const & x) {
+			pointer lower_bound(value_type const & key) const {
+				pointer begin = min();
+
+				while (begin != _null) {
+					if (_comp(begin->val, key) == false)
+						break ;
+					begin = successor(begin);
+				}
+				return begin;
+			}
+
+			pointer upper_bound(value_type const & key) const {
+				pointer begin = min();
+
+				while (begin != _null) {
+					if (_comp(key, begin->val) == true)
+						break ;
+					begin = successor(begin);
+				}
+				return begin;
+			}
+
+			void	swap(RBT & x) {
 				pointer root_ = _root;
 				pointer null_ = _null;
 
@@ -174,7 +193,35 @@ _BEGIN_NS_FT
 				x._null = null_;
 			}
 
-			pointer	searchTree(value_type key) { return searchTreeHelper(_root, key); }
+			pointer	successor(pointer x) const {
+				if (x->right != _null)
+					return min(x->right);
+
+				if (x->parent == ft_nullptr || x == max())
+					return _null;
+				pointer y = x->parent;
+				while (y != _null && x == y->right) {
+					x = y;
+					y = y->parent;
+				}
+				return y;
+			}
+
+			pointer	predecessor(pointer s) const {
+				if (s->left != _null)
+					return max(s->left);
+
+				if (s->parent == ft_nullptr || s == min())
+					return _null;
+				pointer	tmp = s->parent;
+				while (tmp != _null && s == tmp->left) {
+					s = tmp;
+					tmp = tmp->parent;
+				}
+				return tmp;
+			}
+
+			pointer	searchTree(value_type key) const { return searchTreeHelper(_root, key); }
 
 			bool	insert(value_type const & key) {
 				pointer s = allocator_type().allocate(1);
@@ -220,7 +267,10 @@ _BEGIN_NS_FT
 
 			void	destroyTree() {
 				destroyTree(_root);
+				_root = _null;
+			}
 
+			void	destroyNull() {
 				allocator_type().destroy(_null);
 				allocator_type().deallocate(_null, 1);
 			}
@@ -245,7 +295,7 @@ _BEGIN_NS_FT
 				return s;
 			}
 
-			pointer	searchTreeHelper(pointer node, value_type const & key) {
+			pointer	searchTreeHelper(pointer node, value_type const & key) const {
 				if (node == _null)
 					return node;
 				else if (_comp(key, node->val))

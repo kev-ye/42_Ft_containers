@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 21:35:05 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/08 20:46:35 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,10 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type							size_type;
 
-			// typedef	typename	ft::RBT<value_type, value_compare>::iterator		iterator;
-			// typedef	typename	ft::RBT<value_type, value_compare>::const_iterator	const_iterator;
-			typedef				ft::mapIterator<value_type, ft::RBT_Node<value_type> >				iterator;
-			typedef				ft::mapIterator<const value_type, ft::RBT_Node<value_type> >				const_iterator;
-			typedef				ft::reverse_iterator<iterator>						reverse_iterator;
-			typedef				ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+			typedef				ft::mapIterator<value_type, ft::RBT_Node<value_type> >			iterator;
+			typedef				ft::mapIterator<const value_type, ft::RBT_Node<value_type> >	const_iterator;
+			typedef				ft::reverse_iterator<iterator>									reverse_iterator;
+			typedef				ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 
 		public:
 		/* member functions: constructor / destructor / operator= */
@@ -116,9 +114,7 @@ _BEGIN_NS_FT
 			 * @param alloc: allocator object.
 			 */
 			explicit map(const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) : _rbt(value_compare(comp)) {
-					(void)alloc;
-				}
+				const allocator_type& alloc = allocator_type()) : _rbt(value_compare(comp)) { (void)alloc; }
 		
 			/**
 			 * @brief constructor: range
@@ -142,14 +138,19 @@ _BEGIN_NS_FT
 			 * 
 			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
 			 */
-			map(const map& x) { insert(x.begin(), x.end()); }
+			map(const map& x) : _rbt(value_compare(key_compare())) {
+				insert(x.begin(), x.end());
+			}
 			
 			/**
 			 * @brief destructor
 			 * @note this destroys all container elements,
 			 * and deallocates all the storage capacity allocated by the vector using its allocator.
 			 */
-   			~map(void) { clear(); }
+   			~map(void) {
+				clear();
+				_rbt.destroyNull();
+			}
 
 			/**
 			 * @brief operator: copy
@@ -161,15 +162,24 @@ _BEGIN_NS_FT
 			map& operator=(const map& x) {
 				if (this == &x) return *this;
 
-				clear();
+				this->~map();
+				_rbt = ft::RBT<value_type, value_compare>(value_compare(key_compare()));
 				insert(x.begin(), x.end());
 				return *this;
 			}
 
 		/* member functions: iterators */
 		
-			iterator begin() { return iterator(_rbt.getRoot(), _rbt.min(), _rbt.getNull()); }
-			const_iterator begin() const { return const_iterator(_rbt.getRoot(), _rbt.min(), _rbt.getNull()); }
+			iterator begin() {
+				if (_rbt.getRoot() == _rbt.getNull())
+					return iterator(_rbt.getRoot(), _rbt.getNull(), _rbt.getNull());
+				return iterator(_rbt.getRoot(), _rbt.min(), _rbt.getNull());
+			}
+			const_iterator begin() const {
+				if (_rbt.getRoot() == _rbt.getNull())
+					return const_iterator(_rbt.getRoot(), _rbt.getNull(), _rbt.getNull());
+				return const_iterator(_rbt.getRoot(), _rbt.min(), _rbt.getNull());
+			}
 			
 			iterator end() { return iterator(_rbt.getRoot(), _rbt.getNull(), _rbt.getNull()); }
 			const_iterator end() const { return const_iterator(_rbt.getRoot(), _rbt.getNull(), _rbt.getNull()); }
@@ -225,24 +235,23 @@ _BEGIN_NS_FT
 
 			void  erase(iterator first, iterator last) {
 				while (first != last) {
+					first = find(first->first);
 					erase(first++);
-					// first++;
-					// seg if we advance the ptr after "erase", because we lost the ptr.
 				}
 			}
 	
-			void swap (map& x) {
-				_rbt.swap(x._rbt);
-			}
+			void swap (map& x) { _rbt.swap(x._rbt); }
 
-			void clear() { _rbt.destroyTree(); }
+			void clear() {
+				_rbt.destroyTree();
+			}
 
 
 		/* member functions: observers */
 
 			key_compare	key_comp() const { return key_compare(); }
 			
-			value_compare  value_comp() const { return value_compare(); }
+			value_compare  value_comp() const { return value_compare(key_comp()); }
 
 		/* member functions: operations */
 		
@@ -261,31 +270,19 @@ _BEGIN_NS_FT
 			}
 			
 			iterator lower_bound(const key_type& k) {
-				iterator it = begin();
-
-				for (; it != end(); it++) {
-					if (key_compare()(it->first, k) == false)
-						break ;
-				}
-				return it;
+				return iterator(_rbt.getRoot(), _rbt.lower_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
 			}
 			
 			const_iterator lower_bound(const key_type& k) const {
-				return const_iterator(lower_bound(k));
+				return const_iterator(_rbt.getRoot(), _rbt.lower_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
 			}
 
 			iterator upper_bound(const key_type& k) {
-				iterator it = begin();
-
-				for (; it != end(); it++) {
-					if (key_compare()(k, it->first) == true)
-						break ;
-				}
-				return it;
+				return iterator(_rbt.getRoot(), _rbt.upper_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
 			}
 			
 			const_iterator upper_bound(const key_type& k) const {
-				return const_iterator(upper_bound(k));
+				return const_iterator(_rbt.getRoot(), _rbt.upper_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
 			}
 
 			ft::pair<iterator, iterator> equal_range(const key_type& k) {
