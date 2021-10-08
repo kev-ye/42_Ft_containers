@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/08 20:46:35 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/08 21:05:02 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ _BEGIN_NS_FT
 
 			void  erase(iterator first, iterator last) {
 				while (first != last) {
+					// refix current ptr
 					first = find(first->first);
 					erase(first++);
 				}
