@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/08 20:55:18 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/09 19:06:50 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,12 +284,16 @@ _BEGIN_NS_FT
 			}
 
 			pointer	min(pointer s) const {
+				if (s == ft_nullptr || s == _null)
+					return _null;
 				while (s->left != _null)
 					s = s->left;
 				return s;
 			}
 
 			pointer	max(pointer s) const {
+				if (s == ft_nullptr || s == _null)
+					return _null;
 				while (s->right != _null)
 					s = s->right;
 				return s;
