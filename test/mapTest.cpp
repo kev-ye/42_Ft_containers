@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vecTest.cpp                                        :+:      :+:    :+:   */
+/*   mapTest.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 00:30:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 00:09:08 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,69 +38,29 @@ void	constructTest(void) {
 	printSize(vecInt);
 
 	std::cout << "\nempty test: Custom Class:\n";
-	__NS__::vector<Custom> vecCustom;
-	printSize(vecCustom);
+	__NS__::vector<Custom> vecCustomClass;
+	printSize(vecCustomClass);
 
 	std::cout << "\nfill test: int:\n";
 	__NS__::vector<int> vecInt2(42);
 	printSize(vecInt2);
 
 	std::cout << "\nrange test: int:\n";
-	__NS__::vector<int> vecInt3(vecInt2.begin(), vecInt2.end());
-	printSize(vecInt3);
+	// __NS__::vector<int> vecInt3(vecInt2.begin(), vecInt2.end());
+	// printSize(vecInt3);
 
-	std::cout << "\nrange test2: Custom:\n";
-	__NS__::vector<Custom> vecCustom2(10);
-	__NS__::vector<Custom>::iterator it = vecCustom2.begin();
-	__NS__::vector<Custom>::iterator ite = vecCustom2.end();
+	std::cout << "\nrange test2: int:\n";
+	__NS__::vector<int>::iterator it = vecInt2.begin();
+	__NS__::vector<int>::iterator ite = vecInt2.end();
 
-	it++;
-	ite--;
-	__NS__::vector<Custom> vecCustom3(it, ite);
-	printSize(vecCustom3);
+	// it++;
+	// ite--;
+	__NS__::vector<int> vecInt4(it, ite);
+	printSize(vecInt4);
 
-	std::cout << "\ncopy test: Custom:\n";
-	__NS__::vector<Custom> vecCustom4(vecCustom3);
-	printSize(vecCustom4);
-
-	std::cout << "\noperator= test: int:\n";
-	vecCustom4 = vecCustom;
-	printSize(vecCustom4);
-}
-
-void	iteratorTest(void) {
-	printTitle("Iterator");
-
-	__NS__::vector<int> vecInt;
-	vecInt.push_back(1);
-	vecInt.push_back(2);
-	vecInt.push_back(3);
-	vecInt.push_back(4);
-	vecInt.push_back(5);
-
-	__NS__::vector<int>::iterator it = vecInt.begin();
-	__NS__::vector<int>::iterator ite = vecInt.end();
-	it++;
-	it--;
-	it += 1;
-	it -= 1;
-
-	__NS__::vector<int>::const_iterator cit = it + 1;
-	std::cout << *cit << std::endl;;
-	cit = it - 1;
-	std::cout << *cit << std::endl;
-	
-	it[2] = 10;
-	std::cout << it[2] << std::endl;
-
-	cit = it;
-	if (it == cit)
-		std::cout << "it == cit" << std::endl;
-
-	for (; it != ite; it++)
-		std::cout << *it << std::endl;
-	
-	printSize(vecInt);
+	std::cout << "\ncopy test: int:\n";
+	__NS__::vector<int> vecInt5(vecInt4);
+	printSize(vecInt5);
 }
 
 int main(int ac, char **av) {
@@ -110,9 +70,6 @@ int main(int ac, char **av) {
 
 	if (std::string(av[1]) == "constructTest")
 		constructTest();
-
-	if (std::string(av[1]) == "iteratorTest")
-		iteratorTest();
 
 	return 0;
 }
