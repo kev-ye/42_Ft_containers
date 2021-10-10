@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "testClass.hpp"
+#include "Custom.hpp"
 #include "vector.hpp"
 #include <iostream>
 #include <vector>
@@ -31,21 +31,45 @@ void	printSize(__NS__::vector<T> vec) {
 }
 
 void	constructTest(void) {
-	printTitle("Constructor")
+	printTitle("Constructor");
 
 	std::cout << "empty test: int:\n";
 	__NS__::vector<int> vecInt;
-	printSize(vec);
+	printSize(vecInt);
 
-	std::cout << "\nempty test: vecCustomClass:\n";
-	__NS__::vector<int> vecCustomClass;
-	printSize(vec);
-	
+	std::cout << "\nempty test: Custom Class:\n";
+	__NS__::vector<Custom> vecCustomClass;
+	printSize(vecCustomClass);
+
+	std::cout << "\nfill test: int:\n";
+	__NS__::vector<int> vecInt2(42);
+	printSize(vecInt2);
+
+	std::cout << "\nrange test: int:\n";
+	// __NS__::vector<int> vecInt3(vecInt2.begin(), vecInt2.end());
+	// printSize(vecInt3);
+
+	std::cout << "\nrange test2: int:\n";
+	__NS__::vector<int>::iterator it = vecInt2.begin();
+	__NS__::vector<int>::iterator ite = vecInt2.end();
+
+	// it++;
+	// ite--;
+	__NS__::vector<int> vecInt4(it, ite);
+	printSize(vecInt4);
+
+	std::cout << "\ncopy test: int:\n";
+	__NS__::vector<int> vecInt5(vecInt4);
+	printSize(vecInt5);
 }
 
-int main(void) {
+int main(int ac, char **av) {
+	if (ac == 1) {
+		std::cout << "all run coming soon ..\n";
+	}
 
-	printSize(vec);
+	if (std::string(av[1]) == "constructTest")
+		constructTest();
 
 	return 0;
 }

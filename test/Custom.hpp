@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef Custom_HPP
-# define Custom_HPP
+#ifndef CUSTOM_HPP
+# define CUSTOM_HPP
 
 #include <string>
 

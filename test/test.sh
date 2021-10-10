@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/10 18:59:55 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/10 20:25:22 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,17 @@
 
 # Function
 
+## Utils
+
 printUse() {
-	echo -e "use: ./test.sh [\e[1;32margs\e[0m]"
-	echo -e "args: \e[1;32mstd\e[0m: compile test with std"
-	echo -e "      \e[1;32mft\e[0m: compile test with ft"
-	echo -e "      \e[1;32mcomp\e[0m: show difference between std and ft"
-	echo -e "      \e[1;32mclean\e[0m: clear deepthought/log directory and file"
+	echo -e "usage: bash test.sh [\e[1;32magrs\e[0m] or [\e[1;32mcontainers\e[0m] [\e[1;32mnamespace\e[0m]"
+	echo -e "args1: \e[1;32mall\e[0m: launch all test"
+	echo -e "       \e[1;32mclean\e[0m: clear deepthought/log directory and file"
+	echo -e "args2: \e[1;32mcontainer\e[0m: (show diff + log) vector/stack/map"
+	echo -e "       \e[1;32mnamespace(use with container)\e[0m: (show log) std/ft"
 }
 
-createDeepthought() {
+createDeepthoughtDirectory() {
 	if [ ! -d "./deepthought" ] ; then
 		mkdir deepthought
 	fi
@@ -40,47 +42,87 @@ cleanDeepthought() {
 	if [ -d "./log" ] ; then
 		rm -rf log
 	fi
+
+	if [ -f "./stdVec" ] ; then
+		rm stdVec
+	fi
+
+	if [ -f "./ftVec" ] ; then
+		rm ftVec
+	fi
 }
 
-runStdCase() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers vecTest.cpp -D __NS__=std
-	./a.out && rm a.out 2>/dev/null
+## vector
+
+vectorStdCompile() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers vecTest.cpp -D __NS__=std -o stdVec
 }
 
-runFtCase() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers vecTest.cpp -D __NS__=ft
-	./a.out && rm a.out 2>/dev/null
+vectorFtCompile() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers vecTest.cpp -D __NS__=ft -o ftVec
 }
 
-doDeepthought() {
-	runStdCase > ./log/stdCase
-	runFtCase > ./log/FtCase
+vectorRun() {
+	if [ -d "./log" ] && [ -f "./stdVec" ] ; then
+		./stdVec constructTest > ./log/std_constructTest.log
+	fi
 
-	diff ./log/stdCase ./log/FtCase > ./deepthought/df
+	if [ -d "./log" ] && [ -f "./ftVec" ] ; then
+		./ftVec constructTest > ./log/ft_constructTest.log
+	fi
+}
+
+vectorDiff() {
+	if [ -d "./deepthought" ] && [ -f "./log/std_constructTest.log" ] && [ -f "./log/ft_constructTest.log" ] ; then
+		diff ./log/std_constructTest.log ./log/ft_constructTest.log > ./deepthought/constructTest.diff
+		if [ ! -s constructTest.diff ] ; then
+			echo -e "constructor test : \e[1;32mOk\e[0m"
+
+		else
+			echo -e "constructor test : \e[1;33mKo\e[0m"
+			
+		fi
+	else
+		echo -e "log file not found!"
+
+	fi
 }
 
 # Run
 
-createDeepthought
+createDeepthoughtDirectory
 
-if [[ $1 = 'std' ]] ; then
+if [[ $1 = 'all' ]] && [ -z $2 ] ; then
 	clear
-	echo -e "\e[1;32mstd case:\e[0m"
-	runStdCase
+	echo -e "coming soon ..."
 
-elif [[ $1 = 'ft' ]] ; then
-	clear
-	echo -e "\e[1;32mstd case:\e[0m"
-	runFtCase
-
-elif [[ $1 = 'comp' ]] ; then
-	clear
+elif [[ $1 = 'clean' ]] && [ -z $2 ] ; then
 	cleanDeepthought
-	createDeepthought
-	doDeepthought
 
-elif [[ $1 = 'clean' ]] ; then
+elif [[ $1 = 'vector' ]] && [ -z $2 ] ; then
 	cleanDeepthought
+	createDeepthoughtDirectory
+
+	vectorStdCompile
+	vectorFtCompile
+
+	vectorRun
+	vectorDiff
+
+elif [[ $1 = 'vector' ]] && ([ $2 = 'std' ] || [ $2 = 'ft' ]) && [ -z $3 ]; then
+	if [ $2 = 'std' ] ; then
+		clear
+		echo "std case"
+		cleanDeepthought
+		createDeepthoughtDirectory
+
+	elif [ $2 = 'ft' ] ; then
+		clear
+		echo "ft case"
+		cleanDeepthought
+		createDeepthoughtDirectory
+
+	fi
 	
 else
 	printUse
