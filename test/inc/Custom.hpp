@@ -26,16 +26,52 @@ class Custom {
 			if (this == &rhs) return *this;
 
 			_i = rhs._i;
-            _str = rhs._str;
+			_str = rhs._str;
 			return *this;
 		}
 
-        int getI(void) const { return _i; };
-        std::string getStr(void) const { return _str; };
+		int getI(void) const { return _i; };
+		std::string getStr(void) const { return _str; };
 
 	private:
 		int _i;
-        std::string _str;
+		std::string _str;
 };
+
+bool operator== (Custom const & lhs, Custom const & rhs) {
+	if (lhs.getI() == rhs.getI())
+		return true;
+	return false;
+}
+
+bool operator!= (Custom const & lhs, Custom const & rhs) {
+	if (lhs.getI() != rhs.getI())
+		return true;
+	return false;
+}
+
+bool operator< (Custom const & lhs, Custom const & rhs) {
+	if (lhs.getI() < rhs.getI())
+		return true;
+	return false;
+}
+
+bool operator<= (Custom const &lhs, Custom const & rhs) {
+	if (lhs.getI() <= rhs.getI())
+		return true;
+	return false;
+}
+
+bool operator> (Custom const & lhs, Custom const & rhs) {
+	if (lhs.getI() > rhs.getI())
+		return true;
+	return false;
+}
+
+bool operator>= (Custom const &lhs, Custom const & rhs) {
+	if (lhs.getI() >= rhs.getI())
+		return true;
+	return false;
+}
 
 #endif
