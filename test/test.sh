@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/11 16:57:49 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/11 17:54:04 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ cleanDeepthought() {
 		fi
 	done
 
-	for EN in 'Vec' 'Stack' 'Map' 'Set'
+	for EN in 'Vec' 'Stk' 'Map' 'Set'
 	do
 		for NS in 'std' 'ft'
 		do
@@ -50,6 +50,11 @@ cleanDeepthought() {
 			fi
 		done
 	done
+}
+
+remake() {
+	cleanDeepthought
+	createDeepthoughtDirectory
 }
 
 ## vector
@@ -77,10 +82,48 @@ vectorTest() {
 			diff ./log/std_vec_"$VECTEST".log ./log/ft_vec_"$VECTEST".log > ./deepthought/vec_"$VECTEST".diff
 			if [ ! -s "./deepthought/vec_"$VECTEST".diff" ] ; then
 				echo -e "$VECTEST : \033[1;32m[Ok]\033[0m"
-				rm ./deepthought/vec_"$VECTEST"
+				rm ./deepthought/vec_"$VECTEST".diff
 
 			else
 				echo -e ""$VECTEST" : \033[1;31m[Ko]\033[0m"
+				
+			fi
+		else
+			echo -e "log file not found!"
+
+		fi
+	done
+}
+
+## stack
+
+stackCompilation() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/stackTest.cpp -D __NS__=std -o stdStk
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/stackTest.cpp -D __NS__=ft -o ftStk
+}
+
+stackTest() {
+	for STKTEST in 'constructTest' 'emptyTest' 'sizeTest' 'topTest' 'pbTest'
+	do
+		if [ -d "./log" ] && [ -f "./stdStk" ] ; then
+			./stdStk $STKTEST > ./log/std_stack_"$STKTEST".log
+		fi
+
+		if [ -d "./log" ] && [ -f "./ftStk" ] ; then
+			./ftStk $STKTEST > ./log/ft_stack_"$STKTEST".log
+		fi
+	done
+
+	for STKTEST in 'constructTest' 'emptyTest' 'sizeTest' 'topTest' 'pbTest'
+	do
+		if [ -d "./deepthought" ] && [ -f "./log/std_stack_"$STKTEST".log" ] && [ -f "./log/ft_stack_"$STKTEST".log" ] ; then
+			diff ./log/std_stack_"$STKTEST".log ./log/ft_stack_"$STKTEST".log > ./deepthought/stack_"$STKTEST".diff
+			if [ ! -s "./deepthought/stack_"$STKTEST".diff" ] ; then
+				echo -e "$STKTEST : \033[1;32m[Ok]\033[0m"
+				rm ./deepthought/stack_"$STKTEST".diff
+
+			else
+				echo -e ""$STKTEST" : \033[1;31m[Ko]\033[0m"
 				
 			fi
 		else
@@ -96,42 +139,59 @@ createDeepthoughtDirectory
 
 if [[ $1 = 'all' ]] && [ -z $2 ] ; then
 	clear
-	echo -e "coming soon ..."
+	remake
+
+	for CONT in 'vector' 'stack'
+	do
+		echo -e "\033[1;35m$CONT\033[0m"
+		$CONT"Compilation"
+		$CONT"Test"
+		echo ""
+	done
 
 elif [[ $1 = 'clean' ]] && [ -z $2 ] ; then
+	clear
 	cleanDeepthought
 
 elif [[ $1 = 'vector' ]] && [ -z $2 ] ; then
+	clear
 	echo -e "\033[1;35mVector\033[0m"
-	cleanDeepthought
-	createDeepthoughtDirectory
+	remake
 
-	vectorCompilation
-	vectorTest
+	for EXEC in 'Compilation' 'Test'
+	do
+		vector$EXEC
+	done
 
 elif [[ $1 = 'stack' ]] && [ -z $2 ] ; then
+	clear
 	echo -e "\033[1;35mStack\033[0m"
-	cleanDeepthought
-	createDeepthoughtDirectory
+	remake
 
-	stackCompilation
-	stackTest
+	for EXEC in 'Compilation' 'Test'
+	do
+		stack$EXEC
+	done
 
 elif [[ $1 = 'map' ]] && [ -z $2 ] ; then
+	clear
 	echo -e "\033[1;35mMap\033[0m"
-	cleanDeepthought
-	createDeepthoughtDirectory
+	remake
 
-	mapCompilation
-	mapTest
+	for EXEC in 'Compilation' 'Test'
+	do
+		map$EXEC
+	done
 
 elif [[ $1 = 'set' ]] && [ -z $2 ] ; then
+	clear
 	echo -e "\033[1;35mSet\033[0m"
-	cleanDeepthought
-	createDeepthoughtDirectory
+	remake
 
-	setCompilation
-	setTest
+	for EXEC in 'Compilation' 'Test'
+	do
+		set$EXEC
+	done
 
 else
 	printUsage

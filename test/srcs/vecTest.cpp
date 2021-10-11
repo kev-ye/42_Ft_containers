@@ -6,17 +6,15 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 16:52:33 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 17:29:13 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Custom.hpp"
 #include "vector.hpp"
-#include <iostream>
 #include <vector>
-#include <iterator>
-#include <algorithm>
-#include <limits>
+#include <iostream>
+#include <string>
 
 // #define __NS__ std // default namespace set
 
@@ -650,18 +648,19 @@ int main(int ac, char **av) {
 	if (ac == 1) {
 		printTitle("Args help");
 		
-		std::cout << "- all\n"
-			<< "- constructTest\n"
-			<< "- iteratorTest\n"
-			<< "- sizeTest\n"
-			<< "- resizeTest\n"
-			<< "- emptyTest\n"
-			<< "- elementAccessTest\n"
-			<< "- assignTest\n"
-			<< "- pbTest\n"
-			<< "- insertTest\n"
-			<< "- swaptTest\n"
-			<< "- clearTest\n";
+		std::cout << "- \033[1;36mall\033[0m: launch all test\n"
+			<< "- \033[1;36mconstructTest\033[0m: launch about constructor test\n"
+			<< "- \033[1;36miteratorTest\033[0m: launch about iterator test\n"
+			<< "- \033[1;36msizeTest\033[0m: launch about size/max_size/capacity test\n"
+			<< "- \033[1;36mresizeTest\033[0m: launch about resize test\n"
+			<< "- \033[1;36memptyTest\033[0m: launch about empty test\n"
+			<< "- \033[1;36melementAccessTest\033[0m: launch about element access test\n"
+			<< "- \033[1;36massignTest\033[0m: launch about assign test\n"
+			<< "- \033[1;36mpbTest\033[0m: launch about push_back/pop_back test\n"
+			<< "- \033[1;36minsertTest\033[0m: launch about insert test\n"
+			<< "- \033[1;36mswaptTest\033[0m: launch about swap test\n"
+			<< "- \033[1;36mclearTest\033[0m: launch about clear test\n";
+		return 0;
 	}
 
 	Test test[] = {
