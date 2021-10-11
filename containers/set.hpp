@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.hpp                                            :+:      :+:    :+:   */
+/*   set.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 08:21:57 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 09:06:23 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_HPP
-# define MAP_HPP
+#ifndef SET_HPP
+# define SET_HPP
 
 #include <memory>
 #include <cstddef>
 #include <exception>
-#include "./utils/mapIte.hpp"
+#include "./utils/setIte.hpp"
 
 _BEGIN_NS_FT
 
 /**
- * @class template: map
+ * @class template: set
  */
 
 	/**
-	 * @brief map
-	 * @note maps are associative containers that store elements formed by a combination of a key value and a mapped value,
+	 * @brief set
+	 * @note sets are associative containers that store elements formed by a combination of a key value and a setped value,
 	 * following a specific order.
 	 * 
 	 * container properties:
@@ -34,63 +34,37 @@ _BEGIN_NS_FT
 	 *   elements in associative containers are referenced by their key and not by their absolute position in the container.
 	 *  - ordered:
 	 *   the elements in the container follow a strict order at all times. All inserted elements are given a position in this order.
-	 *  - map
-	 *   each element associates a key to a mapped value:
-	 *   keys are meant to identify the element whose main content is the mapped value.
+	 *  - set
+	 *   each element associates a key to a setped value:
+	 *   keys are meant to identify the element whose main content is the setped value.
 	 *  - unique keys:
 	 *   no two elements in the container can have equivalent keys.
 	 *  - allocator-aware:
 	 *   the container uses an allocator object to dynamically handle its storage needs.
 	 * 
-	 * @param key: type of the keys. each element in a map is uniquely identified by its key value.
-	 * @param T: type of the mapped valu. each element in a map stores somedata as its mapped value.
+	 * @param key: type of the keys. each element in a set is uniquely identified by its key value.
+	 * @param T: type of the setped valu. each element in a set stores somedata as its setped value.
 	 * @param Compare: a binary predicate that takes two element keys as arguments and returns a bool.
 	 * the expression comp(a,b), where comp is an object of this type and a and b are key values,
 	 * shall return true if a is considered to go before b in the strict weak ordering the function defines.
-	 * The map object uses this expression to determine both the order the elements follow in the container and whether two element keys are equivalent.
-	 * No two elements in a map container can have equivalent keys.
+	 * The set object uses this expression to determine both the order the elements follow in the container and whether two element keys are equivalent.
+	 * No two elements in a set container can have equivalent keys.
 	 * This can be a function pointer or a function object.
 	 * This defaults to less<T>, which returns the same as applying the less-than operator (a<b).
 	 * @param Alloc: type of the allocator object used to define the storage allocation model.
 	 * by default, the allocator class template is used, which defines the simplest memory allocation model and is value-independent.
 	 */
-	template < class Key,
-		class T,
-		class Compare = ft::less<Key>,
-		class Alloc = std::allocator< ft::pair<const Key, T> > >
-	class map {
+	template < class T,
+		class Compare = ft::less<T>,
+		class Alloc = std::allocator<T> >
+	class set {
 		public:
 		/* member types */
 
-			typedef				Key													key_type;
-			typedef				T													mapped_type;
-			typedef				ft::pair<const key_type, mapped_type>				value_type;
+			typedef				T													kwy_type;
+			typedef				T													value_type;
 			typedef				Compare												key_compare;
-
-			/**
-			 * @brief return value comparison object
-			 * @note returns a comparison object that can be used to compare two elements
-			 * to get whether the key of the first one goes before the second.
-			 * 
-			 * @return the comparison object for element values.
-			 */
-			class value_compare : public binary_function<value_type, value_type, bool> {
-				friend class map;
-		
-				protected:
-					key_compare comp;
-
-					value_compare(key_compare c) : comp(c) {}
-
-				public:
-					typedef bool 		result_type;
-					typedef value_type	first_argument_type;
-					typedef value_type	second_argument_type;
-
-					bool operator()(const value_type& x, const value_type& y) const {
-						return comp(x.first, y.first);
-					}
-			};
+			typedef				Compare												value_compare;
 
 			typedef				Alloc															allocator_type;
 			typedef	typename	allocator_type::reference										reference;
@@ -103,8 +77,8 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type										size_type;
 
-			typedef				ft::mapIterator<value_type, ft::RBT_Node<value_type> >			iterator;
-			typedef				ft::mapIterator<const value_type, ft::RBT_Node<value_type> >	const_iterator;
+			typedef				ft::setIterator<const value_type, ft::RBT_Node<value_type> >	iterator;
+			typedef				ft::setIterator<const value_type, ft::RBT_Node<value_type> >	const_iterator;
 			typedef				ft::reverse_iterator<iterator>									reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 
@@ -120,7 +94,7 @@ _BEGIN_NS_FT
 			 * and false otherwise.
 			 * @param alloc: allocator object.
 			 */
-			explicit map(const key_compare& comp = key_compare(),
+			explicit set(const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) : _rbt(value_compare(comp)) { (void)alloc; }
 		
 			/**
@@ -132,7 +106,7 @@ _BEGIN_NS_FT
 			 * @param alloc: allocator object.
 			 */
 			template <class InputIterator>
-			map(InputIterator first, InputIterator last,
+			set(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) : _rbt(value_compare(comp)) {
 					(void)alloc;
@@ -145,7 +119,7 @@ _BEGIN_NS_FT
 			 * 
 			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
 			 */
-			map(const map& x) : _rbt(value_compare(key_compare())) {
+			set(const set& x) : _rbt(value_compare(key_compare())) {
 				insert(x.begin(), x.end());
 			}
 			
@@ -154,7 +128,7 @@ _BEGIN_NS_FT
 			 * @note this destroys all container elements,
 			 * and deallocates all the storage capacity allocated by the vector using its allocator.
 			 */
-   			~map(void) {
+   			~set(void) {
 				clear();
 				_rbt.destroyNull();
 			}
@@ -163,13 +137,13 @@ _BEGIN_NS_FT
 			 * @brief operator: copy
 			 * @note copies all the elements from x into the container.
 			 * 
-			 * @param x: a map object of the same type.
+			 * @param x: a set object of the same type.
 			 * @return *this.
 			 */
-			map& operator=(const map& x) {
+			set& operator=(const set& x) {
 				if (this == &x) return *this;
 
-				this->~map();
+				this->~set();
 				_rbt = ft::RBT<value_type, value_compare>(value_compare(key_compare()));
 				insert(x.begin(), x.end());
 				return *this;
@@ -179,7 +153,7 @@ _BEGIN_NS_FT
 
 			/**
 			 * @brief return iterator to beginning
-			 * @note returns an iterator referring to the first element in the map container.
+			 * @note returns an iterator referring to the first element in the set container.
 			 * 
 			 * @return an iterator to the first element in the container.
 			 */
@@ -188,7 +162,7 @@ _BEGIN_NS_FT
 			
 			/**
 			 * @brief return iterator to end
-			 * @note returns an iterator referring to the past-the-end element in the map container.
+			 * @note returns an iterator referring to the past-the-end element in the set container.
 			 * 
 			 * @return an iterator to the past-the-end element in the container.
 			 */
@@ -207,7 +181,7 @@ _BEGIN_NS_FT
 			/**
 			 * @brief return reverse iterator to reverse end
 			 * @note returns a reverse iterator pointing to the theoretical element right
-			 * before the first element in the map container (which is considered its reverse end).
+			 * before the first element in the set container (which is considered its reverse end).
 			 * 
 			 * @return a reverse iterator to the reverse end of the sequence container.
 			 */
@@ -218,7 +192,7 @@ _BEGIN_NS_FT
 		
 			/**
 			 * @brief test whether container is empty
-			 * @note returns whether the map container is empty (i.e. whether its size is 0).
+			 * @note returns whether the set container is empty (i.e. whether its size is 0).
 			 * 
 			 * @return true if the container size is 0, false otherwise.
 			 */
@@ -226,7 +200,7 @@ _BEGIN_NS_FT
 
 			/**
 			 * @brief return container size
-			 * @note returns the number of elements in the map container.
+			 * @note returns the number of elements in the set container.
 			 * 
 			 * @return the number of elements in the container.
 			 */
@@ -234,23 +208,11 @@ _BEGIN_NS_FT
 
 			/**
 			 * @brief return maximum size
-			 * @note returns the maximum number of elements that the map container can hold.
+			 * @note returns the maximum number of elements that the set container can hold.
 			 * 
-			 * @return the maximum number of elements a map container can hold as content.
+			 * @return the maximum number of elements a set container can hold as content.
 			 */
 			size_type	max_size(void) const { return _rbt.max_size(); }
-
-		/* member functions: element access */
-			
-			/**
-			 * @brief access element
-			 * @note if k matches the key of an element in the container,
-			 * the function returns a reference to its mapped value.
-			 * 
-			 * @param k: key value of the element whose mapped value is accessed.
-			 * @return a reference to the mapped value of the element with a key value equivalent to k.
-			 */
-			mapped_type& operator[](const key_type& k) { return insert(ft::make_pair(k, mapped_type())).first->second; }
 
 		/* member functions: modifiers */
 		
@@ -265,16 +227,16 @@ _BEGIN_NS_FT
 			 * Copies of the elements in the range [first,last) are inserted in the container.
 			 * @return the single element versions (1) return a pair,
 			 * with its member pair::first set to an iterator pointing to either the newly inserted element
-			 * or to the element with an equivalent key in the map.
+			 * or to the element with an equivalent key in the set.
 			 * The pair::second element in the pair is set to true if a new element was inserted or
 			 * false if an equivalent key already existed.
 			 * @return the versions with a hint (2) return an iterator pointing to either
-			 * the newly inserted element or to the element that already had an equivalent key in the map.
+			 * the newly inserted element or to the element that already had an equivalent key in the set.
 			 */
 			ft::pair<iterator, bool> insert(const value_type& val) {
 				if (_rbt.insert(val) == false)
-					return ft::make_pair(find(val.first), false);
-				return ft::make_pair(find(val.first), true);
+					return ft::make_pair(find(val), false);
+				return ft::make_pair(find(val), true);
 			}
 
 			iterator insert(iterator position, const value_type& val) {
@@ -290,21 +252,21 @@ _BEGIN_NS_FT
 
 			/**
 			 * @brief erase elements
-			 * @note removes from the map container either a single element or a range of elements ([first,last)).
+			 * @note removes from the set container either a single element or a range of elements ([first,last)).
 			 * 
-			 * @param position: iterator pointing to a single element to be removed from the map.
-			 * @param k: key of the element to be removed from the map.
-			 * @param first, last: Iterators specifying a range within the map container to be removed: [first,last).
+			 * @param position: iterator pointing to a single element to be removed from the set.
+			 * @param k: key of the element to be removed from the set.
+			 * @param first, last: Iterators specifying a range within the set container to be removed: [first,last).
 			 * i.e., the range includes all the elements between first and last,
 			 * including the element pointed by first but not the one pointed by last.
 			 * @return for the key-based version (2), the function returns the number of elements erased.
 			 */
 			void  erase(iterator position) {
-				erase(position->first);
+				erase(*position);
 			}
 			
-			size_type erase(const key_type& k) {
-				if (_rbt.deleteNode(ft::make_pair(k, mapped_type())) == false)
+			size_type erase(const value_type& val) {
+				if (_rbt.deleteNode(val) == false)
 					return 0;
 				return 1;
 			}
@@ -312,7 +274,7 @@ _BEGIN_NS_FT
 			void  erase(iterator first, iterator last) {
 				while (first != last) {
 					// refix current ptr
-					first = find(first->first);
+					first = find(*first);
 					erase(first++);
 				}
 			}
@@ -320,17 +282,17 @@ _BEGIN_NS_FT
 			/**
 			 * @brief swap content
 			 * @note exchanges the content of the container by the content of x,
-			 * which is another map of the same type. Sizes may differ.
+			 * which is another set of the same type. Sizes may differ.
 			 * 
-			 * @param x: Another map container of the same type as this
+			 * @param x: Another set container of the same type as this
 			 * (i.e., with the same template parameters, Key, T, Compare and Alloc)
 			 * whose content is swapped with that of this container.
 			 */
-			void swap (map& x) { _rbt.swap(x._rbt); }
+			void swap (set& x) { _rbt.swap(x._rbt); }
 
 			/**
 			 * @brief clear content
-			 * @note removes all elements from the map container (which are destroyed),
+			 * @note removes all elements from the set container (which are destroyed),
 			 * leaving the container with a size of 0.
 			 */
 			void clear() { _rbt.destroyTree(); }
@@ -359,18 +321,18 @@ _BEGIN_NS_FT
 			/**
 			 * @brief get iterator to element
 			 * @note searches the container for an element with a key equivalent to k and
-			 * returns an iterator to it if found, otherwise it returns an iterator to map::end.
+			 * returns an iterator to it if found, otherwise it returns an iterator to set::end.
 			 * 
 			 * @param k: key to be searched for.
 			 * @return an iterator to the element,
-			 * if an element with specified key is found, or map::end otherwise.
+			 * if an element with specified key is found, or set::end otherwise.
 			 */
-			iterator find(const key_type& k) {
-				return iterator(_rbt.getRoot(), _rbt.searchTree(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			iterator find(const value_type& val) {
+				return iterator(_rbt.getRoot(), _rbt.searchTree(val), _rbt.getNull());
 			}
 
-			const_iterator find(const key_type& k) const {
-				return const_iterator(_rbt.getRoot(), _rbt.searchTree(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			const_iterator find(const value_type& val) const {
+				return const_iterator(_rbt.getRoot(), _rbt.searchTree(val), _rbt.getNull());
 			}
 
 			/**
@@ -380,8 +342,8 @@ _BEGIN_NS_FT
 			 * @param k: key to search for.
 			 * @return 1 if the container contains an element whose key is equivalent to k, or zero otherwise.
 			 */
-			size_type count(const key_type& k) const {
-				if (find(k) == end())
+			size_type count(const value_type& val) const {
+				if (find(val) == end())
 					return 0;
 				return 1;
 			}
@@ -395,14 +357,14 @@ _BEGIN_NS_FT
 			 * 
 			 * @param k: key to search for.
 			 * @return an iterator to the the first element in the container
-			 * whose key is not considered to go before k, or map::end if all keys are considered to go before k.
+			 * whose key is not considered to go before k, or set::end if all keys are considered to go before k.
 			 */
-			iterator lower_bound(const key_type& k) {
-				return iterator(_rbt.getRoot(), _rbt.lower_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			iterator lower_bound(const value_type& val) {
+				return iterator(_rbt.getRoot(), _rbt.lower_bound(val), _rbt.getNull());
 			}
 			
-			const_iterator lower_bound(const key_type& k) const {
-				return const_iterator(_rbt.getRoot(), _rbt.lower_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			const_iterator lower_bound(const value_type& val) const {
+				return const_iterator(_rbt.getRoot(), _rbt.lower_bound(val), _rbt.getNull());
 			}
 
 			/**
@@ -414,14 +376,14 @@ _BEGIN_NS_FT
 			 * 
 			 * @param k: key to search for.
 			 * @return an iterator to the the first element in the container
-			 * whose key is considered to go after k, or map::end if no keys are considered to go after k.
+			 * whose key is considered to go after k, or set::end if no keys are considered to go after k.
 			 */
-			iterator upper_bound(const key_type& k) {
-				return iterator(_rbt.getRoot(), _rbt.upper_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			iterator upper_bound(const value_type& val) {
+				return iterator(_rbt.getRoot(), _rbt.upper_bound(val), _rbt.getNull());
 			}
 			
-			const_iterator upper_bound(const key_type& k) const {
-				return const_iterator(_rbt.getRoot(), _rbt.upper_bound(ft::make_pair(k, mapped_type())), _rbt.getNull());
+			const_iterator upper_bound(const value_type& val) const {
+				return const_iterator(_rbt.getRoot(), _rbt.upper_bound(val), _rbt.getNull());
 			}
 
 			/**
@@ -434,19 +396,19 @@ _BEGIN_NS_FT
 			 * whose member pair::first is the lower bound of the range (the same as lower_bound),
 			 * and pair::second is the upper bound (the same as upper_bound).
 			 */
-			ft::pair<iterator, iterator> equal_range(const key_type& k) {
-				return ft::make_pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+			ft::pair<iterator, iterator> equal_range(const value_type& val) {
+				return ft::make_pair<iterator, iterator>(lower_bound(val), upper_bound(val));
 			}
 			
-			ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const {
-				return ft::make_pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
+			ft::pair<const_iterator, const_iterator> equal_range(const value_type& val) const {
+				return ft::make_pair<const_iterator, const_iterator>(lower_bound(val), upper_bound(val));
 			}
 
 		/* member functions: allocator */
 		
 			/**
 			 * @brief get allocator
-			 * @note returns a copy of the allocator object associated with the map.
+			 * @note returns a copy of the allocator object associated with the set.
 			 * 
 			 * @return the allocator.
 			 */
@@ -461,50 +423,50 @@ _BEGIN_NS_FT
 	/* non-member function: vector */
 
 		/**
-		 * @brief relational operators for map
-		 * @note performs the appropriate comparison operation between the map containers lhs and rhs.
+		 * @brief relational operators for set
+		 * @note performs the appropriate comparison operation between the set containers lhs and rhs.
 		 * a != b : !(a == b)
 		 * a > b  : b < a
 		 * a <= b : !(b < a)
 		 * a >= b : !(a < b)
 		 * 
-		 * @param lhs, rhs: map containers (to the left- and right-hand side of the operator, respectively),
+		 * @param lhs, rhs: set containers (to the left- and right-hand side of the operator, respectively),
 		 * having both the same template parameters (Key, T, Compare and Alloc).
 		 * @return true if the condition holds, and false otherwise.
 		 */
-		template <class Key, class T, class Compare, class Allocator>
-		bool operator==(const ft::map<Key, T, Compare, Allocator>& lhs,
-				const ft::map<Key, T, Compare, Allocator>& rhs) {
+		template <class T, class Compare, class Allocator>
+		bool operator==(const ft::set<T, Compare, Allocator>& lhs,
+				const ft::set<T, Compare, Allocator>& rhs) {
 					if (lhs.size() != rhs.size())
 						return false;
 					return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		}
 
-		template <class Key, class T, class Compare, class Allocator>
-		bool operator!=(const map<Key, T, Compare, Allocator>& lhs,
-				const map<Key, T, Compare, Allocator>& rhs) { return !(lhs == rhs); }
+		template <class T, class Compare, class Allocator>
+		bool operator!=(const set<T, Compare, Allocator>& lhs,
+				const set<T, Compare, Allocator>& rhs) { return !(lhs == rhs); }
 
-		template <class Key, class T, class Compare, class Allocator>
-		bool operator< (const map<Key, T, Compare, Allocator>& lhs,
-				const map<Key, T, Compare, Allocator>& rhs) {
+		template <class T, class Compare, class Allocator>
+		bool operator< (const set<T, Compare, Allocator>& lhs,
+				const set<T, Compare, Allocator>& rhs) {
 					return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 		}
 
-		template <class Key, class T, class Compare, class Allocator>
-		bool operator<=(const map<Key, T, Compare, Allocator>& lhs,
-				const map<Key, T, Compare, Allocator>& rhs) { return !(rhs < lhs); }
+		template <class T, class Compare, class Allocator>
+		bool operator<=(const set<T, Compare, Allocator>& lhs,
+				const set<T, Compare, Allocator>& rhs) { return !(rhs < lhs); }
 
-		template <class Key, class T, class Compare, class Allocator>
-		bool operator> (const map<Key, T, Compare, Allocator>& lhs,
-				const map<Key, T, Compare, Allocator>& rhs) { return rhs < lhs; }
+		template <class T, class Compare, class Allocator>
+		bool operator> (const set<T, Compare, Allocator>& lhs,
+				const set<T, Compare, Allocator>& rhs) { return rhs < lhs; }
 
-		template <class Key, class T, class Compare, class Allocator>
-		bool operator>=(const map<Key, T, Compare, Allocator>& lhs,
-				const map<Key, T, Compare, Allocator>& rhs) { return !(lhs < rhs); }
+		template <class T, class Compare, class Allocator>
+		bool operator>=(const set<T, Compare, Allocator>& lhs,
+				const set<T, Compare, Allocator>& rhs) { return !(lhs < rhs); }
 
-		template <class Key, class T, class Compare, class Allocator>
-		void swap(map<Key, T, Compare, Allocator>& x,
-			map<Key, T, Compare, Allocator>& y) { x.swap(y); }
+		template <class T, class Compare, class Allocator>
+		void swap(set<T, Compare, Allocator>& x,
+			set<T, Compare, Allocator>& y) { x.swap(y); }
 
 _END_NS_FT
 

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/09 19:06:50 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 08:58:48 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@ _BEGIN_NS_FT
 
 #define RED_NODE 1
 #define BLACK_NODE 0
-
-/**
- * @brief class declare
- */
-	template < class T, class Node >
-	class mapIterator;
 
 /**
  * @class template: RBT_Node
@@ -58,18 +52,8 @@ _BEGIN_NS_FT
 				parent(ft_nullptr),
 				left(ft_nullptr),
 				right(ft_nullptr) {}
-
-			RBT_Node(bool color = BLACK_NODE,
-				RBT_Node *parent = ft_nullptr,
-				RBT_Node *left = ft_nullptr,
-				RBT_Node *right = ft_nullptr) :
-					val(),
-					color(color),
-					parent(parent),
-					left(left),
-					right(right) {}
 			
-			RBT_Node(value_type val,
+			RBT_Node(value_type const & val,
 				bool color = BLACK_NODE,
 				RBT_Node *parent = ft_nullptr,
 				RBT_Node *left = ft_nullptr,
@@ -142,7 +126,7 @@ _BEGIN_NS_FT
 		public:
 			RBT(value_compare const & comp = value_compare()) : _comp(comp) {
 				_null = allocator_type().allocate(1);
-				allocator_type().construct(_null, node_type(BLACK_NODE, ft_nullptr, ft_nullptr, ft_nullptr)); // null node is a black node
+				allocator_type().construct(_null, node_type());
 				_root = _null;
 			}
 

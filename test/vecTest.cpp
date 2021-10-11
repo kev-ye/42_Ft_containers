@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 00:30:03 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 08:21:52 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <iterator>
 #include <algorithm>
 #include <limits>
+
+#define __NS__ std // default namespace set
 
 void	printTitle(std::string const & title) {
 	std::cout << "-- [" << title << "] --" << std::endl;
