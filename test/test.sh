@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/11 00:47:24 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/11 10:29:37 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,11 @@
 ## Utils
 
 printUsage() {
-	echo -e "usage: bash test.sh [\033[1;32magrs\033[0m] or [\033[1;32mcontainers\033[0m] [\033[1;32mnamespace\033[0m]"
-	echo -e "args1: \033[1;32mall\033[0m: launch all test"
-	echo -e "       \033[1;32mclean\033[0m: clear deepthought/log directory and file"
-	echo -e "args2: \033[1;32mcontainer\033[0m: (show diff + log) vector/stack/map"
-	echo -e "       \033[1;32mnamespace(use with container)\033[0m: (show log) std/ft"
+	echo -e "usage: bash test.sh [\033[1;32magrs\033[0m]"
+	echo -e "args: \033[1;32mall\033[0m: launch all test"
+	echo -e "      \033[1;32mclean\033[0m: clear deepthought/log directory and file"
+	echo -e "      \033[1;32mcontainers\033[0m: vector/stack/map (diff + log)"
+	echo -e "Tips: \033[1;35mYou can use the execute std/ft{containersNames} (after tester launch) to compare one by one\033[0m"
 }
 
 createDeepthoughtDirectory() {
@@ -34,13 +34,12 @@ createDeepthoughtDirectory() {
 }
 
 cleanDeepthought() {
-	if [ -d "./deepthought" ] ; then
-		rm -rf deepthought
-	fi
-
-	if [ -d "./log" ] ; then
-		rm -rf log
-	fi
+	for DL in 'deepthought' 'log'
+	do
+		if [ -d "./$DL" ] ; then
+			rm -rf $DL
+		fi
+	done
 
 	for EN in 'Vec' 'Stack' 'Map'
 	do
@@ -55,16 +54,13 @@ cleanDeepthought() {
 
 ## vector
 
-vectorStdCompile() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers vecTest.cpp -D __NS__=std -o stdVec
+vectorCompilation() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/vecTest.cpp -D __NS__=std -o stdVec
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/vecTest.cpp -D __NS__=ft -o ftVec
 }
 
-vectorFtCompile() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers vecTest.cpp -D __NS__=ft -o ftVec
-}
-
-vectorLog() {
-	for VECTEST in 'constructTest' 'iteratorTest'
+vectorTest() {
+	for VECTEST in 'constructTest' 'iteratorTest' 'sizeTest' 'resizeTest' 'emptyTest'
 	do
 		if [ -d "./log" ] && [ -f "./stdVec" ] ; then
 			./stdVec $VECTEST > ./log/std_vec_"$VECTEST".log
@@ -74,15 +70,13 @@ vectorLog() {
 			./ftVec $VECTEST > ./log/ft_vec_"$VECTEST".log
 		fi
 	done
-}
 
-vectorDiff() {
-	for VECTEST in 'constructTest' 'iteratorTest'
+	for VECTEST in 'constructTest' 'iteratorTest' 'sizeTest' 'resizeTest' 'emptyTest'
 	do
 		if [ -d "./deepthought" ] && [ -f "./log/std_vec_"$VECTEST".log" ] && [ -f "./log/ft_vec_"$VECTEST".log" ] ; then
 			diff ./log/std_vec_"$VECTEST".log ./log/ft_vec_"$VECTEST".log > ./deepthought/vec_"$VECTEST".diff
-			if [ ! -s "$VECTEST".diff ] ; then
-				echo -e ""$VECTEST" : \033[1;32mOk\033[0m"
+			if [ ! -s "./deepthought/vec_"$VECTEST".diff" ] ; then
+				echo -e "$VECTEST : \033[1;32mOk\033[0m"
 
 			else
 				echo -e ""$VECTEST" : \033[1;33mKo\033[0m"
@@ -93,42 +87,6 @@ vectorDiff() {
 
 		fi
 	done
-}
-
-## Stack
-
-stackStdCompile() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers stackTest.cpp -D __NS__=std -o stdStack
-}
-
-stackFtCompile() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I../containers stackTest.cpp -D __NS__=ft -o ftStack
-}
-
-stackRun() {
-	if [ -d "./log" ] && [ -f "./stdStack" ] ; then
-		./stdStack constructTest > ./log/std_stack_constructTest.log
-	fi
-
-	if [ -d "./log" ] && [ -f "./ftStack" ] ; then
-		./ftStack constructTest > ./log/ft_stack_constructTest.log
-	fi
-}
-
-stackDiff() {
-	if [ -d "./deepthought" ] && [ -f "./log/std_stack_constructTest.log" ] && [ -f "./log/ft_stack_constructTest.log" ] ; then
-		diff ./log/std_stack_constructTest.log ./log/ft_stack_constructTest.log > ./deepthought/stack_constructTest.diff
-		if [ ! -s constructTest.diff ] ; then
-			echo -e "constructor test : \033[1;32mOk\033[0m"
-
-		else
-			echo -e "constructor test : \033[1;33mKo\033[0m"
-			
-		fi
-	else
-		echo -e "log file not found!"
-
-	fi
 }
 
 # Run
@@ -146,31 +104,29 @@ elif [[ $1 = 'vector' ]] && [ -z $2 ] ; then
 	cleanDeepthought
 	createDeepthoughtDirectory
 
-	vectorStdCompile
-	vectorFtCompile
-
-	vectorRLog
-	vectorDiff
+	vectorCompilation
+	vectorTest
 
 elif [[ $1 = 'stack' ]] && [ -z $2 ] ; then
 	cleanDeepthought
 	createDeepthoughtDirectory
 
-	stackStdCompile
-	stackFtCompile
-
-	stackRun
-	stackDiff
+	stackCompilation
+	stackTest
 
 elif [[ $1 = 'map' ]] && [ -z $2 ] ; then
 	cleanDeepthought
 	createDeepthoughtDirectory
 
-	mapStdCompile
-	mapFtCompile
+	mapCompilation
+	mapTest
 
-	mapRun
-	mapDiff
+elif [[ $1 = 'set' ]] && [ -z $2 ] ; then
+	cleanDeepthought
+	createDeepthoughtDirectory
+
+	setCompilation
+	setTest
 
 else
 	printUsage
