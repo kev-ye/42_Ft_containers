@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 08:21:57 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 13:42:56 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <memory>
 #include <cstddef>
 #include <exception>
-#include "./utils/mapIte.hpp"
+#include "./utils/treeIte.hpp"
 
 _BEGIN_NS_FT
 
@@ -103,8 +103,8 @@ _BEGIN_NS_FT
 			/** @note usually the same as size_t */
 			typedef	typename	allocator_type::size_type										size_type;
 
-			typedef				ft::mapIterator<value_type, ft::RBT_Node<value_type> >			iterator;
-			typedef				ft::mapIterator<const value_type, ft::RBT_Node<value_type> >	const_iterator;
+			typedef				ft::treeIterator<value_type, ft::RBT_Node<value_type> >			iterator;
+			typedef				ft::treeIterator<const value_type, ft::RBT_Node<value_type> >	const_iterator;
 			typedef				ft::reverse_iterator<iterator>									reverse_iterator;
 			typedef				ft::reverse_iterator<const_iterator>							const_reverse_iterator;
 

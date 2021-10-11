@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 08:58:48 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 15:19:54 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <memory>
 #include "utils.hpp"
-#include "mapIte.hpp"
 
 _BEGIN_NS_FT
 
@@ -34,11 +33,12 @@ _BEGIN_NS_FT
 		/* member types */
 		
 			typedef T		value_type;
+			typedef bool	size_type;
 
 		/* attributes */
 
 			value_type	val;
-			bool		color;
+			size_type	color;
 			RBT_Node	*parent;
 			RBT_Node	*left;
 			RBT_Node	*right;

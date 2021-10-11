@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mapIte.hpp                                         :+:      :+:    :+:   */
+/*   treeIte.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/08 17:10:22 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 13:42:25 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAPITE_HPP
-# define MAPITE_HPP
+#ifndef TREEITE_HPP
+# define TREEITE_HPP
 
 #include "RBT.hpp"
 #include "iterator.hpp"
@@ -22,15 +22,15 @@
 _BEGIN_NS_FT
 
 /**
- * @class template: mapIterator
+ * @class template: treeIterator
  */
 
 	/**
-	 * @class template: mapIterator
+	 * @class template: treeIterator
 	 * @brief bidirectional iterator
 	 */
 	template < class T, class Node >
-	class mapIterator : public ft::iterator<bidirectional_iterator_tag, T> {
+	class treeIterator : public ft::iterator<bidirectional_iterator_tag, T> {
 		public:
 		/* member types */
 
@@ -49,24 +49,24 @@ _BEGIN_NS_FT
 
 		/* constructor / destructor / operator= */
 			
-			mapIterator(void) :
+			treeIterator(void) :
 				_root(ft_nullptr),
 				_node(ft_nullptr),
 				_null(ft_nullptr) {}
 
-			mapIterator(node_pointer root, node_pointer node, node_pointer null) :
+			treeIterator(node_pointer root, node_pointer node, node_pointer null) :
 				_root(root),
 				_node(node),
 				_null(null) {}
 
-			mapIterator(mapIterator const & src) :
+			treeIterator(treeIterator const & src) :
 				_root(src._root),
 				_node(src._node),
 				_null(src._null) {}
 
-			~mapIterator(void) {}
+			~treeIterator(void) {}
 
-			mapIterator & operator= (mapIterator const & rhs) {
+			treeIterator & operator= (treeIterator const & rhs) {
 				if (this == &rhs) return *this;
 
 				_root = rhs._root;
@@ -82,7 +82,7 @@ _BEGIN_NS_FT
 			pointer		operator->(void) const { return &(operator*()); }
 
 			/** @brief increment node position*/
-			mapIterator &	operator++ (void) {
+			treeIterator &	operator++ (void) {
 				if (_node == max(_root)) {
 					_node = _null;
 					return *this;
@@ -95,14 +95,14 @@ _BEGIN_NS_FT
 				return *this;
 			}
 			
-			mapIterator	operator++ (int) {
-				mapIterator tmp(_root, _node, _null);
+			treeIterator	operator++ (int) {
+				treeIterator tmp(_root, _node, _null);
 				operator++();
 				return tmp;
 			}
 
 			/** @brief decrease node position*/
-			mapIterator &	operator-- (void) {
+			treeIterator &	operator-- (void) {
 				if (_node == _null) {
 					_node = max(_root);
 					return *this;
@@ -111,33 +111,33 @@ _BEGIN_NS_FT
 				return *this;
 			}
 			
-			mapIterator	operator-- (int) {
-				mapIterator tmp(_root, _node, _null);
+			treeIterator	operator-- (int) {
+				treeIterator tmp(_root, _node, _null);
 				operator--();
 				return tmp;
 			}
 
-			operator mapIterator<const T, Node> (void) {
-				return mapIterator<const T, Node>(_root, _node, _null);
+			operator treeIterator<const T, Node> (void) {
+				return treeIterator<const T, Node>(_root, _node, _null);
 			}
 
 			template < class _T, class _Node >
-			friend bool operator== (const mapIterator<_T, _Node> & lhs, const mapIterator<_T, _Node> & rhs) {
+			friend bool operator== (const treeIterator<_T, _Node> & lhs, const treeIterator<_T, _Node> & rhs) {
 				return lhs._node == rhs._node;
 			}
 
 			template < class _TL, class _TR, class _Node >
-			friend bool operator== (const mapIterator<_TL, _Node> & lhs, const mapIterator<_TR, _Node> & rhs) {
+			friend bool operator== (const treeIterator<_TL, _Node> & lhs, const treeIterator<_TR, _Node> & rhs) {
 				return lhs._node == rhs._node;
 			}
 
 			template < class _T, class _Node >
-			friend bool operator!= (const mapIterator<_T, _Node> & lhs, const mapIterator<_T, _Node> & rhs) {
+			friend bool operator!= (const treeIterator<_T, _Node> & lhs, const treeIterator<_T, _Node> & rhs) {
 				return lhs._node != rhs._node;
 			}
 
 			template < class _TL, class _TR, class _Node >
-			friend bool operator!= (const mapIterator<_TL, _Node> & lhs, const mapIterator<_TR, _Node> & rhs) {
+			friend bool operator!= (const treeIterator<_TL, _Node> & lhs, const treeIterator<_TR, _Node> & rhs) {
 				return lhs._node != rhs._node;
 			}
 

@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/11 10:29:37 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/11 16:57:49 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ cleanDeepthought() {
 		fi
 	done
 
-	for EN in 'Vec' 'Stack' 'Map'
+	for EN in 'Vec' 'Stack' 'Map' 'Set'
 	do
 		for NS in 'std' 'ft'
 		do
@@ -60,7 +60,7 @@ vectorCompilation() {
 }
 
 vectorTest() {
-	for VECTEST in 'constructTest' 'iteratorTest' 'sizeTest' 'resizeTest' 'emptyTest'
+	for VECTEST in 'constructTest' 'iteratorTest' 'sizeTest' 'resizeTest' 'emptyTest' 'elementAccessTest' 'assignTest' 'pbTest' 'insertTest' 'eraseTest' 'swapTest' 'clear'
 	do
 		if [ -d "./log" ] && [ -f "./stdVec" ] ; then
 			./stdVec $VECTEST > ./log/std_vec_"$VECTEST".log
@@ -71,15 +71,16 @@ vectorTest() {
 		fi
 	done
 
-	for VECTEST in 'constructTest' 'iteratorTest' 'sizeTest' 'resizeTest' 'emptyTest'
+	for VECTEST in 'constructTest' 'iteratorTest' 'sizeTest' 'resizeTest' 'emptyTest' 'elementAccessTest' 'assignTest' 'pbTest' 'insertTest' 'eraseTest' 'swapTest' 'clear'
 	do
 		if [ -d "./deepthought" ] && [ -f "./log/std_vec_"$VECTEST".log" ] && [ -f "./log/ft_vec_"$VECTEST".log" ] ; then
 			diff ./log/std_vec_"$VECTEST".log ./log/ft_vec_"$VECTEST".log > ./deepthought/vec_"$VECTEST".diff
 			if [ ! -s "./deepthought/vec_"$VECTEST".diff" ] ; then
-				echo -e "$VECTEST : \033[1;32mOk\033[0m"
+				echo -e "$VECTEST : \033[1;32m[Ok]\033[0m"
+				rm ./deepthought/vec_"$VECTEST"
 
 			else
-				echo -e ""$VECTEST" : \033[1;33mKo\033[0m"
+				echo -e ""$VECTEST" : \033[1;31m[Ko]\033[0m"
 				
 			fi
 		else
@@ -101,6 +102,7 @@ elif [[ $1 = 'clean' ]] && [ -z $2 ] ; then
 	cleanDeepthought
 
 elif [[ $1 = 'vector' ]] && [ -z $2 ] ; then
+	echo -e "\033[1;35mVector\033[0m"
 	cleanDeepthought
 	createDeepthoughtDirectory
 
@@ -108,6 +110,7 @@ elif [[ $1 = 'vector' ]] && [ -z $2 ] ; then
 	vectorTest
 
 elif [[ $1 = 'stack' ]] && [ -z $2 ] ; then
+	echo -e "\033[1;35mStack\033[0m"
 	cleanDeepthought
 	createDeepthoughtDirectory
 
@@ -115,6 +118,7 @@ elif [[ $1 = 'stack' ]] && [ -z $2 ] ; then
 	stackTest
 
 elif [[ $1 = 'map' ]] && [ -z $2 ] ; then
+	echo -e "\033[1;35mMap\033[0m"
 	cleanDeepthought
 	createDeepthoughtDirectory
 
@@ -122,6 +126,7 @@ elif [[ $1 = 'map' ]] && [ -z $2 ] ; then
 	mapTest
 
 elif [[ $1 = 'set' ]] && [ -z $2 ] ; then
+	echo -e "\033[1;35mSet\033[0m"
 	cleanDeepthought
 	createDeepthoughtDirectory
 

@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/08 18:05:30 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 14:47:54 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,11 @@ _BEGIN_NS_FT
 			 * 
 			 * @return the maximum number of elements a vector container can hold as content.
 			 */
-			size_type	max_size(void) const { return allocator_type().max_size(); }
+			size_type	max_size(void) const {
+				size_type ret1 = allocator_type().max_size();
+				size_type ret2 = std::numeric_limits<difference_type>::max();
+				return (ret1 < ret2) ? ret1 : ret2;
+			}
 
 			/**
 			 * @brief change size.
