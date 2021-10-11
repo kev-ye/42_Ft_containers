@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 17:43:09 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 18:02:49 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,17 @@
 #include <iostream>
 #include <string>
 
-// #define __NS__ std // default namespace set
+// #define __NS__ std // default namespace
+
+/**
+ * @brief utils
+ */
+
+typedef void	(*fp)(void);
+struct Test {
+	std::string	testName;
+	fp const	fptr;
+};
 
 void	printTitle(std::string const & title) {
 	std::cout << "-- [" << title << "] --" << std::endl;
@@ -31,6 +41,10 @@ void	printSize(__NS__::stack<T, Container> stack) {
 	std::cout << "size: " << stack.size() << std::endl;
 	std::cout << std::endl;
 }
+
+/**
+ * @brief constructor test
+ */
 
 void	constructTest(void) {
 	printTitle("Constructor");
@@ -57,6 +71,10 @@ void	constructTest(void) {
 	printSize(stk4);
 }
 
+/**
+ * @brief empty test
+ */
+
 void	emptyTest(void) {
 	printTitle("Empty");
 
@@ -71,6 +89,10 @@ void	emptyTest(void) {
 	std::cout << (stk2.empty() == true ? "stk is empty" : "stk is not empty") << std::endl;
 	printSize(stk2);
 }
+
+/**
+ * @brief size test
+ */
 
 void	sizeTest(void) {
 	printTitle("Size");
@@ -88,6 +110,10 @@ void	sizeTest(void) {
 	printSize(stk);
 }
 
+/**
+ * @brief top test
+ */
+
 void	topTest(void) {
 	printTitle("Top");
 
@@ -101,6 +127,10 @@ void	topTest(void) {
 	std::cout << "top: " << stk.top() << std::endl;
 	printSize(stk);
 }
+
+/**
+ * @brief push/pop test
+ */
 
 void	pbTest(void) {
 	printTitle("Push/Pop");
@@ -147,12 +177,9 @@ void	pbTest(void) {
 	printSize(stk);
 }
 
-
-typedef void	(*fp)(void);
-struct Test {
-	std::string	testName;
-	fp const	fptr;
-};
+/**
+ * @brief main
+ */
 
 int main(int ac, char **av) {
 	if (ac == 1) {

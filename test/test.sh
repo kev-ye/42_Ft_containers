@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/11 17:54:04 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/11 18:43:21 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,6 +124,44 @@ stackTest() {
 
 			else
 				echo -e ""$STKTEST" : \033[1;31m[Ko]\033[0m"
+				
+			fi
+		else
+			echo -e "log file not found!"
+
+		fi
+	done
+}
+
+## stack
+
+mapCompilation() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/mapTest.cpp -D __NS__=std -o stdMap
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/mapTest.cpp -D __NS__=ft -o ftMap
+}
+
+mapTest() {
+	for MAPTEST in 'constructTest'
+	do
+		if [ -d "./log" ] && [ -f "./stdMap" ] ; then
+			./stdMap $MAPTEST > ./log/std_map_"$MAPTEST".log
+		fi
+
+		if [ -d "./log" ] && [ -f "./ftMap" ] ; then
+			./ftMap $MAPTEST > ./log/ft_map_"$MAPTEST".log
+		fi
+	done
+
+	for MAPTEST in 'constructTest'
+	do
+		if [ -d "./deepthought" ] && [ -f "./log/std_map_"$MAPTEST".log" ] && [ -f "./log/ft_map_"$MAPTEST".log" ] ; then
+			diff ./log/std_map_"$MAPTEST".log ./log/ft_map_"$MAPTEST".log > ./deepthought/map_"$MAPTEST".diff
+			if [ ! -s "./deepthought/map_"$MAPTEST".diff" ] ; then
+				echo -e "$MAPTEST : \033[1;32m[Ok]\033[0m"
+				# rm ./deepthought/map_"$MAPTEST".diff
+
+			else
+				echo -e ""$MAPTEST" : \033[1;31m[Ko]\033[0m"
 				
 			fi
 		else

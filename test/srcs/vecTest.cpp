@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 17:29:13 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/11 18:49:40 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,17 @@
 #include <iostream>
 #include <string>
 
-// #define __NS__ std // default namespace set
+// #define __NS__ std // default namespace
+
+/**
+ * @brief utils
+*/
+
+typedef void	(*fp)(void);
+struct Test {
+	std::string	testName;
+	fp const	fptr;
+};
 
 void	printTitle(std::string const & title) {
 	std::cout << "-- [" << title << "] --" << std::endl;
@@ -30,6 +40,10 @@ void	printSize(__NS__::vector<T> vec) {
 	std::cout << "Capacity: " << vec.capacity() << std::endl;
 	std::cout << std::endl;
 }
+
+/**
+ * @brief constructor test
+*/
 
 void	constructTest(void) {
 	printTitle("Constructor");
@@ -64,10 +78,14 @@ void	constructTest(void) {
 	__NS__::vector<Custom> vecCustom4(vecCustom3);
 	printSize(vecCustom4);
 
-	std::cout << "\noperator= test: int:\n";
+	std::cout << "\noperator= test: Custom:\n";
 	vecCustom4 = vecCustom;
 	printSize(vecCustom4);
 }
+
+/**
+ * @brief iterator test
+*/
 
 void	iteratorTest(void) {
 	printTitle("Iterator");
@@ -112,6 +130,10 @@ void	iteratorTest(void) {
 	printSize(vecInt);
 }
 
+/**
+ * @brief size/max_size/capacity test
+*/
+
 void	sizeTest(void) {
 	printTitle("Size/Max_size/Capacity");
 	
@@ -137,6 +159,10 @@ void	sizeTest(void) {
 	std::cout << "custom: ";
 	printSize(vecCuston);
 }
+
+/**
+ * @brief resize test
+*/
 
 void	resizeTest(void) {
 	printTitle("resize/reserve");
@@ -200,6 +226,10 @@ void	resizeTest(void) {
 	printSize(vecCustom);
 }
 
+/**
+ * @brief empty test
+*/
+
 void	emptyTest(void) {
 	printTitle("Empty");
 
@@ -225,6 +255,10 @@ void	emptyTest(void) {
 
 	std::cout << (vecCustom.empty() == true ? "vecCustom is empty" : "vecCustom is not empty") << std::endl;
 }
+
+/**
+ * @brief element access test
+*/
 
 void	elementAccessTest(void) {
 	printTitle("Element access");
@@ -312,6 +346,10 @@ void	elementAccessTest(void) {
 	std::cout << "last: " <<  (*(vecCustom.end() - 1)).getStr() << " and back: " << vecCustom.back().getStr() << std::endl;
 }
 
+/**
+ * @brief assign test
+*/
+
 void	assignTest(void) {
 	printTitle("Assign");
 
@@ -348,6 +386,10 @@ void	assignTest(void) {
 	std::cout << std::endl;
 	printSize(vecCustom2);
 }
+
+/**
+ * @brief push_back/pop_bak test
+*/
 
 void	pbTest(void) {
 	printTitle("push_back/pop_back");
@@ -395,6 +437,10 @@ void	pbTest(void) {
 	std::cout << std::endl;
 	printSize(vecCustom);
 }
+
+/**
+ * @brief insert test
+*/
 
 void	insertTest(void) {
 	printTitle("insert");
@@ -459,6 +505,10 @@ void	insertTest(void) {
 	printSize(vecInt2);
 }
 
+/**
+ * @brief erase test
+*/
+
 void	eraseTest(void) {
 	printTitle("erase");
 
@@ -494,6 +544,10 @@ void	eraseTest(void) {
 	vecCustom.erase(vecCustom.begin() + 1, vecCustom.end() - 1);
 	printSize(vecCustom);
 }
+
+/**
+ * @brief swap test
+*/
 
 void	swapTest(void) {
 	printTitle("swap");
@@ -582,6 +636,10 @@ void	swapTest(void) {
 	printSize(vecCustom2);
 }
 
+/**
+ * @brief clear test
+*/
+
 void	clearTest(void) {
 	printTitle("clear");
 
@@ -638,11 +696,9 @@ void	clearTest(void) {
 	printSize(vecCustom);
 }
 
-typedef void	(*fp)(void);
-struct Test {
-	std::string	testName;
-	fp const	fptr;
-};
+/**
+ * @brief main
+*/
 
 int main(int ac, char **av) {
 	if (ac == 1) {
