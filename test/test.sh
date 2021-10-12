@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/12 18:13:37 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/12 18:18:09 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ vectorTest() {
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftVec" ] ; then
-			./ftVec $VECTEST > ./log/ft_vec_"$VECTEST".log\
+			./ftVec $VECTEST > ./log/ft_vec_"$VECTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
@@ -208,7 +208,7 @@ setTest() {
 			diff ./log/std_set_"$SETTEST".log ./log/ft_set_"$SETTEST".log > ./deepthought/set_"$SETTEST".diff
 			if [ ! -s "./deepthought/set_"$SETTEST".diff" ] ; then
 				echo -e "$SETTEST : \033[1;32m[Ok]\033[0m"
-				# rm ./deepthought/set_"$SETTEST".diff
+				rm ./deepthought/set_"$SETTEST".diff
 
 			else
 				echo -e ""$SETTEST" : \033[1;31m[Ko]\033[0m"
