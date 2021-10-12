@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:37:08 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 13:40:39 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 18:51:47 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ _BEGIN_NS_FT
 				return lhs.base() == rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend bool operator== (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() == rhs.base();
@@ -144,6 +145,7 @@ _BEGIN_NS_FT
 				return lhs.base() != rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend bool operator!= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() != rhs.base();
@@ -154,6 +156,7 @@ _BEGIN_NS_FT
 				return lhs.base() < rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend bool operator<  (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() < rhs.base();
@@ -164,6 +167,7 @@ _BEGIN_NS_FT
 				return lhs.base() <= rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend bool operator<= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() <= rhs.base();
@@ -174,6 +178,7 @@ _BEGIN_NS_FT
 				return lhs.base() > rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend bool operator>  (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() > rhs.base();
@@ -184,6 +189,7 @@ _BEGIN_NS_FT
 				return lhs.base() >= rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend bool operator>= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() >= rhs.base();
@@ -199,6 +205,7 @@ _BEGIN_NS_FT
 				return lhs.base() - rhs.base();
 			}
 
+			/* no const -> const case */
 			template < class _TL, class _TR >
 			friend difference_type operator- (const vecIterator<_TL> lhs, const vecIterator<_TR> rhs) {
 				return lhs.base() - rhs.base();

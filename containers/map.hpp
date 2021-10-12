@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 16:39:18 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 18:43:25 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <memory>
 #include <cstddef>
 #include <exception>
+#include "./utils/RBT.hpp"
 #include "./utils/treeIte.hpp"
 
 _BEGIN_NS_FT

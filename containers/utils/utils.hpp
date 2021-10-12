@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 17:37:13 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/06 17:45:08 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 18:49:45 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,7 +258,7 @@ _BEGIN_NS_FT
 
 	/**
 	 * @brief pair of values
-	 * @note this class couples together a pair of values, which may be of different tyoes (T1 and T2).
+	 * @note this class couples together a pair of values, which may be of different types (T1 and T2).
 	 * the individual values can be accessed through its public members first and second.
 	 * 
 	 * @param T1: type of member first.

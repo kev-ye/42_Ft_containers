@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 15:31:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 13:42:25 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 18:44:26 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ _BEGIN_NS_FT
 				return *this;
 			}
 		
+		/* getters */
+
+			node_pointer getRoot(void) const { return _root; };
+			node_pointer getNode(void) const { return _node; };
+			node_pointer getNull(void) const { return _null; };
+
 		/* operator */
 			
 			reference	operator* (void) const { return _node->val; }
@@ -119,26 +125,6 @@ _BEGIN_NS_FT
 
 			operator treeIterator<const T, Node> (void) {
 				return treeIterator<const T, Node>(_root, _node, _null);
-			}
-
-			template < class _T, class _Node >
-			friend bool operator== (const treeIterator<_T, _Node> & lhs, const treeIterator<_T, _Node> & rhs) {
-				return lhs._node == rhs._node;
-			}
-
-			template < class _TL, class _TR, class _Node >
-			friend bool operator== (const treeIterator<_TL, _Node> & lhs, const treeIterator<_TR, _Node> & rhs) {
-				return lhs._node == rhs._node;
-			}
-
-			template < class _T, class _Node >
-			friend bool operator!= (const treeIterator<_T, _Node> & lhs, const treeIterator<_T, _Node> & rhs) {
-				return lhs._node != rhs._node;
-			}
-
-			template < class _TL, class _TR, class _Node >
-			friend bool operator!= (const treeIterator<_TL, _Node> & lhs, const treeIterator<_TR, _Node> & rhs) {
-				return lhs._node != rhs._node;
 			}
 
 		private:
@@ -186,6 +172,26 @@ _BEGIN_NS_FT
 				return tmp;
 			}
 	};
+
+	template < class _T, class _Node >
+	bool operator== (const treeIterator<_T, _Node> & lhs, const treeIterator<_T, _Node> & rhs) {
+		return lhs.getNode() == rhs.getNode();
+	}
+
+	template < class _TL, class _TR, class _Node >
+	bool operator== (const treeIterator<_TL, _Node> & lhs, const treeIterator<_TR, _Node> & rhs) {
+		return lhs.getNode() == rhs.getNode();
+	}
+
+	template < class _T, class _Node >
+	bool operator!= (const treeIterator<_T, _Node> & lhs, const treeIterator<_T, _Node> & rhs) {
+		return lhs.getNode() != rhs.getNode();
+	}
+
+	template < class _TL, class _TR, class _Node >
+	bool operator!= (const treeIterator<_TL, _Node> & lhs, const treeIterator<_TR, _Node> & rhs) {
+		return lhs.getNode() != rhs.getNode();
+	}
 
 _END_NS_FT
 
