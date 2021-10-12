@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 21:41:17 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 21:45:46 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,8 +246,8 @@ _BEGIN_NS_FT
 				return (ret1 < ret2) ? ret1 : ret2;
 
 			#else
-
 				return allocator_type().max_size();
+
 			#endif
 			}
 

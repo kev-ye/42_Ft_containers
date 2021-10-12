@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 21:41:04 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 21:45:54 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ _BEGIN_NS_FT
 			typedef T		value_type;
 		#if defined(__APPLE__) && defined(__MACH__)
 			typedef bool	size_type;
+
 		#else
-			typedef size_t	size_type;
+			typedef size_t	size_type;	
+
 		#endif
 			
 
