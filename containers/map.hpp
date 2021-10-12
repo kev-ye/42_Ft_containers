@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 13:42:56 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 16:39:18 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ _BEGIN_NS_FT
 	 * @param Compare: a binary predicate that takes two element keys as arguments and returns a bool.
 	 * the expression comp(a,b), where comp is an object of this type and a and b are key values,
 	 * shall return true if a is considered to go before b in the strict weak ordering the function defines.
-	 * The map object uses this expression to determine both the order the elements follow in the container and whether two element keys are equivalent.
+	 * The map object uses this expression to determine both the order the elements follow in the container and
+	 * whether two element keys are equivalent.
 	 * No two elements in a map container can have equivalent keys.
 	 * This can be a function pointer or a function object.
 	 * This defaults to less<T>, which returns the same as applying the less-than operator (a<b).
@@ -115,7 +116,7 @@ _BEGIN_NS_FT
 			 * @brief constructor: default
 			 * @note constructs an empty container, with no elements.
 			 * 
-			 * @param comp: binary predicate that, taking two element keeys as argument,
+			 * @param comp: binary predicate that, taking two element keys as argument,
 			 * returns true if the first argument goes before the second argument in the strict weak ordering it defines,
 			 * and false otherwise.
 			 * @param alloc: allocator object.
@@ -143,7 +144,7 @@ _BEGIN_NS_FT
 			 * @brief constructor: copy
 			 * @note constructs a container with a copy of each of the elements in x.
 			 * 
-			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
+			 * @param x: another map object of the same type, whose contents are either copied or acquired.
 			 */
 			map(const map& x) : _rbt(value_compare(key_compare())) {
 				insert(x.begin(), x.end());
@@ -152,7 +153,7 @@ _BEGIN_NS_FT
 			/**
 			 * @brief destructor
 			 * @note this destroys all container elements,
-			 * and deallocates all the storage capacity allocated by the vector using its allocator.
+			 * and deallocates all the storage capacity allocated by the map using its allocator.
 			 */
    			~map(void) {
 				clear();
@@ -160,8 +161,8 @@ _BEGIN_NS_FT
 			}
 
 			/**
-			 * @brief operator: copy
-			 * @note copies all the elements from x into the container.
+			 * @brief copy container content
+			 * @note copies all the elements from x into the container, changing its size accordingly.
 			 * 
 			 * @param x: a map object of the same type.
 			 * @return *this.
@@ -458,7 +459,7 @@ _BEGIN_NS_FT
 			ft::RBT<value_type, value_compare>	_rbt;
 	};
 	
-	/* non-member function: vector */
+	/* non-member function: map */
 
 		/**
 		 * @brief relational operators for map

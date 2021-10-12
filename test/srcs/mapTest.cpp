@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 19:37:27 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 16:26:57 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 17:31:12 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -401,7 +401,7 @@ void	eraseTest(void) {
 		std::cout << it->first << ": " << it->second << std::endl;
 	std::cout << std::endl;
 	
-	std::cout << "erase by range:\n";
+	std::cout << "erase by range: begin -> end\n";
 	m1.erase(m1.begin(), m1.end());
 	std::cout << "show content:\n";
 	if (m1.empty() == true)

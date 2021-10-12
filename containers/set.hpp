@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:14 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 13:44:44 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 16:52:25 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,29 @@ _BEGIN_NS_FT
 
 	/**
 	 * @brief set
-	 * @note sets are associative containers that store elements formed by a combination of a key value and a setped value,
-	 * following a specific order.
+	 * @note sets are containers that store unique elements following a specific order.
 	 * 
 	 * container properties:
 	 *  - associative:
-	 *   elements in associative containers are referenced by their key and not by their absolute position in the container.
+	 *   elements in associative containers are referenced by their key and not by their absolute position in the container
 	 *  - ordered:
 	 *   the elements in the container follow a strict order at all times. All inserted elements are given a position in this order.
 	 *  - set
-	 *   each element associates a key to a setped value:
-	 *   keys are meant to identify the element whose main content is the setped value.
+	 *   the value of an element is also the key used to identify it.
 	 *  - unique keys:
 	 *   no two elements in the container can have equivalent keys.
 	 *  - allocator-aware:
 	 *   the container uses an allocator object to dynamically handle its storage needs.
 	 * 
-	 * @param key: type of the keys. each element in a set is uniquely identified by its key value.
 	 * @param T: type of the setped valu. each element in a set stores somedata as its setped value.
-	 * @param Compare: a binary predicate that takes two element keys as arguments and returns a bool.
-	 * the expression comp(a,b), where comp is an object of this type and a and b are key values,
+	 * @param Compare: a binary predicate that takes two arguments of the same type as the elements and returns a bool.
+	 * The expression comp(a,b), where comp is an object of this type and a and b are key values,
 	 * shall return true if a is considered to go before b in the strict weak ordering the function defines.
-	 * The set object uses this expression to determine both the order the elements follow in the container and whether two element keys are equivalent.
-	 * No two elements in a set container can have equivalent keys.
+	 * The set object uses this expression to determine both the order the elements follow in the container and
+	 * whether two element keys are equivalent (by comparing them reflexively: they are equivalent if !comp(a, b) && !comp(b, a)).
+	 * No two elements in a set container can be equivalent.
 	 * This can be a function pointer or a function object.
-	 * This defaults to less<T>, which returns the same as applying the less-than operator (a<b).
+	 * This defaults to less<T>, which returns the same as applying the less-than operator (a < b).
 	 * @param Alloc: type of the allocator object used to define the storage allocation model.
 	 * by default, the allocator class template is used, which defines the simplest memory allocation model and is value-independent.
 	 */
@@ -61,7 +59,7 @@ _BEGIN_NS_FT
 		public:
 		/* member types */
 
-			typedef				T													kwy_type;
+			typedef				T													key_type;
 			typedef				T													value_type;
 			typedef				Compare												key_compare;
 			typedef				Compare												value_compare;
@@ -89,13 +87,13 @@ _BEGIN_NS_FT
 			 * @brief constructor: default
 			 * @note constructs an empty container, with no elements.
 			 * 
-			 * @param comp: binary predicate that, taking two element keeys as argument,
-			 * returns true if the first argument goes before the second argument in the strict weak ordering it defines,
+			 * @param comp: Binary predicate that, taking two values of the same type of those contained in the set,
+			 * returns true if the first argument goes before the second argument in the strict weak ordering it defines, and false otherwise.
 			 * and false otherwise.
 			 * @param alloc: allocator object.
 			 */
 			explicit set(const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) : _rbt(value_compare(comp)) { (void)alloc; }
+				const allocator_type& alloc = allocator_type()) : _rbt(comp) { (void)alloc; }
 		
 			/**
 			 * @brief constructor: range
@@ -108,7 +106,7 @@ _BEGIN_NS_FT
 			template <class InputIterator>
 			set(InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) : _rbt(value_compare(comp)) {
+				const allocator_type& alloc = allocator_type()) : _rbt(comp) {
 					(void)alloc;
 					insert(first, last);
 			}
@@ -117,16 +115,16 @@ _BEGIN_NS_FT
 			 * @brief constructor: copy
 			 * @note constructs a container with a copy of each of the elements in x.
 			 * 
-			 * @param x: another vector object of the same type, whose contents are either copied or acquired.
+			 * @param x: another set object of the same type, whose contents are either copied or acquired.
 			 */
-			set(const set& x) : _rbt(value_compare(key_compare())) {
+			set(const set& x) : _rbt(value_compare()) {
 				insert(x.begin(), x.end());
 			}
 			
 			/**
 			 * @brief destructor
-			 * @note this destroys all container elements,
-			 * and deallocates all the storage capacity allocated by the vector using its allocator.
+			 * @note destroys the container object.
+			 * and deallocates all the storage capacity allocated by the set using its allocator.
 			 */
    			~set(void) {
 				clear();
@@ -134,8 +132,8 @@ _BEGIN_NS_FT
 			}
 
 			/**
-			 * @brief operator: copy
-			 * @note copies all the elements from x into the container.
+			 * @brief copy container content
+			 * @note copies all the elements from x into the container, changing its size accordingly.
 			 * 
 			 * @param x: a set object of the same type.
 			 * @return *this.
@@ -144,7 +142,7 @@ _BEGIN_NS_FT
 				if (this == &x) return *this;
 
 				this->~set();
-				_rbt = ft::RBT<value_type, value_compare>(value_compare(key_compare()));
+				_rbt = ft::RBT<value_type, value_compare>(value_compare());
 				insert(x.begin(), x.end());
 				return *this;
 			}
@@ -227,11 +225,11 @@ _BEGIN_NS_FT
 			 * Copies of the elements in the range [first,last) are inserted in the container.
 			 * @return the single element versions (1) return a pair,
 			 * with its member pair::first set to an iterator pointing to either the newly inserted element
-			 * or to the element with an equivalent key in the set.
+			 * or to the element with an equivalent element in the set.
 			 * The pair::second element in the pair is set to true if a new element was inserted or
-			 * false if an equivalent key already existed.
+			 * false if an equivalent element already existed.
 			 * @return the versions with a hint (2) return an iterator pointing to either
-			 * the newly inserted element or to the element that already had an equivalent key in the set.
+			 * the newly inserted element or to the element that already had an equivalent element in the set.
 			 */
 			ft::pair<iterator, bool> insert(const value_type& val) {
 				if (_rbt.insert(val) == false)
@@ -255,11 +253,11 @@ _BEGIN_NS_FT
 			 * @note removes from the set container either a single element or a range of elements ([first,last)).
 			 * 
 			 * @param position: iterator pointing to a single element to be removed from the set.
-			 * @param k: key of the element to be removed from the set.
+			 * @param val: value of the element to be removed from the set.
 			 * @param first, last: Iterators specifying a range within the set container to be removed: [first,last).
 			 * i.e., the range includes all the elements between first and last,
 			 * including the element pointed by first but not the one pointed by last.
-			 * @return for the key-based version (2), the function returns the number of elements erased.
+			 * @return for the value-based version (2), the function returns the number of elements erased.
 			 */
 			void  erase(iterator position) {
 				erase(*position);
@@ -300,32 +298,31 @@ _BEGIN_NS_FT
 		/* member functions: observers */
 
 			/**
-			 * @brief return key comparison object
-			 * @note Returns a copy of the comparison object used by the container to compare keys.
+			 * @brief return comparison object
+			 * @note returns a copy of the comparison object used by the container.
 			 * 
 			 * @return the comparison object.
 			 */
 			key_compare	key_comp() const { return key_compare(); }
 			
 			/**
-			 * @brief return value comparison object
-			 * @note Returns a comparison object that can be used to compare two elements to get whether
-			 * the key of the first one goes before the second.
+			 * @brief rreturn comparison object
+			 * @note Returns a copy of the comparison object used by the container.
 			 * 
-			 * @return the comparison object for element values.
+			 * @return the comparison object.
 			 */
-			value_compare  value_comp() const { return value_compare(key_comp()); }
+			value_compare  value_comp() const { return value_compare(); }
 
 		/* member functions: operations */
 		
 			/**
 			 * @brief get iterator to element
-			 * @note searches the container for an element with a key equivalent to k and
+			 * @note searches the container for an element equivalent to val and
 			 * returns an iterator to it if found, otherwise it returns an iterator to set::end.
 			 * 
-			 * @param k: key to be searched for.
+			 * @param val: value to be searched for.
 			 * @return an iterator to the element,
-			 * if an element with specified key is found, or set::end otherwise.
+			 * if val is found, or set::end otherwise.
 			 */
 			iterator find(const value_type& val) {
 				return iterator(_rbt.getRoot(), _rbt.searchTree(val), _rbt.getNull());
@@ -336,11 +333,11 @@ _BEGIN_NS_FT
 			}
 
 			/**
-			 * @brief count elements with a specific key
-			 * @note searches the container for elements with a key equivalent to k and returns the number of matches.
+			 * @brief count elements with a specific value
+			 * @note searches the container for elements equivalent to val and returns the number of matches.
 			 * 
-			 * @param k: key to search for.
-			 * @return 1 if the container contains an element whose key is equivalent to k, or zero otherwise.
+			 * @param val: value to search for.
+			 * @return 1 if the container contains an element equivalent to val, or zero otherwise.
 			 */
 			size_type count(const value_type& val) const {
 				if (find(val) == end())
@@ -350,14 +347,14 @@ _BEGIN_NS_FT
 			
 			/**
 			 * @brief return iterator to lower bound
-			 * @note returns an iterator pointing to the first element in the container
-			 * whose key is not considered to go before k (i.e., either it is equivalent or goes after).
-			 * the function uses its internal comparison object (key_comp) to determine this,
-			 * returning an iterator to the first element for which key_comp(element_key,k) would return false.
+			 * @note Returns an iterator pointing to the first element in the container
+			 * which is not considered to go before val (i.e., either it is equivalent or goes after).
+			 * The function uses its internal comparison object (key_comp) to determine this,
+			 * returning an iterator to the first element for which key_comp(element,val) would return false.
 			 * 
-			 * @param k: key to search for.
+			 * @param val: value to search for.
 			 * @return an iterator to the the first element in the container
-			 * whose key is not considered to go before k, or set::end if all keys are considered to go before k.
+			 * which is not considered to go before val, or set::end if all elements are considered to go before val.
 			 */
 			iterator lower_bound(const value_type& val) {
 				return iterator(_rbt.getRoot(), _rbt.lower_bound(val), _rbt.getNull());
@@ -369,14 +366,13 @@ _BEGIN_NS_FT
 
 			/**
 			 * @brief return iterator to upper bound
-			 * @note returns an iterator pointing to the first element in the container
-			 * whose key is considered to go after k.
+			 * @note returns an iterator pointing to the first element in the container which is considered to go after val.
 			 * the function uses its internal comparison object (key_comp) to determine this,
-			 * returning an iterator to the first element for which key_comp(k,element_key) would return true.
+			 * returning an iterator to the first element for which key_comp(val,element) would return true.
 			 * 
-			 * @param k: key to search for.
+			 * @param val: value to search for.
 			 * @return an iterator to the the first element in the container
-			 * whose key is considered to go after k, or set::end if no keys are considered to go after k.
+			 * which is considered to go after val, or set::end if no elements are considered to go after val.
 			 */
 			iterator upper_bound(const value_type& val) {
 				return iterator(_rbt.getRoot(), _rbt.upper_bound(val), _rbt.getNull());
@@ -388,10 +384,9 @@ _BEGIN_NS_FT
 
 			/**
 			 * @brief get range of equal elements
-			 * @note returns the bounds of a range that includes
-			 * all the elements in the container which have a key equivalent to k.
+			 * @note returns the bounds of a range that includes all the elements in the container that are equivalent to val.
 			 * 
-			 * @param k: key to search for.
+			 * @param val: value to search for.
 			 * @return the function returns a pair,
 			 * whose member pair::first is the lower bound of the range (the same as lower_bound),
 			 * and pair::second is the upper bound (the same as upper_bound).
@@ -420,7 +415,7 @@ _BEGIN_NS_FT
 			ft::RBT<value_type, value_compare>	_rbt;
 	};
 	
-	/* non-member function: vector */
+	/* non-member function: set */
 
 		/**
 		 * @brief relational operators for set

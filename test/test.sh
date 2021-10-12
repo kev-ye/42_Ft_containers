@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/12 16:24:18 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/12 17:54:06 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -133,7 +133,7 @@ stackTest() {
 	done
 }
 
-## stack
+## map
 
 mapCompilation() {
 	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/mapTest.cpp -D __NS__=std -o stdMap
@@ -158,10 +158,48 @@ mapTest() {
 			diff ./log/std_map_"$MAPTEST".log ./log/ft_map_"$MAPTEST".log > ./deepthought/map_"$MAPTEST".diff
 			if [ ! -s "./deepthought/map_"$MAPTEST".diff" ] ; then
 				echo -e "$MAPTEST : \033[1;32m[Ok]\033[0m"
-				# rm ./deepthought/map_"$MAPTEST".diff
+				rm ./deepthought/map_"$MAPTEST".diff
 
 			else
 				echo -e ""$MAPTEST" : \033[1;31m[Ko]\033[0m"
+				
+			fi
+		else
+			echo -e "log file not found!"
+
+		fi
+	done
+}
+
+## set
+
+setCompilation() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/setTest.cpp -D __NS__=std -o stdSet
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/setTest.cpp -D __NS__=ft -o ftSet
+}
+
+setTest() {
+	for SETTEST in 'constructTest' 'iteratorTest' 'emptyTest' 'sizeTest' 'insertTest' 'eraseTest' 'swapTest' 'clearTest' 'keyCompTest' 'valueCompTest' 'findTest' 'countTest' 'boundTest' 'equalRangeTest'
+	do
+		if [ -d "./log" ] && [ -f "./stdSet" ] ; then
+			./stdSet $SETTEST > ./log/std_set_"$SETTEST".log
+		fi
+
+		if [ -d "./log" ] && [ -f "./ftSet" ] ; then
+			./ftSet $SETTEST > ./log/ft_set_"$SETTEST".log
+		fi
+	done
+
+	for SETTEST in 'constructTest' 'iteratorTest' 'emptyTest' 'sizeTest' 'insertTest' 'eraseTest' 'swapTest' 'clearTest' 'keyCompTest' 'valueCompTest' 'findTest' 'countTest' 'boundTest' 'equalRangeTest'
+	do
+		if [ -d "./deepthought" ] && [ -f "./log/std_set_"$SETTEST".log" ] && [ -f "./log/ft_set_"$SETTEST".log" ] ; then
+			diff ./log/std_set_"$SETTEST".log ./log/ft_set_"$SETTEST".log > ./deepthought/set_"$SETTEST".diff
+			if [ ! -s "./deepthought/set_"$SETTEST".diff" ] ; then
+				echo -e "$SETTEST : \033[1;32m[Ok]\033[0m"
+				# rm ./deepthought/set_"$SETTEST".diff
+
+			else
+				echo -e ""$SETTEST" : \033[1;31m[Ko]\033[0m"
 				
 			fi
 		else
@@ -179,12 +217,14 @@ if [[ $1 = 'all' ]] && [ -z $2 ] ; then
 	clear
 	remake
 
-	for CONT in 'vector' 'stack'
+	for CONT in 'vector' 'stack' 'map' 'set'
 	do
 		echo -e "\033[1;35m$CONT\033[0m"
 		$CONT"Compilation"
 		$CONT"Test"
-		echo ""
+		if [[ $CONT != 'set' ]] ; then
+			echo ""
+		fi
 	done
 
 elif [[ $1 = 'clean' ]] && [ -z $2 ] ; then
