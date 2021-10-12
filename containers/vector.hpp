@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:16 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/11 14:47:54 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/12 18:14:27 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstddef>
 #include <exception>
 #include <stdexcept>
+#include <limits>
 #include "./utils/vecIte.hpp"
 
 _BEGIN_NS_FT

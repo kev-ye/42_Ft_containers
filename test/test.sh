@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/12 17:54:06 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/12 18:13:37 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,10 +69,14 @@ vectorTest() {
 	do
 		if [ -d "./log" ] && [ -f "./stdVec" ] ; then
 			./stdVec $VECTEST > ./log/std_vec_"$VECTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftVec" ] ; then
-			./ftVec $VECTEST > ./log/ft_vec_"$VECTEST".log
+			./ftVec $VECTEST > ./log/ft_vec_"$VECTEST".log\
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
 	done
 
@@ -89,7 +93,7 @@ vectorTest() {
 				
 			fi
 		else
-			echo -e "log file not found!"
+			echo -e "\033[1;31mlog file not found!\033[0m"
 
 		fi
 	done
@@ -107,10 +111,14 @@ stackTest() {
 	do
 		if [ -d "./log" ] && [ -f "./stdStk" ] ; then
 			./stdStk $STKTEST > ./log/std_stack_"$STKTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftStk" ] ; then
 			./ftStk $STKTEST > ./log/ft_stack_"$STKTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
 	done
 
@@ -145,10 +153,14 @@ mapTest() {
 	do
 		if [ -d "./log" ] && [ -f "./stdMap" ] ; then
 			./stdMap $MAPTEST > ./log/std_map_"$MAPTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftMap" ] ; then
 			./ftMap $MAPTEST > ./log/ft_map_"$MAPTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
 		fi
 	done
 
