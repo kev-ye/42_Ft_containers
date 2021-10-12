@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/12 18:18:09 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/12 18:24:04 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,12 +71,14 @@ vectorTest() {
 			./stdVec $VECTEST > ./log/std_vec_"$VECTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftVec" ] ; then
 			./ftVec $VECTEST > ./log/ft_vec_"$VECTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 	done
 
@@ -94,6 +96,7 @@ vectorTest() {
 			fi
 		else
 			echo -e "\033[1;31mlog file not found!\033[0m"
+			exit
 
 		fi
 	done
@@ -113,12 +116,14 @@ stackTest() {
 			./stdStk $STKTEST > ./log/std_stack_"$STKTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftStk" ] ; then
 			./ftStk $STKTEST > ./log/ft_stack_"$STKTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 	done
 
@@ -136,6 +141,7 @@ stackTest() {
 			fi
 		else
 			echo -e "log file not found!"
+			exit
 
 		fi
 	done
@@ -155,12 +161,14 @@ mapTest() {
 			./stdMap $MAPTEST > ./log/std_map_"$MAPTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftMap" ] ; then
 			./ftMap $MAPTEST > ./log/ft_map_"$MAPTEST".log
 		else
 			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 	done
 
@@ -174,10 +182,10 @@ mapTest() {
 
 			else
 				echo -e ""$MAPTEST" : \033[1;31m[Ko]\033[0m"
-				
 			fi
 		else
 			echo -e "log file not found!"
+			exit
 
 		fi
 	done
@@ -195,10 +203,16 @@ setTest() {
 	do
 		if [ -d "./log" ] && [ -f "./stdSet" ] ; then
 			./stdSet $SETTEST > ./log/std_set_"$SETTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 
 		if [ -d "./log" ] && [ -f "./ftSet" ] ; then
 			./ftSet $SETTEST > ./log/ft_set_"$SETTEST".log
+		else
+			echo -e "\033[1;31mlog folder or execute file not found!\033[0m"
+			exit
 		fi
 	done
 
@@ -216,6 +230,7 @@ setTest() {
 			fi
 		else
 			echo -e "log file not found!"
+			exit
 
 		fi
 	done
