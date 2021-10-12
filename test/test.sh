@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/11 20:30:26 by kaye             ###   ########.fr        #
+#    Updated: 2021/10/12 16:24:18 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,7 +141,7 @@ mapCompilation() {
 }
 
 mapTest() {
-	for MAPTEST in 'constructTest' 'iteratorTest' 'emptyTest' 'sizeTest' 'elementAccessTest'
+	for MAPTEST in 'constructTest' 'iteratorTest' 'emptyTest' 'sizeTest' 'elementAccessTest' 'insertTest' 'eraseTest' 'swapTest' 'clearTest' 'keyCompTest' 'valueCompTest' 'findTest' 'countTest' 'boundTest' 'equalRangeTest'
 	do
 		if [ -d "./log" ] && [ -f "./stdMap" ] ; then
 			./stdMap $MAPTEST > ./log/std_map_"$MAPTEST".log
@@ -152,7 +152,7 @@ mapTest() {
 		fi
 	done
 
-	for MAPTEST in 'constructTest' 'iteratorTest' 'emptyTest' 'sizeTest' 'elementAccessTest'
+	for MAPTEST in 'constructTest' 'iteratorTest' 'emptyTest' 'sizeTest' 'elementAccessTest' 'insertTest' 'eraseTest' 'swapTest' 'clearTest' 'keyCompTest' 'valueCompTest' 'findTest' 'countTest' 'boundTest' 'equalRangeTest'
 	do
 		if [ -d "./deepthought" ] && [ -f "./log/std_map_"$MAPTEST".log" ] && [ -f "./log/ft_map_"$MAPTEST".log" ] ; then
 			diff ./log/std_map_"$MAPTEST".log ./log/ft_map_"$MAPTEST".log > ./deepthought/map_"$MAPTEST".diff
