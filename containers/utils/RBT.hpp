@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:40:35 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 21:45:54 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/13 16:05:31 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ _BEGIN_NS_FT
 				return *this;
 			}
 
-			/* member function: operator==  */
+		/* member function: operator==  */
+
 			bool operator==(RBT_Node const & rhs) {
 				if (val == rhs.val)
 					return true;
@@ -131,6 +132,8 @@ _BEGIN_NS_FT
 			typedef	typename	allocator_type::size_type				size_type;
 
 		public:
+		/* member function: constructor / destructor  */
+
 			RBT(value_compare const & comp = value_compare()) : _comp(comp) {
 				_null = allocator_type().allocate(1);
 				allocator_type().construct(_null, node_type());
@@ -139,122 +142,102 @@ _BEGIN_NS_FT
 
 			~RBT() {}
 
+		/* member function: getters  */
+
 			pointer	getRoot() const { return _root; }
 
 			pointer	getNull() const { return _null; }
+
+		/* member function: capacity  */
 
 			size_type	size() const { return size(_root); }
 
 			size_type	max_size() const { return allocator_type().max_size(); }
 
+		/* member function: operation  */
+
+			pointer	searchTree(value_type val) const { return searchTreeHelper(_root, val); }
+
 			pointer	min() const { return min(_root); }
 
 			pointer	max() const { return max(_root); }
 
-			pointer lower_bound(value_type const & key) const {
+			pointer lower_bound(value_type const & val) const {
 				pointer begin = min();
 
 				while (begin != _null) {
-					if (_comp(begin->val, key) == false)
+					if (_comp(begin->val, val) == false)
 						break ;
 					begin = successor(begin);
 				}
 				return begin;
 			}
 
-			pointer upper_bound(value_type const & key) const {
+			pointer upper_bound(value_type const & val) const {
 				pointer begin = min();
 
 				while (begin != _null) {
-					if (_comp(key, begin->val) == true)
+					if (_comp(val, begin->val) == true)
 						break ;
 					begin = successor(begin);
 				}
 				return begin;
 			}
 
-			void	swap(RBT & x) {
+		/* member function: modifiers  */
+
+			void	swap(RBT & toSwap) {
 				pointer root_ = _root;
 				pointer null_ = _null;
 
-				_root = x.getRoot();
-				_null = x.getNull();
+				_root = toSwap.getRoot();
+				_null = toSwap.getNull();
 
-				x._root = root_;
-				x._null = null_;
+				toSwap._root = root_;
+				toSwap._null = null_;
 			}
 
-			pointer	successor(pointer x) const {
-				if (x->right != _null)
-					return min(x->right);
+			bool	insert(value_type const & val) {
+				pointer toInsert = allocator_type().allocate(1);
+				allocator_type().construct(toInsert, node_type(val, RED_NODE, ft_nullptr, _null, _null)); // new node must be red
 
-				if (x->parent == ft_nullptr || x == max())
-					return _null;
-				pointer y = x->parent;
-				while (y != _null && x == y->right) {
-					x = y;
-					y = y->parent;
-				}
-				return y;
-			}
+				pointer current = ft_nullptr;
+				pointer root = _root;
 
-			pointer	predecessor(pointer s) const {
-				if (s->left != _null)
-					return max(s->left);
-
-				if (s->parent == ft_nullptr || s == min())
-					return _null;
-				pointer	tmp = s->parent;
-				while (tmp != _null && s == tmp->left) {
-					s = tmp;
-					tmp = tmp->parent;
-				}
-				return tmp;
-			}
-
-			pointer	searchTree(value_type key) const { return searchTreeHelper(_root, key); }
-
-			bool	insert(value_type const & key) {
-				pointer s = allocator_type().allocate(1);
-				allocator_type().construct(s, node_type(key, RED_NODE, ft_nullptr, _null, _null)); // new node must be red
-
-				pointer y = ft_nullptr;
-				pointer x = _root;
-
-				while (x != _null) {
-					y = x;
-					if (_comp(s->val, x->val))
-						x = x->left;
-					else if (_comp(x->val, s->val))
-						x = x->right;
+				while (root != _null) {
+					current = root;
+					if (_comp(toInsert->val, root->val))
+						root = root->left;
+					else if (_comp(root->val, toInsert->val))
+						root = root->right;
 					else {
-						allocator_type().destroy(s);
-						allocator_type().deallocate(s, 1);
+						allocator_type().destroy(toInsert);
+						allocator_type().deallocate(toInsert, 1);
 						return false;
 					}
 				}
 
-				s->parent = y;
-				if (y == ft_nullptr)
-					_root = s;
-				else if (_comp(s->val, y->val))
-					y->left = s;
+				toInsert->parent = current;
+				if (current == ft_nullptr)
+					_root = toInsert;
+				else if (_comp(toInsert->val, current->val))
+					current->left = toInsert;
 				else
-					y->right = s;
+					current->right = toInsert;
 
-				if (s->parent == ft_nullptr) {
-					s->color = BLACK_NODE;
+				if (toInsert->parent == ft_nullptr) {
+					toInsert->color = BLACK_NODE;
 					return true;
 				}
 
-				if (s->parent->parent == ft_nullptr)
+				if (toInsert->parent->parent == ft_nullptr)
 					return true;
 
-				fixInsert(s);
+				fixInsert(toInsert);
 				return true;
 			}
 
-			bool	deleteNode(value_type const & key) { return deleteNodeHelper(_root, key); }
+			bool	deleteNode(value_type const & val) { return deleteNodeHelper(_root, val); }
 
 			void	destroyTree() {
 				destroyTree(_root);
@@ -266,198 +249,239 @@ _BEGIN_NS_FT
 				allocator_type().deallocate(_null, 1);
 			}
 
-		private:
+		/* member function: iteration  */
 
+			pointer	successor(pointer node) const {
+				if (node->right != _null)
+					return min(node->right);
+
+				if (node->parent == ft_nullptr || node == max())
+					return _null;
+				pointer tmp = node->parent;
+				while (tmp != _null && node == tmp->right) {
+					node = tmp;
+					tmp = tmp->parent;
+				}
+				return tmp;
+			}
+
+			pointer	predecessor(pointer node) const {
+				if (node->left != _null)
+					return max(node->left);
+
+				if (node->parent == ft_nullptr || node == min())
+					return _null;
+				pointer	tmp = node->parent;
+				while (tmp != _null && node == tmp->left) {
+					node = tmp;
+					tmp = tmp->parent;
+				}
+				return tmp;
+			}
+
+		private:
+		/* member function (private): capacity  */
+	
 			size_type size(pointer root) const {
 				if (root == _null)
 					return 0;
 				return size(root->left) + 1 + size(root->right);
 			}
 
-			pointer	min(pointer s) const {
-				if (s == ft_nullptr || s == _null)
-					return _null;
-				while (s->left != _null)
-					s = s->left;
-				return s;
-			}
+		/* member function (private): operation  */
 
-			pointer	max(pointer s) const {
-				if (s == ft_nullptr || s == _null)
-					return _null;
-				while (s->right != _null)
-					s = s->right;
-				return s;
-			}
-
-			pointer	searchTreeHelper(pointer node, value_type const & key) const {
+			pointer	searchTreeHelper(pointer node, value_type const & val) const {
 				if (node == _null)
 					return node;
-				else if (_comp(key, node->val))
-					return searchTreeHelper(node->left, key);
-				else if (_comp(node->val, key))
-					return searchTreeHelper(node->right, key);
+				else if (_comp(val, node->val))
+					return searchTreeHelper(node->left, val);
+				else if (_comp(node->val, val))
+					return searchTreeHelper(node->right, val);
 				else
 					return node;
 			}
 
-			void	leftRotate(pointer s) {
-				pointer	tmp = s->right;
+			pointer	min(pointer node) const {
+				if (node == ft_nullptr || node == _null)
+					return _null;
+				while (node->left != _null)
+					node = node->left;
+				return node;
+			}
+
+			pointer	max(pointer node) const {
+				if (node == ft_nullptr || node == _null)
+					return _null;
+				while (node->right != _null)
+					node = node->right;
+				return node;
+			}
+
+		/* member function (private): modifiers  */
+
+			void	leftRotate(pointer node) {
+				pointer	tmp = node->right;
 				
-				s->right = tmp->left;
+				node->right = tmp->left;
 				if (tmp->left != _null)
-					tmp->left->parent = s;
-				tmp->parent = s->parent;
-				if (s->parent == ft_nullptr)
+					tmp->left->parent = node;
+	
+				tmp->parent = node->parent;
+				if (node->parent == ft_nullptr)
 					_root = tmp;
-				else if (s == s->parent->left)
-					s->parent->left = tmp;
+				else if (node == node->parent->left)
+					node->parent->left = tmp;
 				else
-					s->parent->right = tmp;
-				tmp->left = s;
-				s->parent = tmp;
+					node->parent->right = tmp;
+
+				tmp->left = node;
+				node->parent = tmp;
 			}
 
-			void	rightRotate(pointer x) {
-				pointer	y = x->left;
+			void	rightRotate(pointer node) {
+				pointer	tmp = node->left;
 				
-				x->left = y->right;
-				if (y->right != _null)
-					y->right->parent = x;
-				y->parent = x->parent;
-				if (x->parent == ft_nullptr)
-					_root = y;
-				else if (x == x->parent->right)
-					x->parent->right = y;
+				node->left = tmp->right;
+				if (tmp->right != _null)
+					tmp->right->parent = node;
+
+				tmp->parent = node->parent;
+				if (node->parent == ft_nullptr)
+					_root = tmp;
+				else if (node == node->parent->right)
+					node->parent->right = tmp;
 				else
-					x->parent->left = y;
-				y->right = x;
-				x->parent = y;
+					node->parent->left = tmp;
+
+				tmp->right = node;
+				node->parent = tmp;
 			}
 
-			void	fixInsert(pointer k) {
-				pointer	u;
+			void	fixInsert(pointer toFix) {
+				pointer	tmp;
 				
-				while (k->parent->color == RED_NODE) {
-					if (k->parent == k->parent->parent->right) {
-						u = k->parent->parent->left;
-						if (u->color == RED_NODE) {
-							u->color = BLACK_NODE;
-							k->parent->color = BLACK_NODE;
-							k->parent->parent->color = RED_NODE;
-							k = k->parent->parent;
+				while (toFix->parent->color == RED_NODE) {
+					if (toFix->parent == toFix->parent->parent->right) {
+						tmp = toFix->parent->parent->left;
+						if (tmp->color == RED_NODE) {
+							tmp->color = BLACK_NODE;
+							toFix->parent->color = BLACK_NODE;
+							toFix->parent->parent->color = RED_NODE;
+							toFix = toFix->parent->parent;
 						}
 						else {
-							if (k == k->parent->left) {
-								k = k->parent;
-								rightRotate(k);
+							if (toFix == toFix->parent->left) {
+								toFix = toFix->parent;
+								rightRotate(toFix);
 							}
-							k->parent->color = BLACK_NODE;
-							k->parent->parent->color = RED_NODE;
-							leftRotate(k->parent->parent);
+							toFix->parent->color = BLACK_NODE;
+							toFix->parent->parent->color = RED_NODE;
+							leftRotate(toFix->parent->parent);
 						}
 					}
 					else {
-						u = k->parent->parent->right;
+						tmp = toFix->parent->parent->right;
 
-						if (u->color == RED_NODE) {
-							u->color = BLACK_NODE;
-							k->parent->color = BLACK_NODE;
-							k->parent->parent->color = RED_NODE;
-							k = k->parent->parent;	
+						if (tmp->color == RED_NODE) {
+							tmp->color = BLACK_NODE;
+							toFix->parent->color = BLACK_NODE;
+							toFix->parent->parent->color = RED_NODE;
+							toFix = toFix->parent->parent;	
 						}
 						else {
-							if (k == k->parent->right) {
-								k = k->parent;
-								leftRotate(k);
+							if (toFix == toFix->parent->right) {
+								toFix = toFix->parent;
+								leftRotate(toFix);
 							}
-							k->parent->color = BLACK_NODE;
-							k->parent->parent->color = RED_NODE;
-							rightRotate(k->parent->parent);
+							toFix->parent->color = BLACK_NODE;
+							toFix->parent->parent->color = RED_NODE;
+							rightRotate(toFix->parent->parent);
 						}
 					}
-					if (k == _root)
+					if (toFix == _root)
 						break ;
 				}
 				_root->color = BLACK_NODE;
 			}
 
-			void	fixDelete(pointer x) {
-				pointer	s;
-				while (x != _root && x->color == BLACK_NODE) {
-					if (x == x->parent->left) {
-						s = x->parent->right;
-						if (s->color == RED_NODE) {
-							s->color = BLACK_NODE;
-							x->parent->color = RED_NODE;
-							leftRotate(x->parent);
-							s = x->parent->right;
+			void	fixDelete(pointer toFix) {
+				pointer	tmp;
+
+				while (toFix != _root && toFix->color == BLACK_NODE) {
+					if (toFix == toFix->parent->left) {
+						tmp = toFix->parent->right;
+						if (tmp->color == RED_NODE) {
+							tmp->color = BLACK_NODE;
+							toFix->parent->color = RED_NODE;
+							leftRotate(toFix->parent);
+							tmp = toFix->parent->right;
 						}
 
-						if (s->left->color == BLACK_NODE && s->right->color == BLACK_NODE) {
-							s->color = RED_NODE;
-							x = x->parent;
+						if (tmp->left->color == BLACK_NODE && tmp->right->color == BLACK_NODE) {
+							tmp->color = RED_NODE;
+							toFix = toFix->parent;
 						}
 						else {
-							if (s->right->color == BLACK_NODE) {
-								s->left->color = BLACK_NODE;
-								s->color = RED_NODE;
-								rightRotate(s);
-								s = x->parent->right;
+							if (tmp->right->color == BLACK_NODE) {
+								tmp->left->color = BLACK_NODE;
+								tmp->color = RED_NODE;
+								rightRotate(tmp);
+								tmp = toFix->parent->right;
 							}
-							s->color = x->parent->color;
-							x->parent->color = BLACK_NODE;
-							s->right->color = BLACK_NODE;
-							leftRotate(x->parent);
-							x = _root;
+							tmp->color = toFix->parent->color;
+							toFix->parent->color = BLACK_NODE;
+							tmp->right->color = BLACK_NODE;
+							leftRotate(toFix->parent);
+							toFix = _root;
 						}
 					}
 					else {
-						s = x->parent->left;
-						if (s->color == RED_NODE) {
-							s->color = BLACK_NODE;
-							x->parent->color = RED_NODE;
-							rightRotate(x->parent);
-							s = x->parent->left;
+						tmp = toFix->parent->left;
+						if (tmp->color == RED_NODE) {
+							tmp->color = BLACK_NODE;
+							toFix->parent->color = RED_NODE;
+							rightRotate(toFix->parent);
+							tmp = toFix->parent->left;
 						}
 
-						if (s->left->color == BLACK_NODE && s->right->color == BLACK_NODE) {
-							s->color = RED_NODE;
-							x = x->parent;
+						if (tmp->left->color == BLACK_NODE && tmp->right->color == BLACK_NODE) {
+							tmp->color = RED_NODE;
+							toFix = toFix->parent;
 						}
 						else {
-							if (s->left->color == BLACK_NODE) {
-								s->right->color = BLACK_NODE;
-								s->color = RED_NODE;
-								leftRotate(s);
-								s = x->parent->left;
+							if (tmp->left->color == BLACK_NODE) {
+								tmp->right->color = BLACK_NODE;
+								tmp->color = RED_NODE;
+								leftRotate(tmp);
+								tmp = toFix->parent->left;
 							} 
 
-							s->color = x->parent->color;
-							x->parent->color = BLACK_NODE;
-							s->left->color = BLACK_NODE;
-							rightRotate(x->parent);
-							x = _root;
+							tmp->color = toFix->parent->color;
+							toFix->parent->color = BLACK_NODE;
+							tmp->left->color = BLACK_NODE;
+							rightRotate(toFix->parent);
+							toFix = _root;
 						}
 					} 
 				}
-				x->color = BLACK_NODE;
+				toFix->color = BLACK_NODE;
 			}
 
-			void	rbTransplant(pointer u, pointer v) {
-				if (u->parent == ft_nullptr)
-					_root = v;
-				else if (u == u->parent->left)
-					u->parent->left = v;
+			void	rbTransplant(pointer node, pointer toTransplant) {
+				if (node->parent == ft_nullptr)
+					_root = toTransplant;
+				else if (node == node->parent->left)
+					node->parent->left = toTransplant;
 				else
-					u->parent->right = v;
-				v->parent = u->parent;
+					node->parent->right = toTransplant;
+
+				toTransplant->parent = node->parent;
 			}
 
 			bool	deleteNodeHelper(pointer node, value_type const & key) {
-				pointer z = _null;
-				pointer x;
-				pointer y;
+				pointer toDelete = _null;
+				pointer tmp;
+				pointer current;
 
 				while (node != _null) {
 					if (_comp(node->val, key))
@@ -465,49 +489,49 @@ _BEGIN_NS_FT
 					else if (_comp(key, node->val))
 						node = node->left;
 					else {
-						z = node;
+						toDelete = node;
 						node = node->right;
 					}
 				}
 
-				if (z == _null) {
+				if (toDelete == _null) {
 					return false;
 				} 
 
-				y = z;
-				int y_original_color = y->color;
-				if (z->left == _null) {
-					x = z->right;
-					rbTransplant(z, z->right);
+				current = toDelete;
+				int y_original_color = current->color;
+				if (toDelete->left == _null) {
+					tmp = toDelete->right;
+					rbTransplant(toDelete, toDelete->right);
 				}
-				else if (z->right == _null) {
-					x = z->left;
-					rbTransplant(z, z->left);
+				else if (toDelete->right == _null) {
+					tmp = toDelete->left;
+					rbTransplant(toDelete, toDelete->left);
 				}
 				else {
-					y = min(z->right);
-					y_original_color = y->color;
-					x = y->right;
-					if (y->parent == z) {
-						x->parent = y;
+					current = min(toDelete->right);
+					y_original_color = current->color;
+					tmp = current->right;
+					if (current->parent == toDelete) {
+						tmp->parent = current;
 					}
 					else {
-						rbTransplant(y, y->right);
-						y->right = z->right;
-						y->right->parent = y;
+						rbTransplant(current, current->right);
+						current->right = toDelete->right;
+						current->right->parent = current;
 					}
 
-					rbTransplant(z, y);
-					y->left = z->left;
-					y->left->parent = y;
-					y->color = z->color;
+					rbTransplant(toDelete, current);
+					current->left = toDelete->left;
+					current->left->parent = current;
+					current->color = toDelete->color;
 				}
 
-				allocator_type().destroy(z);
-				allocator_type().deallocate(z, 1);
+				allocator_type().destroy(toDelete);
+				allocator_type().deallocate(toDelete, 1);
 
 				if (y_original_color == BLACK_NODE)
-					fixDelete(x);
+					fixDelete(tmp);
 				return true;
 			}
 
@@ -524,6 +548,8 @@ _BEGIN_NS_FT
 			}
 
 		private:
+		/* attributes */
+
 			pointer			_root;
 			pointer			_null;
 			value_compare	_comp;
