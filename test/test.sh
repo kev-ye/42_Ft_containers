@@ -10,6 +10,7 @@ printUsage() {
 	echo -e "usage: ./test.sh [\033[1;32magrs\033[0m]"
 	echo -e "args: \033[1;32mall\033[0m: launch all test"
 	echo -e "      \033[1;32mclean\033[0m: clear deepthought/log directory and file"
+	echo -e "      \033[1;32mtime\033[0m: show run time"
 	echo -e "      \033[1;32mcontainers\033[0m: vector/stack/map/set (diff + log)"
 	echo -e "Tips: \033[1;35mChanger the path in test.sh with 'CONTAINERS_FOLDER'\033[0m"
 	echo -e "Tips2: \033[1;35mYou can use the execute std/ft{containersNames} (after tester launch) to compare one by one\033[0m"
@@ -24,7 +25,7 @@ createDeepthoughtDirectory() {
 	done
 }
 
-cleanDeepthought() {
+cleanAll() {
 	for DL in 'deepthought' 'log'
 	do
 		if [ -d "./$DL" ] ; then
@@ -41,10 +42,20 @@ cleanDeepthought() {
 			fi
 		done
 	done
+
+	for RT in 'VecRunTime' 'StkRunTime' 'MapRunTime' 'SetRunTime'
+	do
+		for NS in 'std' 'ft'
+		do
+			if [ -f "./$NS$RT" ] ; then
+				rm $NS$RT
+			fi
+		done
+	done
 }
 
 remake() {
-	cleanDeepthought
+	cleanAll
 	createDeepthoughtDirectory
 }
 
@@ -93,6 +104,16 @@ vectorTest() {
 	done
 }
 
+vectorRunTime() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/vecRunTime.cpp -D __NS__=std -o stdVecRunTime
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/vecRunTime.cpp -D __NS__=ft -o ftVecRunTime
+
+	echo -e "\033[1;32mVector: STD part:\033[0m"
+	time ./stdVecRunTime
+	echo -e "\n\033[1;32mVector: FT part:\033[0m"
+	time ./ftVecRunTime
+}
+
 ## stack
 
 stackCompilation() {
@@ -138,6 +159,17 @@ stackTest() {
 	done
 }
 
+stackRunTime() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/stackRunTime.cpp -D __NS__=std -o stdStkRunTime
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/stackRunTime.cpp -D __NS__=ft -o ftStkRunTime
+
+	echo -e "\033[1;32mStack: STD part:\033[0m"
+	time ./stdStkRunTime
+	echo -e "\n\033[1;32mStack: FT part:\033[0m"
+	time ./ftStkRunTime
+	echo ""
+}
+
 ## map
 
 mapCompilation() {
@@ -180,6 +212,17 @@ mapTest() {
 
 		fi
 	done
+}
+
+mapRunTime() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/mapRunTime.cpp -D __NS__=std -o stdMapRunTime
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/mapRunTime.cpp -D __NS__=ft -o ftMapRunTime
+
+	echo -e "\033[1;32mMap: STD part:\033[0m"
+	time ./stdMapRunTime
+	echo -e "\n\033[1;32mMap: FT part:\033[0m"
+	time ./ftMapRunTime
+	echo ""
 }
 
 ## set
@@ -227,6 +270,16 @@ setTest() {
 	done
 }
 
+setRunTime() {
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/setRunTime.cpp -D __NS__=std -o stdSetRunTime
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/setRunTime.cpp -D __NS__=ft -o ftSetRunTime
+
+	echo -e "\033[1;32mSet: STD part:\033[0m"
+	time ./stdSetRunTime
+	echo -e "\n\033[1;32mSet: FT part:\033[0m"
+	time ./ftSetRunTime
+}
+
 # Run
 
 createDeepthoughtDirectory
@@ -247,7 +300,16 @@ if [[ $1 = 'all' ]] && [ -z $2 ] ; then
 
 elif [[ $1 = 'clean' ]] && [ -z $2 ] ; then
 	clear
-	cleanDeepthought
+	cleanAll
+
+elif [[ $1 = 'time' ]] && [ -z $2 ] ; then
+	clear
+	
+	for CONT in 'vector' 'stack' 'map' 'set'
+	do
+		$CONT"RunTime"
+	done
+
 
 elif [[ $1 = 'vector' ]] && [ -z $2 ] ; then
 	clear
