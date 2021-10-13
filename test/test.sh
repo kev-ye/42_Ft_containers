@@ -1,27 +1,18 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    test.sh                                            :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/09/17 14:35:38 by kaye              #+#    #+#              #
-#    Updated: 2021/10/12 18:24:04 by kaye             ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #!/bin/bash
+
+CONTAINERS_FOLDER=containers
 
 # Function
 
 ## Utils
 
 printUsage() {
-	echo -e "usage: bash test.sh [\033[1;32magrs\033[0m]"
+	echo -e "usage: ./test.sh [\033[1;32magrs\033[0m]"
 	echo -e "args: \033[1;32mall\033[0m: launch all test"
 	echo -e "      \033[1;32mclean\033[0m: clear deepthought/log directory and file"
-	echo -e "      \033[1;32mcontainers\033[0m: vector/stack/map (diff + log)"
-	echo -e "Tips: \033[1;35mYou can use the execute std/ft{containersNames} (after tester launch) to compare one by one\033[0m"
+	echo -e "      \033[1;32mcontainers\033[0m: vector/stack/map/set (diff + log)"
+	echo -e "Tips: \033[1;35mChanger the path in test.sh with 'CONTAINERS_FOLDER'\033[0m"
+	echo -e "Tips2: \033[1;35mYou can use the execute std/ft{containersNames} (after tester launch) to compare one by one\033[0m"
 }
 
 createDeepthoughtDirectory() {
@@ -60,8 +51,8 @@ remake() {
 ## vector
 
 vectorCompilation() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/vecTest.cpp -D __NS__=std -o stdVec
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/vecTest.cpp -D __NS__=ft -o ftVec
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/vecTest.cpp -D __NS__=std -o stdVec
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/vecTest.cpp -D __NS__=ft -o ftVec
 }
 
 vectorTest() {
@@ -105,8 +96,8 @@ vectorTest() {
 ## stack
 
 stackCompilation() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/stackTest.cpp -D __NS__=std -o stdStk
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/stackTest.cpp -D __NS__=ft -o ftStk
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/stackTest.cpp -D __NS__=std -o stdStk
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/stackTest.cpp -D __NS__=ft -o ftStk
 }
 
 stackTest() {
@@ -150,8 +141,8 @@ stackTest() {
 ## map
 
 mapCompilation() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/mapTest.cpp -D __NS__=std -o stdMap
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/mapTest.cpp -D __NS__=ft -o ftMap
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/mapTest.cpp -D __NS__=std -o stdMap
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/mapTest.cpp -D __NS__=ft -o ftMap
 }
 
 mapTest() {
@@ -194,8 +185,8 @@ mapTest() {
 ## set
 
 setCompilation() {
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/setTest.cpp -D __NS__=std -o stdSet
-	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../containers ./srcs/setTest.cpp -D __NS__=ft -o ftSet
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/setTest.cpp -D __NS__=std -o stdSet
+	clang++ -Wall -Wextra -Werror -std=c++98 -I./inc -I../$CONTAINERS_FOLDER ./srcs/setTest.cpp -D __NS__=ft -o ftSet
 }
 
 setTest() {

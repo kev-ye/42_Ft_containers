@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 14:04:12 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/07 15:23:27 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/13 14:16:56 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ _BEGIN_NS_FT
 			 * @param alloc: allocator object.
 			 * @param x: A stack of the ame type.
 			 */
-			explicit stack(const container_type& ctnr = container_type()) : _c(ctnr) {}
+			explicit stack(const container_type& ctnr = container_type()) : c(ctnr) {}
 
 			/**
 			 * @brief destructor
@@ -67,7 +67,7 @@ _BEGIN_NS_FT
 			 * 
 			 * @return true if the underlying container's size if 0, false otherwise.
 			 */
-			bool empty(void) const { return _c.empty(); }
+			bool empty(void) const { return c.empty(); }
 
 			/**
 			 * @brief return size
@@ -75,7 +75,7 @@ _BEGIN_NS_FT
 			 * 
 			 * @return the number of elements in the underlying container.
 			 */
-			size_type size(void) const { return _c.size(); }
+			size_type size(void) const { return c.size(); }
 
 		/* member functions: element access */
 
@@ -85,8 +85,8 @@ _BEGIN_NS_FT
 			 * 
 			 * @return a reference to the top element in the stack.
 			 */
-			value_type& top(void) { return _c.back(); }
-			const value_type& top(void) const { return _c.back(); }
+			value_type& top(void) { return c.back(); }
+			const value_type& top(void) const { return c.back(); }
 
 		/* member functions: modifiers */
 
@@ -97,13 +97,13 @@ _BEGIN_NS_FT
 			 * 
 			 * @param val: value to which the inserted element is initialized.
 			 */
-			void push (const value_type& val) { _c.push_back(val); }
+			void push (const value_type& val) { c.push_back(val); }
 
 			/**
 			 * @brief remove top element
 			 * @note removes the element on top of the stack, effectively reducing its size by one.
 			 */
-			void pop(void) { _c.pop_back(); }
+			void pop(void) { c.pop_back(); }
 
 		/* non-member function: stack */
 
@@ -116,27 +116,27 @@ _BEGIN_NS_FT
 			 * @return true, if the condition holds, and false otherwise.
 			 */
 			template < class _T, class _Container >
-			friend bool operator== (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs._c == rhs._c; }
+			friend bool operator== (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs.c == rhs.c; }
 
 			template < class _T, class _Container >
-			friend bool operator!= (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs._c != rhs._c; }
+			friend bool operator!= (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs.c != rhs.c; }
 
 			template < class _T, class _Container >
-			friend bool operator<  (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs._c < rhs._c; }
+			friend bool operator<  (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs.c < rhs.c; }
 
 			template < class _T, class _Container >
-			friend bool operator<= (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs._c <= rhs._c; }
+			friend bool operator<= (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs.c <= rhs.c; }
 
 			template < class _T, class _Container >
-			friend bool operator>  (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs._c > rhs._c; }
+			friend bool operator>  (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs.c > rhs.c; }
 			
 			template < class _T, class _Container >
-			friend bool operator>= (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs._c >= rhs._c; }
+			friend bool operator>= (const stack<_T, _Container>& lhs, const stack<_T, _Container>& rhs) { return lhs.c >= rhs.c; }
 
 		protected:
 		/* attributes */
 
-			container_type _c;
+			container_type c;
 	};
 
 _END_NS_FT
