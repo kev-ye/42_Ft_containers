@@ -6,7 +6,7 @@
 /*   By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:37:08 by kaye              #+#    #+#             */
-/*   Updated: 2021/10/12 18:51:47 by kaye             ###   ########.fr       */
+/*   Updated: 2021/10/15 14:06:00 by kaye             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,85 +129,77 @@ _BEGIN_NS_FT
 
 		/* non-member function: vecIterator */
 
-			template < class _T >
-			friend bool operator== (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+			friend bool operator== (const vecIterator<T> & lhs, const vecIterator<T> & rhs) {
 				return lhs.base() == rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend bool operator== (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+			template < class _TR >
+			friend bool operator== (const vecIterator<T> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() == rhs.base();
 			}
 
-			template < class _T >
-			friend bool operator!= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+			friend bool operator!= (const vecIterator<T> & lhs, const vecIterator<T> & rhs) {
 				return lhs.base() != rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend bool operator!= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+			template < class _TR >
+			friend bool operator!= (const vecIterator<T> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() != rhs.base();
 			}
 
-			template < class _T >
-			friend bool operator<  (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+			friend bool operator<  (const vecIterator<T> & lhs, const vecIterator<T> & rhs) {
 				return lhs.base() < rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend bool operator<  (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+			template < class _TR >
+			friend bool operator<  (const vecIterator<T> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() < rhs.base();
 			}
 
-			template < class _T >
-			friend bool operator<= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+			friend bool operator<= (const vecIterator<T> & lhs, const vecIterator<T> & rhs) {
 				return lhs.base() <= rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend bool operator<= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+			template < class _TR >
+			friend bool operator<= (const vecIterator<T> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() <= rhs.base();
 			}
 
-			template < class _T >
-			friend bool operator>  (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+			friend bool operator>  (const vecIterator<T> & lhs, const vecIterator<T> & rhs) {
 				return lhs.base() > rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend bool operator>  (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+			template < class _TR >
+			friend bool operator>  (const vecIterator<T> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() > rhs.base();
 			}
 
-			template < class _T >
-			friend bool operator>= (const vecIterator<_T> & lhs, const vecIterator<_T> & rhs) {
+			friend bool operator>= (const vecIterator<T> & lhs, const vecIterator<T> & rhs) {
 				return lhs.base() >= rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend bool operator>= (const vecIterator<_TL> & lhs, const vecIterator<_TR> & rhs) {
+			template < class _TR >
+			friend bool operator>= (const vecIterator<T> & lhs, const vecIterator<_TR> & rhs) {
 				return lhs.base() >= rhs.base();
 			}
 
-			template < class _T >
-			friend vecIterator<_T> operator+ (difference_type n, const vecIterator<_T> & it) {
+			friend vecIterator<T> operator+ (difference_type n, const vecIterator<T> & it) {
 				return it + n;
 			}
 
-			template < class _T >
-			friend difference_type operator- (const vecIterator<_T> lhs, const vecIterator<_T> rhs) {
+			friend difference_type operator- (const vecIterator<T> lhs, const vecIterator<T> rhs) {
 				return lhs.base() - rhs.base();
 			}
 
 			/* no const -> const case */
-			template < class _TL, class _TR >
-			friend difference_type operator- (const vecIterator<_TL> lhs, const vecIterator<_TR> rhs) {
+			template < class _TR >
+			friend difference_type operator- (const vecIterator<T> lhs, const vecIterator<_TR> rhs) {
 				return lhs.base() - rhs.base();
 			}
 
